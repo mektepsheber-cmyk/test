@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="kk">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>🧩 Сан жүйесін түрлендіру ойыны</title>
+    
+    <style>
+        /* Ойынның негізгі фоны мен стилі */
+        body { 
+            background: radial-gradient(circle at center, #1b0034, #090979); 
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #fff;
+        }
+
+        #sanau-game {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .sg-title {
+            font-size: 28px;
+            color: #00eaff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(0,255,255,0.5);
+        }
+
+        /* Кубтың стилі */
+        .sg-scene {
+            width: 150px;
+            height: 150px;
+            margin: 30px auto;
+            perspective: 1000px;
+        }
+
+        .sg-cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: spin 10s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotateX(-20deg) rotateY(0deg); }
+            to { transform: rotateX(-20deg) rotateY(360deg); }
+        }
+
+        .sg-face {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--g1, #0f52ba), var(--g2, #5ce1e6));
+            border: 2px solid rgba(255,255,255,0.2);
+            backface-visibility: hidden;
+        }
+
+        .sg-front  { transform: translateZ(75px); }
+        .sg-back   { transform: rotateY(180deg) translateZ(75px); }
+        .sg-right  { transform: rotateY(90deg) translateZ(75px); }
+        .sg-left   { transform: rotateY(-90deg) translateZ(75px); }
+        .sg-top    { transform: rotateX(90deg) translateZ(75px); }
+        .sg-bottom { transform: rotateX(-90deg) translateZ(75px); }
+
+        /* Есеп шарты */
+        .sg-task {
+            margin-top: 20px;
+            font-size: 18px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .sg-score {
+            font-size: 22px;
+            color: #76ff03;
+            margin: 20px 0;
+        }
+
+        /* Енгізу өрісі */
+        .sg-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        #sg-answer {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #00eaff;
+            background: #111;
+            color: #00eaff;
+            width: 180px;
+            text-align: center;
+        }
+
+        #sg-check {
+            padding: 12px 25px;
+            border-radius: 8px;
+            border: none;
+            background: #00eaff;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #sg-result {
+            margin-top: 15px;
+            height: 25px;
+            font-weight: bold;
+        }
+
+        .cube-correct { --g1: #00ff80 !important; --g2: #00c853 !important; }
+        .cube-wrong { --g1: #ff1744 !important; --g2: #d50000 !important; }
+    </style>
+</head>
+<body>
+
+<div id="sanau-game">
+    <h3 class="sg-title">🧩 Сан жүйесін түрлендіру</h3>
+
+    <div class="sg-scene">
+        <div class="sg-cube" id="sg-cube">
+            <div class="sg-face sg-front" id="sg-cube-number">?</div>
+            <div class="sg-face sg-back"></div>
+            <div class="sg-face sg-right"></div>
+            <div class="sg-face sg-left"></div>
+            <div class="sg-face sg-top"></div>
+            <div class="sg-face sg-bottom"></div>
+        </div>
+    </div>
+
+    <div class="sg-task" id="sg-task">Жүктелуде...</div>
+
+    <div class="sg-score">⭐ Ұпай: <span id="sg-score">0</span></div>
+
+    <div class="sg-input">
+        <input id="sg-answer" type="text" placeholder="Жауап..." autocomplete="off">
+        <button id="sg-check">✅ Тексеру</button>
+    </div>
+
+    <div id="sg-result"></div>
+</div>
+
+<script>
+(function(){
+    const cube = document.getElementById('sg-cube');
+    const cubeNumber = document.getElementById('sg-cube-number');
+    const taskEl = document.getElementById('sg-task');
+    const answerEl = document.getElementById('sg-answer');
+    const checkBtn = document.getElementById('sg-check');
+    const resultEl = document.getElementById('sg-result');
+    const scoreEl = document.getElementById('sg-score');
+
+    let current = null, score = 0, mode = 'bin';
+
+    function showNewNumber() {
+        mode = (mode === 'bin') ? 'oct' : 'bin';
+        current = Math.floor(Math.random()*64);
+        cubeNumber.textContent = current;
+        taskEl.textContent = (mode === 'bin')
+            ? `Есеп: ${current} санын екілік (2) жүйеге айналдырыңыз`
+            : `Есеп: ${current} санын сегіздік (8) жүйеге айналдырыңыз`;
+        answerEl.value = '';
+        cube.classList.remove('cube-correct','cube-wrong');
+    }
+
+    function checkAnswer() {
+        const raw = answerEl.value.trim();
+        if (!raw) return;
+
+        let userVal;
+        if (mode === 'bin') {
+            userVal = parseInt(raw, 2);
+        } else {
+            userVal = parseInt(raw, 8);
+        }
+
+        if (userVal === current) {
+            score++;
+            scoreEl.textContent = score;
+            resultEl.textContent = '✅ Дұрыс!';
+            resultEl.style.color = '#76ff03';
+            cube.classList.add('cube-correct');
+            setTimeout(showNewNumber, 1000);
+        } else {
+            resultEl.textContent = '❌ Қате, қайталап көр!';
+            resultEl.style.color = '#ff1744';
+            cube.classList.add('cube-wrong');
+            setTimeout(() => cube.classList.remove('cube-wrong'), 500);
+        }
+    }
+
+    checkBtn.addEventListener('click', checkAnswer);
+    answerEl.addEventListener('keydown', (e) => { if(e.key === 'Enter') checkAnswer(); });
+    showNewNumber();
+})();
+</script>
+
+</body>
+</html>
