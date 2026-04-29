@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Информатика сабақтары</title>
+
+        <!-- CSS FILES -->        
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="css/bootstrap-icons.css" rel="stylesheet">
+
+        <link href="css/templatemo-kind-heart-charity.css" rel="stylesheet">
+<!--
+
+TemplateMo 581 Kind Heart Charity
+
+https://templatemo.com/tm-581-kind-heart-charity
+
+-->
+
+    </head>
+    
+    <body id="section_1">
+
+        <header class="site-header">
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col-lg-8 col-12 d-flex flex-wrap">
+                        <p class="d-flex me-4 mb-0">
+                            <i class="bi-geo-alt me-2"></i>
+                            №145 мектеп,Шымкент қ.
+                        </p>
+
+                        <p class="d-flex mb-0">
+                            <i class="bi-envelope me-2"></i>
+
+                            <a href="mailto:informatika@school.kz">
+                                informatika@school.kz
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
+                        <ul class="social-icon">
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-twitter"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-facebook"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-instagram"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-youtube"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-whatsapp"></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+
+        <nav class="navbar navbar-expand-lg bg-light shadow-lg">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <img src="images/logo.png" class="logo img-fluid" alt="Kind Heart Charity">
+                    <span>
+                        Информатика
+                        <small>Оқу платформасы</small>
+                    </span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#top">Басты бет</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_2">Python</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_3">Алгоритмдер</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_4">Практика</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link click-scroll dropdown-toggle" href="#section_5" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Бейне сабақтар</a>
+
+                            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                                <li><a class="dropdown-item" href="news.html">Барлық сабақтар</a></li>
+
+                                <li><a class="dropdown-item" href="news-detail.html">Сабақ үлгісі</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_6">Байланыс</a>
+                        </li>
+
+                        <li class="nav-item ms-3">
+                            <a class="nav-link custom-btn custom-border-btn btn" href="donate.html">Материалдар</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+
+            <section class="hero-section hero-section-full-height">
+   <!-- Сан жүйесін түрлендіру ойыны -->
+<div id="sanau-game" style="max-width:600px;margin:30px auto;">
+  <h3 class="sg-title">🧩 Сан жүйесін түрлендіру ойыны</h3>
+
+  <div class="sg-scene">
+    <div class="sg-cube" id="sg-cube" style="--g1:#0f52ba; --g2:#5ce1e6;">
+      <div class="sg-face sg-front" id="sg-cube-number">?</div>
+      <div class="sg-face sg-back"></div>
+      <div class="sg-face sg-right"></div>
+      <div class="sg-face sg-left"></div>
+      <div class="sg-face sg-top"></div>
+      <div class="sg-face sg-bottom"></div>
+    </div>
+  </div>
+
+  <div class="sg-task" id="sg-task">Есеп шарты мұнда көрінеді</div>
+
+  <div class="sg-score-wrap">
+    <div class="sg-score-glow" id="sg-score-glow"></div>
+    <div class="sg-score">⭐ Ұпай: <span id="sg-score">0</span></div>
+  </div>
+
+  <div class="sg-input">
+    <input id="sg-answer" type="text" placeholder="Жауабыңызды енгізіңіз..." autocomplete="off" />
+    <button id="sg-check">✅ Тексеру</button>
+  </div>
+
+  <div id="sg-result" role="status" aria-live="polite"></div>
+</div>
+
+<style>
+  body { background: radial-gradient(circle at center, #1b0034, #090979); }
+  #sanau-game {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    color: #fff;
+    position: relative;
+  }
+
+  .sg-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #00eaff;
+    margin-bottom: 12px;
+    text-shadow: 0 0 20px rgba(0,255,255,0.7);
+    background: linear-gradient(to right, #00eaff, #00ff80);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .sg-scene {
+    width: 180px;
+    height: 180px;
+    margin: 20px auto;
+    perspective: 1200px;
+  }
+
+  .sg-cube {
+    width: 180px;
+    height: 180px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: spin 8s linear infinite;
+    transition: background 600ms ease, transform 0.3s ease;
+  }
+
+  @keyframes spin {
+    from { transform: rotateX(-20deg) rotateY(0deg); }
+    to { transform: rotateX(-20deg) rotateY(360deg); }
+  }
+
+  .sg-face {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, var(--g1), var(--g2));
+    box-shadow: 0 0 20px rgba(0,255,255,0.4), inset 0 0 30px rgba(255,255,255,0.1);
+    backface-visibility: hidden;
+  }
+
+  .sg-front  { transform: translateZ(90px); }
+  .sg-back   { transform: rotateY(180deg) translateZ(90px); }
+  .sg-right  { transform: rotateY(90deg) translateZ(90px); }
+  .sg-left   { transform: rotateY(-90deg) translateZ(90px); }
+  .sg-top    { transform: rotateX(90deg) translateZ(90px); }
+  .sg-bottom { transform: rotateX(-90deg) translateZ(90px); }
+
+  .sg-task {
+    margin-top: 3cm;
+    font-size: 20px;
+    font-weight: 600;
+    color: #f8f8f8;
+    background: rgba(0, 0, 0, 0.6);
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(255,255,255,0.1), inset 0 0 12px rgba(255,255,255,0.05);
+  }
+
+  .sg-score-wrap {
+    position: relative;
+    margin-top: 26px;
+    display: inline-block;
+  }
+
+  .sg-score {
+    font-size: 20px;
+    color: #76ff03;
+    text-shadow: 0 0 12px rgba(100,255,100,0.5);
+    background: rgba(20,20,20,0.8);
+    border-radius: 14px;
+    padding: 6px 18px;
+  }
+
+  .sg-score-glow {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,255,100,0.3), transparent 60%);
+    pointer-events: none;
+    transition: transform 700ms ease, opacity 700ms ease;
+  }
+
+  .glow-active { transform: translate(-50%,-50%) scale(1); opacity:1; }
+
+  .sg-input {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  #sg-answer {
+    width: 230px;
+    padding: 12px;
+    font-size: 16px;
+    color: #00ffcc;
+    background: linear-gradient(145deg, #111, #222);
+    border: 1px solid rgba(0,255,255,0.4);
+    border-radius: 10px;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+
+  #sg-answer:focus {
+    box-shadow: 0 0 25px rgba(0,255,255,0.6);
+    transform: translateY(-2px);
+  }
+
+  #sg-check {
+    padding: 12px 18px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: linear-gradient(145deg, #00ff80, #00bcd4);
+    color: #000;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+
+  #sg-check:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(0,255,255,0.6);
+  }
+
+  #sg-result {
+    margin-top: 16px;
+    font-size: 17px;
+    min-height: 20px;
+  }
+
+  /* Эффекттер */
+  .cube-correct {
+    --g1: #00ff80 !important;
+    --g2: #00c853 !important;
+    transform: scale(1.1);
+  }
+
+  .cube-wrong {
+    --g1: #ff1744 !important;
+    --g2: #d50000 !important;
+    animation: shake 0.4s;
+  }
+
+  @keyframes shake {
+    0% { transform: rotateX(-20deg) rotateY(0deg) translateX(0); }
+    25% { transform: rotateX(-20deg) rotateY(0deg) translateX(-8px); }
+    50% { transform: rotateX(-20deg) rotateY(0deg) translateX(8px); }
+    75% { transform: rotateX(-20deg) rotateY(0deg) translateX(-5px); }
+    100% { transform: rotateX(-20deg) rotateY(0deg) translateX(0); }
+  }
+</style>
+
+<script>
+(function(){
+  const cube = document.getElementById('sg-cube');
+  const cubeNumber = document.getElementById('sg-cube-number');
+  const taskEl = document.getElementById('sg-task');
+  const answerEl = document.getElementById('sg-answer');
+  const checkBtn = document.getElementById('sg-check');
+  const resultEl = document.getElementById('sg-result');
+  const scoreEl = document.getElementById('sg-score');
+  const glow = document.getElementById('sg-score-glow');
+
+  let current = null, score = 0, mode = 'bin';
+
+  function showNewNumber() {
+    mode = (mode === 'bin') ? 'oct' : 'bin';
+    current = Math.floor(Math.random()*64);
+    cubeNumber.textContent = current;
+    taskEl.textContent = (mode === 'bin')
+      ? `Есеп: ${current} санын екілік (2) жүйеге түрлендіріңіз`
+      : `Есеп: ${current} санын сегіздік (8) жүйеге түрлендіріңіз`;
+    resultEl.textContent = '';
+    answerEl.value = '';
+    cube.classList.remove('cube-correct','cube-wrong');
+  }
+
+  function checkAnswer() {
+    const raw = answerEl.value.trim();
+    if (!raw) { resultEl.textContent = 'Сан енгізіңіз!'; resultEl.style.color='#ffcc00'; return; }
+
+    let userVal;
+    if (mode==='bin') {
+      if (!/^[01]+$/.test(raw)) { resultEl.textContent='Тек 0 және 1 болу керек!'; resultEl.style.color='#ff6666'; return; }
+      userVal = parseInt(raw,2);
+    } else {
+      if (!/^[0-7]+$/.test(raw)) { resultEl.textContent='Тек 0–7 болу керек!'; resultEl.style.color='#ff6666'; return; }
+      userVal = parseInt(raw,8);
+    }
+
+    if (userVal===current) {
+      score++;
+      scoreEl.textContent = score;
+      resultEl.textContent='✅ Дұрыс! Ұпай қосылды';
+      resultEl.style.color='#76ff03';
+      glow.classList.add('glow-active');
+      cube.classList.add('cube-correct');
+      setTimeout(()=>{
+        glow.classList.remove('glow-active');
+        showNewNumber();
+      },1000);
+    } else {
+      resultEl.textContent='❌ Қате! Қайта енгізіп көр!';
+      resultEl.style.color='#ffffff';
+      cube.classList.add('cube-wrong');
+      setTimeout(()=>cube.classList.remove('cube-wrong'),700);
+    }
+  }
+
+  checkBtn.addEventListener('click',checkAnswer);
+  answerEl.addEventListener('keydown',e=>{if(e.key==='Enter')checkAnswer();});
+  showNewNumber();
+})();
+</script>
+
+            </section>
+
+
+
+            <section class="section-padding" style="margin-top: 100px;">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-10 col-12 text-center mx-auto">
+
+                <h2 class="mb-5">Информатика пәніне қош келдіңіз!</h2>
+
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
+                            <div class="featured-block d-flex justify-content-center align-items-center">
+                                <a href="donate.html" class="d-block">
+                                    <img src="images/icons/hands.png" class="featured-block-image img-fluid" alt="">
+                                    <p class="featured-block-text"><strong>Python</strong> үйрену</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0 mb-md-4">
+                            <div class="featured-block d-flex justify-content-center align-items-center">
+                                <a href="donate.html" class="d-block">
+                                    <img src="images/icons/heart.png" class="featured-block-image img-fluid" alt="">
+                                    <p class="featured-block-text"><strong>Алгоритмдік</strong> ойлау</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0 mb-md-4">
+                            <div class="featured-block d-flex justify-content-center align-items-center">
+                                <a href="donate.html" class="d-block">
+                                    <img src="images/icons/receive.png" class="featured-block-image img-fluid" alt="">
+                                    <p class="featured-block-text"><strong>Практикалық</strong> тапсырмалар</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
+                            <div class="featured-block d-flex justify-content-center align-items-center">
+                                <a href="donate.html" class="d-block">
+                                    <img src="images/icons/scholarship.png" class="featured-block-image img-fluid" alt="">
+                                    <p class="featured-block-text"><strong>Бейне</strong> сабақтар</p>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-12 mb-4">
+                        <img src="images/logo.png" class="logo img-fluid" alt="">
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                        <h5 class="site-footer-title mb-3">Жылдам сілтемелер</h5>
+
+                        <ul class="footer-menu">
+                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Python</a></li>
+                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Алгоритмдер</a></li>
+                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Практика</a></li>
+                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Бейне сабақтар</a></li>
+                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Байланыс</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-12 mx-auto">
+                        <h5 class="site-footer-title mb-3">Байланыс ақпараты</h5>
+
+                        <p class="text-white d-flex mb-2">
+                            <i class="bi-telephone me-2"></i>
+                            <a href="tel:+77000000000" class="site-footer-link">
+                                +7 (700) 000-00-00
+                            </a>
+                        </p>
+
+                        <p class="text-white d-flex">
+                            <i class="bi-envelope me-2"></i>
+                            <a href="mailto:informatika@school.kz" class="site-footer-link">
+                                informatika@school.kz
+                            </a>
+                        </p>                        
+
+                        <a href="#" class="custom-btn btn mt-3">Кері байланыс</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="site-footer-bottom">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-6 col-md-7 col-12">
+                            <p class="copyright-text mb-0">© 2025 Информатика сабағы. Барлық құқықтар қорғалған.
+                        	Дизайн: <a href="https://templatemo.com" target="_blank">TemplateMo</a></p>
+                        </div>
+                        
+                        <div class="col-lg-6 col-md-5 col-12 d-flex justify-content-center align-items-center mx-auto">
+                            <ul class="social-icon">
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-youtube"></a>
+                                </li>
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-telegram"></a>
+                                </li>
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-facebook"></a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- JAVASCRIPT FILES -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.sticky.js"></script>
+        <script src="js/click-scroll.js"></script>
+        <script src="js/counter.js"></script>
+        <script src="js/custom.js"></script>
+
+    </body>
+</html>
