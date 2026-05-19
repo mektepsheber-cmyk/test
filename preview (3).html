@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberEdu KZ</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial;
+    background:#0f172a;
+    color:white;
+}
+
+header{
+    background:linear-gradient(90deg,#2563eb,#7c3aed);
+    padding:25px;
+    text-align:center;
+    font-size:32px;
+    font-weight:bold;
+}
+
+.container{
+    padding:20px;
+    max-width:1200px;
+    margin:auto;
+}
+
+.student{
+    background:#1e293b;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:25px;
+}
+
+.student input{
+    width:250px;
+    padding:10px;
+    margin:5px;
+    border:none;
+    border-radius:8px;
+}
+
+.task{
+    background:#1e293b;
+    margin-bottom:25px;
+    padding:20px;
+    border-radius:15px;
+    border-left:6px solid #3b82f6;
+}
+
+.task h2{
+    color:#60a5fa;
+}
+
+button{
+    padding:14px 22px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+.result{
+    text-align:center;
+    font-size:30px;
+    margin-top:30px;
+    color:#22c55e;
+    font-weight:bold;
+}
+
+.drag{
+    background:#334155;
+    padding:12px;
+    margin:10px;
+    border-radius:10px;
+    cursor:grab;
+}
+
+.drop{
+    min-height:60px;
+    background:#475569;
+    margin-top:10px;
+    border-radius:10px;
+    padding:10px;
+}
+
+.card{
+    display:inline-block;
+    width:120px;
+    height:80px;
+    background:#2563eb;
+    margin:10px;
+    text-align:center;
+    line-height:80px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.level{
+    background:#7c3aed;
+    padding:10px;
+    border-radius:10px;
+    display:inline-block;
+    margin-bottom:20px;
+}
+
+.timer{
+    font-size:24px;
+    color:yellow;
+    text-align:right;
+}
+
+.progress{
+    width:100%;
+    background:#334155;
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:20px;
+}
+
+.bar{
+    width:0%;
+    height:20px;
+    background:#22c55e;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+🌐 CYBER EDU KZ — ИНТЕРАКТИВТІ ИНФОРМАТИКА
+</header>
+
+<div class="container">
+
+<div class="student">
+<h2>👨‍🎓 Оқушы мәліметі</h2>
+
+<input type="text" placeholder="Оқушының аты-жөні">
+<input type="text" placeholder="Сыныбы">
+
+<div class="level">
+🔥 Level: Beginner Hacker
+</div>
+
+<div class="timer">
+⏰ Уақыт: <span id="time">300</span>
+</div>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+</div>
+
+<form id="quiz">
+
+<!-- 1 -->
+<div class="task">
+<h2>1. Интернет пакетін жібер</h2>
+
+<p>Пакетті дұрыс бағытпен өткіз:</p>
+
+<div class="drag" draggable="true" id="packet">
+📦 DATA PACKET
+</div>
+
+<div class="drop">💻 Компьютер</div>
+<div class="drop">📡 Router</div>
+<div class="drop">🌐 Internet</div>
+<div class="drop">🖥️ Server</div>
+
+</div>
+
+<!-- 2 -->
+<div class="task">
+<h2>2. VPN туннелі</h2>
+
+<p>VPN не үшін қажет?</p>
+
+<input type="radio" name="q2" value="1">
+Қауіпсіз байланыс<br>
+
+<input type="radio" name="q2" value="0">
+Видео монтаж<br>
+
+<input type="radio" name="q2" value="0">
+Ойын жасау
+</div>
+
+<!-- 3 -->
+<div class="task">
+<h2>3. IP пазл</h2>
+
+<p>IPv4 неше бит?</p>
+
+<input type="number" id="ip">
+</div>
+
+<!-- 4 -->
+<div class="task">
+<h2>4. Хакерден қорған</h2>
+
+<p>Қауіпсіз парольді таңда:</p>
+
+<input type="radio" name="q4" value="0">
+123456<br>
+
+<input type="radio" name="q4" value="1">
+Qazaq$2026<br>
+
+<input type="radio" name="q4" value="0">
+password
+</div>
+
+<!-- 5 -->
+<div class="task">
+<h2>5. Drag & Drop</h2>
+
+<div class="drag" draggable="true" id="virus">
+🦠 virus.exe
+</div>
+
+<div class="drag" draggable="true" id="cloud">
+☁️ Google Drive
+</div>
+
+<div class="drop" data-answer="virus">
+❌ Қауіпті файл
+</div>
+
+<div class="drop" data-answer="cloud">
+✅ Бұлттық сервис
+</div>
+
+</div>
+
+<!-- 6 -->
+<div class="task">
+<h2>6. DNS сәйкестендіру</h2>
+
+<select id="dns">
+<option value="">Таңда</option>
+<option value="1">Доменді IP-ге айналдырады</option>
+<option value="0">Компьютерді өшіреді</option>
+<option value="0">Видео көреді</option>
+</select>
+</div>
+
+<!-- 7 -->
+<div class="task">
+<h2>7. HTML конструктор</h2>
+
+<p>Тақырып тегі:</p>
+
+<input type="text" id="html">
+</div>
+
+<!-- 8 -->
+<div class="task">
+<h2>8. Фишинг хат</h2>
+
+<p>Бейтаныс сілтемені ашуға бола ма?</p>
+
+<select id="fish">
+<option value="">Таңда</option>
+<option value="0">Иә</option>
+<option value="1">Жоқ</option>
+</select>
+</div>
+
+<!-- 9 -->
+<div class="task">
+<h2>9. Memory Game</h2>
+
+<div class="card">VPN</div>
+<div class="card">DNS</div>
+<div class="card">IP</div>
+<div class="card">HTML</div>
+
+<p>Есте сақта!</p>
+
+</div>
+
+<!-- 10 -->
+<div class="task">
+<h2>10. kz домені</h2>
+
+<p>kz қай ел?</p>
+
+<input type="radio" name="q10" value="1">
+Қазақстан<br>
+
+<input type="radio" name="q10" value="0">
+АҚШ<br>
+
+<input type="radio" name="q10" value="0">
+Ресей
+</div>
+
+<!-- 11 -->
+<div class="task">
+<h2>11. Қысқа жауап</h2>
+
+Ақпараттық қауіпсіздік дегеніміз не?
+
+<textarea rows="4" style="width:100%;"></textarea>
+</div>
+
+<!-- 12 -->
+<div class="task">
+<h2>12. Шифрлау</h2>
+
+<p>Ақпаратты кодтау қалай аталады?</p>
+
+<input type="radio" name="q12" value="1">
+Шифрлау<br>
+
+<input type="radio" name="q12" value="0">
+Өшіру<br>
+
+<input type="radio" name="q12" value="0">
+Көшіру
+</div>
+
+<!-- 13 -->
+<div class="task">
+<h2>13. Checkbox қауіпсіздік</h2>
+
+<input type="checkbox" class="safe" value="1">
+Антивирус<br>
+
+<input type="checkbox" class="safe" value="1">
+Күрделі пароль<br>
+
+<input type="checkbox" class="safe" value="0">
+Пароль тарату
+</div>
+
+<!-- 14 -->
+<div class="task">
+<h2>14. CSS дизайнер</h2>
+
+<p>CSS не үшін қажет?</p>
+
+<input type="radio" name="q14" value="1">
+Сайтты сәндеу<br>
+
+<input type="radio" name="q14" value="0">
+Музыка тыңдау<br>
+
+<input type="radio" name="q14" value="0">
+Ойын орнату
+</div>
+
+<!-- 15 -->
+<div class="task">
+<h2>15. Домен құрастыр</h2>
+
+<p>www . mektep . kz</p>
+
+<input type="text" id="domain">
+</div>
+
+<!-- 16 -->
+<div class="task">
+<h2>16. Вирус ұстап ал</h2>
+
+<button type="button" onclick="catchVirus()">🦠 Вирусты ұста</button>
+
+<p id="virusResult"></p>
+</div>
+
+<!-- 17 -->
+<div class="task">
+<h2>17. Логикалық сұрақ</h2>
+
+VPN интернетсіз жұмыс істей ме?
+
+<input type="radio" name="q17" value="0">
+Иә<br>
+
+<input type="radio" name="q17" value="1">
+Жоқ
+</div>
+
+<!-- 18 -->
+<div class="task">
+<h2>18. RGB түсі</h2>
+
+<p>Қауіпті түс:</p>
+
+<input type="color">
+</div>
+
+<!-- 19 -->
+<div class="task">
+<h2>19. Компьютерлік желі</h2>
+
+Компьютерлік желі дегеніміз?
+
+<input type="radio" name="q19" value="1">
+Компьютерлер байланысы<br>
+
+<input type="radio" name="q19" value="0">
+Музыкалық программа<br>
+
+<input type="radio" name="q19" value="0">
+Видео редактор
+</div>
+
+<!-- 20 -->
+<div class="task">
+<h2>20. Финал Boss Level</h2>
+
+<p>Информатика саған ұнай ма?</p>
+
+<select id="final">
+<option value="">Таңда</option>
+<option value="1">🔥 Өте қатты</option>
+<option value="1">😎 Иә</option>
+<option value="0">😅 Жоқ</option>
+</select>
+</div>
+
+<button type="button" onclick="finishQuiz()">
+🏆 Нәтижені шығару
+</button>
+
+</form>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<script>
+
+let score = 0;
+
+function finishQuiz(){
+
+score = 0;
+
+let q2 = document.querySelector('input[name="q2"]:checked');
+if(q2 && q2.value=="1") score++;
+
+if(document.getElementById("ip").value == 32){
+score++;
+}
+
+let q4 = document.querySelector('input[name="q4"]:checked');
+if(q4 && q4.value=="1") score++;
+
+score += Number(document.getElementById("dns").value || 0);
+
+let html = document.getElementById("html").value.toLowerCase();
+
+if(html=="h1" || html=="<h1>"){
+score++;
+}
+
+score += Number(document.getElementById("fish").value || 0);
+
+let q10 = document.querySelector('input[name="q10"]:checked');
+if(q10 && q10.value=="1") score++;
+
+let q12 = document.querySelector('input[name="q12"]:checked');
+if(q12 && q12.value=="1") score++;
+
+let checks = document.querySelectorAll(".safe:checked");
+
+checks.forEach(c=>{
+score += Number(c.value);
+});
+
+let q14 = document.querySelector('input[name="q14"]:checked');
+if(q14 && q14.value=="1") score++;
+
+let domain = document.getElementById("domain").value.toLowerCase();
+
+if(domain=="www.mektep.kz"){
+score++;
+}
+
+let q17 = document.querySelector('input[name="q17"]:checked');
+if(q17 && q17.value=="1") score++;
+
+let q19 = document.querySelector('input[name="q19"]:checked');
+if(q19 && q19.value=="1") score++;
+
+score += Number(document.getElementById("final").value || 0);
+
+document.getElementById("result").innerHTML =
+"🎉 Жалпы балл: " + score + " / 20";
+
+document.getElementById("bar").style.width =
+(score*5) + "%";
+
+}
+
+const drags = document.querySelectorAll(".drag");
+const drops = document.querySelectorAll(".drop");
+
+drags.forEach(item=>{
+
+item.addEventListener("dragstart",e=>{
+e.dataTransfer.setData("text",e.target.id);
+});
+
+});
+
+drops.forEach(zone=>{
+
+zone.addEventListener("dragover",e=>{
+e.preventDefault();
+});
+
+zone.addEventListener("drop",e=>{
+
+e.preventDefault();
+
+const id = e.dataTransfer.getData("text");
+
+const dragged = document.getElementById(id);
+
+zone.appendChild(dragged);
+
+if(id=="virus" && zone.dataset.answer=="virus"){
+score++;
+}
+
+if(id=="cloud" && zone.dataset.answer=="cloud"){
+score++;
+}
+
+});
+
+});
+
+function catchVirus(){
+
+document.getElementById("virusResult").innerHTML =
+"✅ Вирус ұсталды! +1 ұпай";
+
+score++;
+
+}
+
+let time = 300;
+
+setInterval(()=>{
+
+if(time>0){
+
+time--;
+
+document.getElementById("time").innerHTML = time;
+
+}
+
+},1000);
+
+</script>
+
+</body>
+</html>
