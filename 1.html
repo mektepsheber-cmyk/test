@@ -1,0 +1,151 @@
+```html
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ноутбук таңдау тапсырмасы</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+}
+
+.container{
+    width:700px;
+    background:white;
+    border-radius:20px;
+    padding:35px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+    margin-bottom:15px;
+}
+
+.info{
+    background:#eef7ff;
+    border-left:5px solid #0066cc;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+    line-height:1.6;
+}
+
+label{
+    display:block;
+    margin-top:18px;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #bbb;
+    font-size:16px;
+}
+
+textarea{
+    height:150px;
+    resize:none;
+}
+
+button{
+    margin-top:25px;
+    width:100%;
+    padding:14px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    background:#0066cc;
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#004999;
+}
+
+.footer{
+    text-align:center;
+    margin-top:20px;
+    color:gray;
+    font-size:14px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>💻 Ноутбук таңдау тапсырмасы</h1>
+
+<div class="info">
+Егер сен жаңа ноутбук сатып алатын болсаң, оқу, ойын немесе
+бейнемонтаж жасау сияқты қажеттіліктеріңе қарай қандай
+<b>RAM көлемін</b> және қандай
+<b>сақтау құрылғысын (SSD немесе HDD)</b>
+таңдар едің? Өз таңдауыңды толық түсіндір.
+</div>
+
+<form>
+
+<label>👨‍🎓 Оқушының аты-жөні</label>
+<input type="text" placeholder="Аты-жөніңізді енгізіңіз">
+
+<label>🎯 Ноутбукты қандай мақсатта қолданасың?</label>
+<select>
+    <option>Таңдаңыз</option>
+    <option>📚 Оқу</option>
+    <option>🎮 Ойын</option>
+    <option>🎬 Бейнемонтаж</option>
+</select>
+
+<label>🧠 Қандай RAM көлемін таңдайсың?</label>
+<select>
+    <option>4 GB</option>
+    <option>8 GB</option>
+    <option>16 GB</option>
+    <option>32 GB</option>
+</select>
+
+<label>💾 Қандай сақтау құрылғысын таңдайсың?</label>
+<select>
+    <option>SSD</option>
+    <option>HDD</option>
+</select>
+
+<label>✍️ Таңдауыңды түсіндір</label>
+<textarea placeholder="Неліктен осы RAM мен сақтау құрылғысын таңдадың?"></textarea>
+
+<button type="submit">✅ Жауапты жіберу</button>
+
+</form>
+
+<div class="footer">
+Информатика пәні | HTML + CSS тапсырмасы
+</div>
+
+</div>
+
+</body>
+</html>
+```
