@@ -1,0 +1,1270 @@
+```html
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Интернеттегі қауіпсіздік | 2 сынып</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    background:linear-gradient(135deg,#dff6ff,#fff5d6,#e8ddff);
+    min-height:100vh;
+    color:#25324a;
+}
+
+header{
+    background:linear-gradient(135deg,#5b5bea,#7b5cff);
+    color:white;
+    text-align:center;
+    padding:28px 15px;
+    box-shadow:0 5px 20px #7775;
+}
+
+header h1{
+    font-size:clamp(28px,5vw,48px);
+    margin-bottom:8px;
+}
+
+header p{
+    font-size:20px;
+}
+
+.author{
+    margin-top:10px;
+    font-size:14px;
+    opacity:.9;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:25px 15px 50px;
+}
+
+.score-board{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:25px;
+}
+
+.score-box{
+    background:white;
+    border-radius:20px;
+    padding:13px 25px;
+    box-shadow:0 5px 15px #5552;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.score{
+    color:#6b55e8;
+    font-size:24px;
+}
+
+.progress{
+    height:15px;
+    background:#ffffffaa;
+    border-radius:20px;
+    overflow:hidden;
+    margin:10px auto 25px;
+    max-width:700px;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#ffbd59,#ff6b8a);
+    transition:.5s;
+}
+
+.game{
+    display:none;
+    background:white;
+    border-radius:30px;
+    padding:30px;
+    box-shadow:0 10px 30px #5553;
+    animation:appear .5s;
+}
+
+.game.active{
+    display:block;
+}
+
+@keyframes appear{
+    from{opacity:0;transform:translateY(15px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+.game-title{
+    text-align:center;
+    font-size:30px;
+    color:#5749c9;
+    margin-bottom:8px;
+}
+
+.game-description{
+    text-align:center;
+    color:#657086;
+    margin-bottom:25px;
+    font-size:18px;
+}
+
+.question{
+    background:#f4f5ff;
+    border-radius:22px;
+    padding:25px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.big-emoji{
+    font-size:70px;
+    margin-bottom:10px;
+}
+
+.question h2{
+    font-size:25px;
+}
+
+.answers{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+.answer{
+    border:3px solid #e3e4f5;
+    background:#fff;
+    border-radius:20px;
+    padding:18px;
+    font-size:20px;
+    cursor:pointer;
+    transition:.2s;
+    font-weight:bold;
+}
+
+.answer:hover{
+    transform:translateY(-4px);
+    border-color:#7665ef;
+    box-shadow:0 5px 15px #7773;
+}
+
+.answer.correct{
+    background:#d9ffd9;
+    border-color:#32bd61;
+}
+
+.answer.wrong{
+    background:#ffdede;
+    border-color:#ff5d5d;
+}
+
+.feedback{
+    min-height:50px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    padding:15px;
+}
+
+.next-btn,
+.start-btn,
+.restart-btn{
+    display:block;
+    margin:15px auto 0;
+    border:0;
+    border-radius:18px;
+    padding:15px 35px;
+    background:linear-gradient(135deg,#6355e9,#8a5cf6);
+    color:white;
+    font-size:19px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 5px 15px #5554;
+    transition:.2s;
+}
+
+.next-btn:hover,
+.start-btn:hover,
+.restart-btn:hover{
+    transform:scale(1.04);
+}
+
+.next-btn:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+}
+
+.match-area{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.match-column{
+    background:#f7f7ff;
+    border-radius:20px;
+    padding:15px;
+}
+
+.match-column h3{
+    text-align:center;
+    margin-bottom:12px;
+    color:#6154d5;
+}
+
+.match-item{
+    background:white;
+    border:3px solid #e4e4f5;
+    border-radius:15px;
+    padding:15px;
+    margin:10px 0;
+    cursor:pointer;
+    font-size:18px;
+    text-align:center;
+    transition:.2s;
+}
+
+.match-item:hover{
+    transform:scale(1.02);
+}
+
+.match-item.selected{
+    border-color:#6a5ae8;
+    background:#eeecff;
+}
+
+.match-item.matched{
+    background:#d9ffd9;
+    border-color:#35b962;
+    cursor:default;
+}
+
+.password-options{
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+    justify-content:center;
+}
+
+.password{
+    padding:18px 22px;
+    border-radius:18px;
+    background:#f5f5ff;
+    border:3px solid #ddd;
+    cursor:pointer;
+    font-size:19px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.password:hover{
+    border-color:#6558df;
+    transform:translateY(-3px);
+}
+
+.detective{
+    max-width:750px;
+    margin:auto;
+}
+
+.message{
+    border-radius:20px;
+    padding:20px;
+    margin:12px 0;
+    background:#f5f6ff;
+    border:3px solid #e2e3f2;
+    cursor:pointer;
+    font-size:18px;
+    transition:.2s;
+}
+
+.message:hover{
+    transform:translateX(5px);
+}
+
+.message .sender{
+    font-weight:bold;
+    color:#5548c8;
+    margin-bottom:8px;
+}
+
+.message.correct{
+    background:#d9ffd9;
+    border-color:#36bd61;
+}
+
+.message.wrong{
+    background:#ffdede;
+    border-color:#ff5c5c;
+}
+
+.game-navigation{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin:25px 0;
+    flex-wrap:wrap;
+}
+
+.game-nav{
+    border:0;
+    border-radius:15px;
+    padding:12px 18px;
+    background:white;
+    cursor:pointer;
+    font-weight:bold;
+    box-shadow:0 3px 10px #5552;
+}
+
+.game-nav.active{
+    background:#6558e9;
+    color:white;
+}
+
+.result{
+    display:none;
+    background:white;
+    border-radius:30px;
+    padding:40px 20px;
+    text-align:center;
+    box-shadow:0 10px 30px #5553;
+}
+
+.result.show{
+    display:block;
+}
+
+.result .trophy{
+    font-size:90px;
+}
+
+.result h2{
+    font-size:35px;
+    color:#5b50d2;
+    margin:15px;
+}
+
+.final-score{
+    font-size:55px;
+    font-weight:bold;
+    color:#ff9d27;
+}
+
+.stars{
+    font-size:45px;
+    margin:10px;
+}
+
+.tip{
+    background:#fff8d9;
+    border:3px dashed #ffc94d;
+    border-radius:20px;
+    padding:18px;
+    margin-top:25px;
+    font-size:18px;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#687086;
+}
+
+@media(max-width:650px){
+    .game{
+        padding:18px;
+    }
+
+    .match-area{
+        grid-template-columns:1fr;
+    }
+
+    .question h2{
+        font-size:21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🛡️ Интернет қаһарманы</h1>
+    <p>Интернетте қауіпсіз болуды үйренейік!</p>
+    <div class="author">2-сынып • Автор: Әмірәлі Мейірхан</div>
+</header>
+
+<div class="container">
+
+    <div class="score-board">
+        <div class="score-box">⭐ Ұпай: <span class="score" id="score">0</span></div>
+        <div class="score-box">🎮 Ойын: <span id="gameNumber">1</span>/4</div>
+        <div class="score-box">❤️ Дұрыс: <span id="correctCount">0</span></div>
+    </div>
+
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="game-navigation">
+        <button class="game-nav active" onclick="showGame(1)">🧩 Сәйкестендір</button>
+        <button class="game-nav" onclick="showGame(2)">🚦 Қауіпсіз бе?</button>
+        <button class="game-nav" onclick="showGame(3)">🔐 Құпиясөз</button>
+        <button class="game-nav" onclick="showGame(4)">🕵️ Детектив</button>
+    </div>
+
+    <!-- GAME 1 -->
+    <section class="game active" id="game1">
+        <h2 class="game-title">🧩 1-ойын: Сәйкестендір</h2>
+        <p class="game-description">
+            Сол жақтағы жағдайды оң жақтағы дұрыс әрекетпен сәйкестендір!
+        </p>
+
+        <div class="match-area">
+            <div class="match-column">
+                <h3>👀 Жағдайлар</h3>
+
+                <div class="match-item situation" data-id="1">
+                    📸 Бейтаныс адам сурет сұрады
+                </div>
+
+                <div class="match-item situation" data-id="2">
+                    🔗 Бейтаныс сілтеме келді
+                </div>
+
+                <div class="match-item situation" data-id="3">
+                    😟 Интернетте біреу ренжітті
+                </div>
+
+                <div class="match-item situation" data-id="4">
+                    🔑 Біреу құпиясөз сұрады
+                </div>
+            </div>
+
+            <div class="match-column">
+                <h3>🛡️ Дұрыс әрекет</h3>
+
+                <div class="match-item action" data-id="3">
+                    👨‍👩‍👧 Үлкен адамға айту
+                </div>
+
+                <div class="match-item action" data-id="1">
+                    🚫 Сурет жібермеу
+                </div>
+
+                <div class="match-item action" data-id="4">
+                    🤫 Құпиясөзді айтпау
+                </div>
+
+                <div class="match-item action" data-id="2">
+                    ❌ Сілтемені ашпау
+                </div>
+            </div>
+        </div>
+
+        <div class="feedback" id="matchFeedback"></div>
+    </section>
+
+
+    <!-- GAME 2 -->
+    <section class="game" id="game2">
+
+        <h2 class="game-title">🚦 2-ойын: Қауіпсіз бе?</h2>
+
+        <p class="game-description">
+            Әр жағдайды оқы. Қауіпсіз әрекетті таңда!
+        </p>
+
+        <div class="question">
+            <div class="big-emoji" id="safeEmoji">🤔</div>
+            <h2 id="safeQuestion"></h2>
+        </div>
+
+        <div class="answers" id="safeAnswers"></div>
+
+        <div class="feedback" id="safeFeedback"></div>
+
+        <button class="next-btn" id="safeNext" onclick="nextSafe()" disabled>
+            Келесі ➡️
+        </button>
+
+    </section>
+
+
+    <!-- GAME 3 -->
+    <section class="game" id="game3">
+
+        <h2 class="game-title">🔐 3-ойын: Құпиясөз шебері</h2>
+
+        <p class="game-description">
+            Қай құпиясөз қауіпсіз екенін тап!
+        </p>
+
+        <div class="question">
+            <div class="big-emoji">🔐</div>
+            <h2>Мықты құпиясөзді таңда!</h2>
+        </div>
+
+        <div class="password-options" id="passwordOptions"></div>
+
+        <div class="feedback" id="passwordFeedback"></div>
+
+        <button class="next-btn" id="passwordNext" onclick="nextPassword()" disabled>
+            Келесі ➡️
+        </button>
+
+    </section>
+
+
+    <!-- GAME 4 -->
+    <section class="game" id="game4">
+
+        <h2 class="game-title">🕵️ 4-ойын: Интернет детективі</h2>
+
+        <p class="game-description">
+            Күдікті хабарламаны тап. Оны ашуға болмайды!
+        </p>
+
+        <div class="detective" id="messages"></div>
+
+        <div class="feedback" id="detectiveFeedback"></div>
+
+        <button class="next-btn" id="detectiveNext"
+                onclick="nextDetective()" disabled>
+            Келесі ➡️
+        </button>
+
+    </section>
+
+
+    <!-- RESULT -->
+    <section class="result" id="result">
+
+        <div class="trophy">🏆</div>
+
+        <h2>Жарайсың, Интернет қаһарманы!</h2>
+
+        <div class="final-score" id="finalScore">0</div>
+
+        <div>ұпай жинадың!</div>
+
+        <div class="stars" id="stars">⭐⭐⭐</div>
+
+        <div class="tip">
+            🛡️ <b>Есте сақта!</b><br><br>
+            Бейтаныс адамдарға жеке мәліметіңді берме.<br>
+            Құпиясөзіңді ешкімге айтпа.<br>
+            Күмәнді сілтемелерді ашпа.<br>
+            Бір нәрсе түсініксіз болса, ата-анаңа немесе мұғалімге айт.
+        </div>
+
+        <button class="restart-btn" onclick="restartGame()">
+            🔄 Қайта ойнау
+        </button>
+
+    </section>
+
+</div>
+
+<footer>
+    🛡️ Қауіпсіз интернет — ақылды баланың таңдауы!
+</footer>
+
+
+<script>
+
+/* =========================
+   НЕГІЗГІ ҰПАЙ ЖҮЙЕСІ
+========================= */
+
+let score = 0;
+let correctCount = 0;
+let currentGame = 1;
+
+function addScore(points){
+    score += points;
+    correctCount++;
+
+    document.getElementById("score").textContent = score;
+    document.getElementById("correctCount").textContent = correctCount;
+
+    updateProgress();
+}
+
+function updateProgress(){
+
+    let percent = Math.min(score / 40 * 100, 100);
+
+    document.getElementById("progressBar").style.width =
+        percent + "%";
+}
+
+function showGame(num){
+
+    currentGame = num;
+
+    document.querySelectorAll(".game").forEach(g=>{
+        g.classList.remove("active");
+    });
+
+    document.getElementById("game" + num)
+        .classList.add("active");
+
+    document.querySelectorAll(".game-nav").forEach((b,i)=>{
+        b.classList.toggle("active", i === num-1);
+    });
+
+    document.getElementById("gameNumber").textContent = num;
+
+    if(num === 2) loadSafe();
+    if(num === 3) loadPassword();
+    if(num === 4) loadDetective();
+}
+
+
+/* =========================
+   ДЫБЫС
+========================= */
+
+function sound(correct){
+
+    try{
+
+        const ctx =
+            new (window.AudioContext ||
+            window.webkitAudioContext)();
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.frequency.value =
+            correct ? 700 : 180;
+
+        gain.gain.value = 0.08;
+
+        osc.start();
+
+        osc.stop(ctx.currentTime + 0.15);
+
+    }catch(e){}
+}
+
+
+/* =========================
+   1-ОЙЫН
+   СӘЙКЕСТЕНДІРУ
+========================= */
+
+let selectedSituation = null;
+let selectedAction = null;
+let matchedPairs = 0;
+
+document.querySelectorAll(".situation").forEach(item=>{
+
+    item.addEventListener("click",()=>{
+
+        if(item.classList.contains("matched")) return;
+
+        document.querySelectorAll(".situation")
+            .forEach(x=>x.classList.remove("selected"));
+
+        item.classList.add("selected");
+
+        selectedSituation = item.dataset.id;
+
+        checkMatch();
+
+    });
+
+});
+
+
+document.querySelectorAll(".action").forEach(item=>{
+
+    item.addEventListener("click",()=>{
+
+        if(item.classList.contains("matched")) return;
+
+        document.querySelectorAll(".action")
+            .forEach(x=>x.classList.remove("selected"));
+
+        item.classList.add("selected");
+
+        selectedAction = item.dataset.id;
+
+        checkMatch();
+
+    });
+
+});
+
+
+function checkMatch(){
+
+    if(!selectedSituation || !selectedAction) return;
+
+    if(selectedSituation === selectedAction){
+
+        const s =
+            document.querySelector(
+                `.situation[data-id="${selectedSituation}"]`
+            );
+
+        const a =
+            document.querySelector(
+                `.action[data-id="${selectedAction}"]`
+            );
+
+        s.classList.remove("selected");
+        a.classList.remove("selected");
+
+        s.classList.add("matched");
+        a.classList.add("matched");
+
+        matchedPairs++;
+
+        addScore(2);
+
+        document.getElementById("matchFeedback")
+            .textContent = "🎉 Дұрыс! Керемет! +2 ұпай";
+
+        sound(true);
+
+        selectedSituation = null;
+        selectedAction = null;
+
+        if(matchedPairs === 4){
+
+            document.getElementById("matchFeedback")
+                .textContent =
+                "🏆 Барлық жұпты дұрыс таптың! Тамаша!";
+        }
+
+    }else{
+
+        document.getElementById("matchFeedback")
+            .textContent =
+            "🤔 Бұл жұп сәйкес келмейді. Қайта байқап көр!";
+
+        sound(false);
+
+        selectedSituation = null;
+        selectedAction = null;
+
+        document.querySelectorAll(".selected")
+            .forEach(x=>x.classList.remove("selected"));
+    }
+}
+
+
+/* =========================
+   2-ОЙЫН
+   ҚАУІПСІЗ БЕ?
+========================= */
+
+const safeQuestions = [
+
+    {
+        emoji:"👤",
+        q:"Бейтаныс адам интернетте сенің мекенжайыңды сұрады. Не істейсің?",
+        answers:[
+            ["🏠 Мекенжайымды беремін",false],
+            ["🚫 Бермеу және үлкен адамға айту",true],
+            ["😊 Әзілдеп айтамын",false]
+        ]
+    },
+
+    {
+        emoji:"🔗",
+        q:"Досың емес адам «мына қызық сыйлықты ал!» деп сілтеме жіберді.",
+        answers:[
+            ["🖱️ Бірден ашамын",false],
+            ["🚫 Ашпаймын, үлкен адамнан сұраймын",true],
+            ["📤 Барлық достарыма жіберемін",false]
+        ]
+    },
+
+    {
+        emoji:"🔑",
+        q:"Досың сенен ойынның құпиясөзін сұрады.",
+        answers:[
+            ["🔐 Құпиясөзімді айтпаймын",true],
+            ["🗣️ Айтып беремін",false],
+            ["📱 Интернетке жазамын",false]
+        ]
+    },
+
+    {
+        emoji:"😢",
+        q:"Біреу интернетте сені ренжітті.",
+        answers:[
+            ["😡 Мен де оны ренжітемін",false],
+            ["🤫 Ешкімге айтпаймын",false],
+            ["👨‍👩‍👧 Үлкен адамға айтып, көмек сұраймын",true]
+        ]
+    },
+
+    {
+        emoji:"📷",
+        q:"Бейтаныс адам сенен жеке суретіңді сұрады.",
+        answers:[
+            ["📸 Жіберемін",false],
+            ["🚫 Жібермеймін және үлкен адамға айтамын",true],
+            ["🌐 Барлық жерге саламын",false]
+        ]
+    }
+];
+
+let safeIndex = 0;
+let safeAnswered = false;
+
+function loadSafe(){
+
+    if(safeIndex >= safeQuestions.length){
+
+        document.getElementById("safeQuestion").textContent =
+            "🎉 Бұл ойын аяқталды!";
+
+        document.getElementById("safeAnswers").innerHTML =
+            "<div style='text-align:center;font-size:25px'>Жарайсың!</div>";
+
+        document.getElementById("safeNext").style.display="none";
+
+        return;
+    }
+
+    safeAnswered = false;
+
+    const q = safeQuestions[safeIndex];
+
+    document.getElementById("safeEmoji").textContent =
+        q.emoji;
+
+    document.getElementById("safeQuestion").textContent =
+        q.q;
+
+    document.getElementById("safeFeedback").textContent = "";
+
+    const area =
+        document.getElementById("safeAnswers");
+
+    area.innerHTML = "";
+
+    q.answers.forEach((answer,index)=>{
+
+        const btn = document.createElement("button");
+
+        btn.className = "answer";
+
+        btn.innerHTML = answer[0];
+
+        btn.onclick = ()=>answerSafe(btn,answer[1]);
+
+        area.appendChild(btn);
+
+    });
+
+    document.getElementById("safeNext").disabled = true;
+}
+
+function answerSafe(btn,correct){
+
+    if(safeAnswered) return;
+
+    safeAnswered = true;
+
+    if(correct){
+
+        btn.classList.add("correct");
+
+        document.getElementById("safeFeedback")
+            .textContent =
+            "🎉 Дұрыс жауап! +2 ұпай";
+
+        addScore(2);
+
+        sound(true);
+
+    }else{
+
+        btn.classList.add("wrong");
+
+        document.getElementById("safeFeedback")
+            .textContent =
+            "❌ Қате. Қайта ойлан: қауіпсіздік маңызды!";
+
+        sound(false);
+
+        document.querySelectorAll("#safeAnswers .answer")
+            .forEach(b=>{
+                // дұрыс жауапты көрсету
+                const text=b.textContent;
+                const q=safeQuestions[safeIndex];
+
+                q.answers.forEach((a)=>{
+                    if(a[0]===text && a[1]){
+                        b.classList.add("correct");
+                    }
+                });
+            });
+    }
+
+    document.getElementById("safeNext").disabled = false;
+}
+
+function nextSafe(){
+
+    safeIndex++;
+
+    if(safeIndex >= safeQuestions.length){
+
+        document.getElementById("safeFeedback")
+            .textContent =
+            "🏆 2-ойын аяқталды!";
+
+        document.getElementById("safeNext").style.display =
+            "none";
+
+    }else{
+
+        loadSafe();
+
+    }
+}
+
+
+/* =========================
+   3-ОЙЫН
+   ҚҰПИЯСӨЗ
+========================= */
+
+const passwords = [
+    {
+        options:[
+            ["123456",false],
+            ["qwerty",false],
+            ["Aqyl!2026_Kun",true],
+            ["111111",false]
+        ]
+    },
+
+    {
+        options:[
+            ["Ali2000",false],
+            ["Mektep",false],
+            ["Balapan",false],
+            ["Koktem#7!Qaz",true]
+        ]
+    },
+
+    {
+        options:[
+            ["password",false],
+            ["987654321",false],
+            ["Arman",false],
+            ["Qalam@45!Z",true]
+        ]
+    }
+];
+
+let passwordIndex = 0;
+let passwordAnswered = false;
+
+function loadPassword(){
+
+    if(passwordIndex >= passwords.length) return;
+
+    passwordAnswered = false;
+
+    const area =
+        document.getElementById("passwordOptions");
+
+    area.innerHTML = "";
+
+    document.getElementById("passwordFeedback")
+        .textContent = "";
+
+    passwords[passwordIndex].options.forEach(item=>{
+
+        const btn=document.createElement("button");
+
+        btn.className="password";
+
+        btn.textContent=item[0];
+
+        btn.onclick=()=>{
+            answerPassword(btn,item[1]);
+        };
+
+        area.appendChild(btn);
+
+    });
+
+    document.getElementById("passwordNext").disabled=true;
+}
+
+function answerPassword(btn,correct){
+
+    if(passwordAnswered) return;
+
+    passwordAnswered=true;
+
+    if(correct){
+
+        btn.style.background="#d9ffd9";
+        btn.style.borderColor="#35bd61";
+
+        document.getElementById("passwordFeedback")
+            .textContent =
+            "🔐 Керемет! Бұл құпиясөз мықты! +3 ұпай";
+
+        addScore(3);
+
+        sound(true);
+
+    }else{
+
+        btn.style.background="#ffdede";
+        btn.style.borderColor="#ff5c5c";
+
+        document.getElementById("passwordFeedback")
+            .textContent =
+            "❌ Бұл құпиясөз әлсіз. Ұзын әрі күрделі құпиясөз таңда!";
+
+        sound(false);
+
+        document.querySelectorAll(".password")
+            .forEach(b=>{
+
+                passwords[passwordIndex].options.forEach(item=>{
+
+                    if(item[0] === b.textContent && item[1]){
+
+                        b.style.background="#d9ffd9";
+                        b.style.borderColor="#35bd61";
+
+                    }
+
+                });
+
+            });
+    }
+
+    document.getElementById("passwordNext").disabled=false;
+}
+
+function nextPassword(){
+
+    passwordIndex++;
+
+    if(passwordIndex >= passwords.length){
+
+        document.getElementById("passwordFeedback")
+            .textContent =
+            "🏆 3-ойын аяқталды!";
+
+        document.getElementById("passwordNext").style.display =
+            "none";
+
+    }else{
+
+        loadPassword();
+
+    }
+}
+
+
+/* =========================
+   4-ОЙЫН
+   ИНТЕРНЕТ ДЕТЕКТИВІ
+========================= */
+
+const messages=[
+
+    {
+        sender:"🎁 Сыйлық ойыны",
+        text:"Құттықтаймыз! Сен 1 000 000 теңге ұтып алдың! Қазір мына сілтемеге кір!",
+        correct:true
+    },
+
+    {
+        sender:"👩 Анашым",
+        text:"Сабақтан кейін үйге келе жатқанда маған хабарлас.",
+        correct:false
+    },
+
+    {
+        sender:"👨 Мұғалім",
+        text:"Ертең информатика сабағы болады. Үй тапсырмасын орындауды ұмытпа.",
+        correct:false
+    },
+
+    {
+        sender:"❓ Бейтаныс адам",
+        text:"Сәлем! Қай мектепте оқисың? Үйің қай жерде?",
+        correct:true
+    }
+];
+
+let detectiveAnswered=false;
+let detectiveScore=0;
+
+function loadDetective(){
+
+    detectiveAnswered=false;
+
+    const area=document.getElementById("messages");
+
+    area.innerHTML="";
+
+    document.getElementById("detectiveFeedback")
+        .textContent="";
+
+    messages.forEach((m,index)=>{
+
+        const div=document.createElement("div");
+
+        div.className="message";
+
+        div.innerHTML=
+            `<div class="sender">${m.sender}</div>
+             <div>${m.text}</div>`;
+
+        div.onclick=()=>answerDetective(div,m.correct);
+
+        area.appendChild(div);
+
+    });
+
+    document.getElementById("detectiveNext").disabled=true;
+}
+
+function answerDetective(element,correct){
+
+    if(element.classList.contains("correct") ||
+       element.classList.contains("wrong")) return;
+
+    if(correct){
+
+        element.classList.add("correct");
+
+        detectiveScore++;
+
+        addScore(3);
+
+        document.getElementById("detectiveFeedback")
+            .textContent =
+            "🕵️ Дұрыс! Сен қауіпті хабарламаны таптың! +3 ұпай";
+
+        sound(true);
+
+    }else{
+
+        element.classList.add("wrong");
+
+        document.getElementById("detectiveFeedback")
+            .textContent =
+            "🤔 Бұл хабарлама қауіпті емес. Тағы біреуін тексер!";
+
+        sound(false);
+    }
+
+    let selected =
+        document.querySelectorAll(
+            "#messages .correct, #messages .wrong"
+        ).length;
+
+    if(selected >= messages.length){
+
+        document.getElementById("detectiveNext")
+            .disabled=false;
+    }
+}
+
+function nextDetective(){
+
+    document.getElementById("detectiveNext")
+        .style.display="none";
+
+    finishGame();
+}
+
+
+/* =========================
+   ОЙЫНДЫ АЯҚТАУ
+========================= */
+
+function finishGame(){
+
+    document.querySelectorAll(".game")
+        .forEach(g=>g.classList.remove("active"));
+
+    document.querySelector(".game-navigation")
+        .style.display="none";
+
+    document.getElementById("result")
+        .classList.add("show");
+
+    document.getElementById("finalScore")
+        .textContent=score;
+
+    let stars="";
+
+    if(score >= 30){
+        stars="⭐⭐⭐⭐⭐";
+    }else if(score >= 20){
+        stars="⭐⭐⭐⭐";
+    }else if(score >= 10){
+        stars="⭐⭐⭐";
+    }else{
+        stars="⭐⭐";
+    }
+
+    document.getElementById("stars")
+        .textContent=stars;
+
+    document.getElementById("gameNumber")
+        .textContent="✓";
+
+    document.getElementById("progressBar")
+        .style.width="100%";
+}
+
+
+/* =========================
+   ҚАЙТА БАСТАУ
+========================= */
+
+function restartGame(){
+
+    location.reload();
+
+}
+
+
+/* =========================
+   БАСТАПҚЫ ЖАҒДАЙ
+========================= */
+
+updateProgress();
+
+</script>
+
+</body>
+</html>
+```
