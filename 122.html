@@ -1,0 +1,2005 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Перцептрон зертханасы — 11 сынып</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    color:#173b56;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 10% 10%,#fff1c7 0,transparent 25%),
+        radial-gradient(circle at 90% 20%,#dff4ff 0,transparent 30%),
+        linear-gradient(135deg,#fffdf7,#eef8fc);
+}
+
+body:before{
+    content:"";
+    display:block;
+    height:8px;
+    background:repeating-linear-gradient(
+        90deg,
+        #1677c8 0 28px,
+        #e0aa2b 28px 42px,
+        #ffffff 42px 55px
+    );
+}
+
+.container{
+    width:min(1100px,94%);
+    margin:auto;
+}
+
+header{
+    text-align:center;
+    padding:30px 0 18px;
+}
+
+.symbol{
+    width:76px;
+    height:76px;
+    margin:auto;
+    border:3px solid #d9a52b;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:38px;
+    background:#fff;
+    box-shadow:0 8px 25px #174d7620;
+}
+
+.smallTitle{
+    margin-top:15px;
+    color:#1677c8;
+    font-size:13px;
+    font-weight:bold;
+    letter-spacing:2px;
+}
+
+h1{
+    font-size:clamp(34px,7vw,60px);
+    margin:7px 0;
+    background:linear-gradient(90deg,#1263a0,#1677c8,#d49a20);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.author{
+    color:#778899;
+    font-size:14px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin:18px 0;
+}
+
+.stat{
+    background:#fff;
+    border:1px solid #dce8ef;
+    border-radius:17px;
+    padding:14px;
+    text-align:center;
+    box-shadow:0 5px 18px #173b5610;
+}
+
+.stat span{
+    display:block;
+    font-size:11px;
+    color:#81909e;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+.stat strong{
+    color:#1677c8;
+    font-size:21px;
+}
+
+.progressBox{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:22px;
+}
+
+.progress{
+    height:10px;
+    flex:1;
+    background:#e4edf2;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progressBar{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#1677c8,#35a7dc,#d9a52b);
+    transition:.4s;
+}
+
+.progressText{
+    font-size:12px;
+    color:#718392;
+}
+
+.card{
+    background:#fff;
+    border:1px solid #dce8ef;
+    border-radius:26px;
+    padding:32px;
+    box-shadow:0 18px 50px #173b5614;
+}
+
+.home{
+    text-align:center;
+    padding:50px 30px;
+}
+
+.homeIcon{
+    font-size:58px;
+    margin-bottom:15px;
+}
+
+.home h2{
+    color:#174d76;
+    font-size:30px;
+    margin-bottom:14px;
+}
+
+.home p{
+    max-width:720px;
+    margin:0 auto;
+    color:#697d8d;
+    line-height:1.8;
+}
+
+.rules{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    max-width:780px;
+    margin:28px auto;
+}
+
+.rule{
+    padding:20px;
+    background:#f6fafc;
+    border:1px solid #dceaf1;
+    border-radius:17px;
+}
+
+.rule b{
+    display:block;
+    color:#1677c8;
+    margin:6px 0;
+}
+
+.level{
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:30px;
+    background:#eaf6fd;
+    border:1px solid #d0e9f7;
+    color:#1267a5;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:14px;
+}
+
+.question{
+    font-size:27px;
+    line-height:1.4;
+    color:#173f5d;
+    margin-bottom:14px;
+}
+
+.description{
+    color:#697d8d;
+    line-height:1.7;
+    margin-bottom:18px;
+}
+
+.formula{
+    text-align:center;
+    font-size:25px;
+    font-weight:bold;
+    padding:20px;
+    margin:15px 0;
+    border-radius:17px;
+    background:#f4f9fc;
+    color:#1267a5;
+    border:1px solid #dceaf1;
+}
+
+.code{
+    background:#f5f8fa;
+    border-left:5px solid #1677c8;
+    border-radius:14px;
+    padding:20px;
+    font-family:Consolas,monospace;
+    white-space:pre-wrap;
+    line-height:1.7;
+    color:#24485f;
+    margin:15px 0;
+}
+
+.options{
+    display:grid;
+    gap:11px;
+}
+
+.option{
+    width:100%;
+    text-align:left;
+    padding:16px;
+    border-radius:14px;
+    border:1px solid #d9e5eb;
+    background:#fff;
+    color:#27485f;
+    cursor:pointer;
+    font-size:15px;
+    transition:.2s;
+}
+
+.option:hover{
+    background:#f3faff;
+    border-color:#52a8d5;
+    transform:translateX(4px);
+}
+
+.option.correct{
+    background:#eaf9f1;
+    border-color:#42ad79;
+    color:#087043;
+}
+
+.option.wrong{
+    background:#fff0f0;
+    border-color:#e17676;
+    color:#a52e2e;
+}
+
+.mainBtn{
+    border:0;
+    background:linear-gradient(90deg,#1677c8,#299ed3);
+    color:#fff;
+    padding:14px 24px;
+    border-radius:13px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:19px;
+    box-shadow:0 7px 18px #1677c830;
+}
+
+.mainBtn:hover{
+    transform:translateY(-2px);
+}
+
+.feedback{
+    display:none;
+    margin-top:18px;
+    padding:15px;
+    border-radius:14px;
+    line-height:1.6;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.feedback.good{
+    background:#ebf9f2;
+    color:#096c40;
+    border:1px solid #72c79c;
+}
+
+.feedback.bad{
+    background:#fff0f0;
+    color:#a13232;
+    border:1px solid #e28a8a;
+}
+
+.hint{
+    display:none;
+    margin-top:15px;
+    padding:15px;
+    background:#fff9e7;
+    border:1px solid #e9cc70;
+    border-radius:14px;
+    color:#735716;
+    line-height:1.6;
+}
+
+.hint.show{
+    display:block;
+}
+
+.matchGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+.matchCol{
+    display:grid;
+    gap:10px;
+}
+
+.matchItem{
+    padding:15px;
+    background:#f7fafc;
+    border:1px solid #dce7ed;
+    border-radius:13px;
+    cursor:pointer;
+}
+
+.matchItem.selected{
+    background:#eaf6fd;
+    border-color:#1677c8;
+}
+
+.matchItem.done{
+    background:#eaf9f1;
+    border-color:#42ad79;
+    color:#087043;
+}
+
+.sequence{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.seqItem{
+    padding:14px 17px;
+    background:#f7fafc;
+    border:1px solid #dce7ed;
+    border-radius:13px;
+    cursor:pointer;
+}
+
+.seqItem.selected{
+    background:#eaf6fd;
+    border-color:#1677c8;
+    color:#1267a5;
+}
+
+.seqResult{
+    margin-top:16px;
+    color:#1677c8;
+    font-weight:bold;
+    line-height:1.6;
+}
+
+.table{
+    width:100%;
+    border-collapse:collapse;
+    margin:15px 0;
+    background:#fff;
+}
+
+.table th,
+.table td{
+    border:1px solid #dce6ec;
+    padding:12px;
+    text-align:center;
+}
+
+.table th{
+    background:#eef7fb;
+    color:#1267a5;
+}
+
+.perceptron{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    margin:25px 0;
+    flex-wrap:wrap;
+}
+
+.node{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    background:#eaf6fd;
+    border:4px solid #1677c8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-weight:bold;
+    color:#1267a5;
+}
+
+.arrow{
+    font-size:30px;
+    color:#d19a22;
+}
+
+.hidden{
+    display:none!important;
+}
+
+.result{
+    text-align:center;
+    padding:50px 25px;
+}
+
+.result h2{
+    color:#174d76;
+}
+
+.rank{
+    font-size:40px;
+    margin:20px 0;
+    font-weight:bold;
+    background:linear-gradient(90deg,#1677c8,#d49a20);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+footer{
+    text-align:center;
+    padding:28px;
+    color:#8a98a4;
+    font-size:12px;
+}
+
+@media(max-width:700px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .rules{
+        grid-template-columns:1fr;
+    }
+
+    .matchGrid{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:21px;
+    }
+
+    .question{
+        font-size:21px;
+    }
+
+    .formula{
+        font-size:20px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+    <div class="symbol">🧠</div>
+
+    <div class="smallTitle">
+        11-СЫНЫП • ЖАСАНДЫ ИНТЕЛЛЕКТ
+    </div>
+
+    <h1>ПЕРЦЕПТРОН ЗЕРТХАНАСЫ</h1>
+
+    <div class="author">
+        Информатика және жасанды интеллект
+        <br>
+        Автор: <b>Әмірәлі Мейірхан</b>
+    </div>
+
+</header>
+
+
+<div class="stats">
+
+    <div class="stat">
+        <span>ҰПАЙ</span>
+        <strong id="score">0</strong>
+    </div>
+
+    <div class="stat">
+        <span>МҮМКІНДІК</span>
+        <strong id="lives">❤️❤️❤️</strong>
+    </div>
+
+    <div class="stat">
+        <span>КОМБО</span>
+        <strong id="combo">0</strong>
+    </div>
+
+    <div class="stat">
+        <span>ТАПСЫРМА</span>
+        <strong id="taskNum">0/20</strong>
+    </div>
+
+</div>
+
+
+<div class="progressBox">
+
+    <div class="progress">
+        <div id="progress" class="progressBar"></div>
+    </div>
+
+    <div class="progressText">
+        Зертхана барысы
+    </div>
+
+</div>
+
+
+<!-- БАСТЫ БЕТ -->
+
+<div id="home" class="card home">
+
+    <div class="homeIcon">🧠⚡</div>
+
+    <h2>Перцептрон зертханасына қош келдің!</h2>
+
+    <p>
+        Бұл ойын арқылы сен жасанды нейронның қалай жұмыс
+        істейтінін зерттейсің.
+    </p>
+
+    <p style="margin-top:10px">
+        <b>Кіріс → Салмақ → Bias → Қосынды → Активация → Нәтиже</b>
+    </p>
+
+    <div class="formula">
+        z = x₁w₁ + x₂w₂ + b
+    </div>
+
+    <div class="rules">
+
+        <div class="rule">
+            🔢
+            <b>Есепте</b>
+            Салмақталған қосындыны анықта.
+        </div>
+
+        <div class="rule">
+            🧠
+            <b>Талда</b>
+            Перцептронның шешімін түсін.
+        </div>
+
+        <div class="rule">
+            🐍
+            <b>Кодта</b>
+            Python арқылы модельді зертте.
+        </div>
+
+    </div>
+
+    <button class="mainBtn" onclick="startGame()">
+        🚀 ЗЕРТХАНАНЫ БАСТАУ
+    </button>
+
+</div>
+
+
+<!-- ТАПСЫРМА -->
+
+<div id="taskCard" class="card hidden">
+
+    <div id="taskContent"></div>
+
+    <div id="feedback" class="feedback"></div>
+
+    <div id="hint" class="hint"></div>
+
+    <button
+        id="hintBtn"
+        class="mainBtn"
+        onclick="showHint()">
+
+        💡 КЕҢЕС АЛУ (-5 ҰПАЙ)
+
+    </button>
+
+    <button
+        id="nextBtn"
+        class="mainBtn hidden"
+        onclick="nextTask()">
+
+        КЕЛЕСІ ТАПСЫРМА →
+
+    </button>
+
+</div>
+
+
+<!-- НӘТИЖЕ -->
+
+<div id="result" class="card result hidden"></div>
+
+
+<footer>
+    Перцептрон зертханасы • 11-сынып
+    <br>
+    © Әмірәлі Мейірхан
+</footer>
+
+</div>
+
+
+<script>
+
+let score=0;
+let lives=3;
+let combo=0;
+let current=0;
+let answered=false;
+let hintUsed=false;
+
+let selectedLeft=null;
+let selectedRight=null;
+let matchDone=[];
+
+let sequenceAnswer=[];
+
+
+/* =====================================================
+   20 ТАПСЫРМА
+===================================================== */
+
+const tasks=[
+
+/* 1 */
+
+{
+type:"choice",
+level:"1-ДЕҢГЕЙ • НЕЙРОН ҚҰРЫЛЫСЫ",
+title:"ПЕРЦЕПТРОН ҚАЛАЙ ЖҰМЫС ІСТЕЙДІ?",
+text:"Перцептронның негізгі жұмыс тізбегін дұрыс таңда.",
+options:[
+"Нәтиже → кіріс → салмақ → bias",
+"Кіріс → салмақтау → қосынды → активация → нәтиже",
+"Bias → нәтиже → кіріс",
+"Тек кіріс → нәтиже"
+],
+answer:1,
+points:10,
+hint:"Алдымен ақпарат кіреді, содан кейін салмақтармен есептеледі."
+},
+
+/* 2 */
+
+{
+type:"choice",
+level:"1-ДЕҢГЕЙ • ЕСЕПТЕУ",
+title:"САЛМАҚТАЛҒАН ҚОСЫНДЫ",
+text:"Берілгені:",
+formula:"x₁ = 2,  w₁ = 3,  x₂ = 1,  w₂ = 4,  b = 1",
+question:"z мәнін тап.",
+options:[
+"9",
+"10",
+"11",
+"12"
+],
+answer:2,
+points:15,
+hint:"2×3 + 1×4 + 1 формуласын есепте."
+},
+
+/* 3 */
+
+{
+type:"choice",
+level:"1-ДЕҢГЕЙ • АКТИВАЦИЯ",
+title:"НЕЙРОННЫҢ ШЫҒЫСЫН ТАП",
+text:"Егер z = 7 болса және активация функциясы:",
+formula:"z ≥ 0 → 1\nz < 0 → 0",
+question:"Нейронның шығуы қандай?",
+options:[
+"0",
+"1",
+"-1",
+"7"
+],
+answer:1,
+points:10,
+hint:"7 нөлден үлкен."
+},
+
+/* 4 */
+
+{
+type:"choice",
+level:"2-ДЕҢГЕЙ • ЕКІ КІРІС",
+title:"ПЕРЦЕПТРОН ЕСЕБІ",
+text:"Модель параметрлері:",
+formula:"x₁=1, x₂=3\nw₁=2, w₂=-1\nb=2",
+question:"z мәні неге тең?",
+options:[
+"-3",
+"0",
+"1",
+"2"
+],
+answer:1,
+points:15,
+hint:"1×2 + 3×(-1) + 2 есепте."
+},
+
+/* 5 */
+
+{
+type:"sequence",
+level:"2-ДЕҢГЕЙ • ҚҰРЫЛЫМ",
+title:"ПЕРЦЕПТРОН КЕЗЕҢДЕРІ",
+text:"Перцептронның жұмыс кезеңдерін дұрыс ретпен орналастыр.",
+items:[
+"Шығыс нәтижесін алу",
+"Кіріс деректерін беру",
+"Салмақтарға көбейту",
+"Bias қосу",
+"Активация функциясын қолдану"
+],
+answer:[1,2,3,4,0],
+points:20,
+hint:"Кіріс бірінші беріледі, соңында активация арқылы нәтиже шығады."
+},
+
+/* 6 */
+
+{
+type:"choice",
+level:"2-ДЕҢГЕЙ • BIAS",
+title:"BIAS НЕ ҮШІН ҚАЖЕТ?",
+text:"Перцептрондағы bias параметрінің қызметі қандай?",
+options:[
+"Компьютерді жылдамдату үшін",
+"Шешім шекарасын ығыстыру үшін",
+"Кіріс санын азайту үшін",
+"Файлды сақтау үшін"
+],
+answer:1,
+points:15,
+hint:"Bias нейронға қосымша ығысу береді."
+},
+
+/* 7 */
+
+{
+type:"choice",
+level:"2-ДЕҢГЕЙ • ЛОГИКА",
+title:"AND ПЕРЦЕПТРОНЫ",
+text:"AND логикасында нәтиже қашан 1 болады?",
+options:[
+"Екі кірістің кемінде біреуі 1 болса",
+"Екі кіріс те 0 болса",
+"Екі кіріс те 1 болса",
+"Әрқашан 1"
+],
+answer:2,
+points:15,
+hint:"AND — барлық шарт орындалғанда ғана ақиқат."
+},
+
+/* 8 */
+
+{
+type:"choice",
+level:"3-ДЕҢГЕЙ • AND",
+title:"AND ҮШІН ЕСЕПТЕ",
+text:"Перцептрон:",
+formula:"w₁=1, w₂=1, b=-1.5",
+question:"x₁=1, x₂=1 кезінде z неге тең?",
+options:[
+"-1.5",
+"-0.5",
+"0.5",
+"1.5"
+],
+answer:2,
+points:20,
+hint:"1×1 + 1×1 - 1.5."
+},
+
+/* 9 */
+
+{
+type:"choice",
+level:"3-ДЕҢГЕЙ • OR",
+title:"OR ЛОГИКАСЫ",
+text:"OR логикалық функциясында нәтиже қашан 0 болады?",
+options:[
+"0 OR 0",
+"0 OR 1",
+"1 OR 0",
+"1 OR 1"
+],
+answer:0,
+points:15,
+hint:"OR тек екі кіріс те 0 болғанда ғана 0."
+},
+
+/* 10 */
+
+{
+type:"match",
+level:"3-ДЕҢГЕЙ • ТЕРМИНДЕР",
+title:"ПЕРЦЕПТРОН ЭЛЕМЕНТТЕРІ",
+text:"Терминдерді олардың қызметімен сәйкестендір.",
+left:[
+"x — кіріс",
+"w — салмақ",
+"b — bias",
+"y — шығыс"
+],
+right:[
+"Нейронның соңғы нәтижесі",
+"Кіріс мәліметі",
+"Кірістің әсер ету күші",
+"Шешім шекарасының ығысуы"
+],
+pairs:[1,2,3,0],
+points:25,
+hint:"x — input, w — weight, b — bias, y — output."
+},
+
+/* 11 */
+
+{
+type:"choice",
+level:"3-ДЕҢГЕЙ • КЕРІ ЕСЕП",
+title:"BIAS-ТЫ ТАП",
+text:"Берілген:",
+formula:"x₁=2, w₁=2\nx₂=1, w₂=3\nz=0",
+question:"b мәні қандай?",
+options:[
+"-7",
+"-6",
+"5",
+"7"
+],
+answer:0,
+points:25,
+hint:"2×2 + 1×3 + b = 0 теңдеуін шеш."
+},
+
+/* 12 */
+
+{
+type:"choice",
+level:"4-ДЕҢГЕЙ • PYTHON",
+title:"PYTHON НӘТИЖЕСІ",
+text:"Кодтың нәтижесін анықта.",
+code:`x1 = 1
+x2 = 1
+
+w1 = 2
+w2 = 3
+
+b = -4
+
+z = x1*w1 + x2*w2 + b
+
+if z >= 0:
+    y = 1
+else:
+    y = 0
+
+print(z, y)`,
+options:[
+"-1 0",
+"0 1",
+"1 1",
+"-1 1"
+],
+answer:0,
+points:25,
+hint:"2 + 3 - 4 = ?"
+},
+
+/* 13 */
+
+{
+type:"choice",
+level:"4-ДЕҢГЕЙ • PYTHON DEBUG",
+title:"ҚАТЕНІ ТАП",
+text:"Мына кодта перцептронның формуласын есептеуде қандай қате бар?",
+code:`x1 = 1
+x2 = 1
+
+w1 = 2
+w2 = 2
+
+b = -3
+
+z = x1*w1 + x2*w2 - b`,
+options:[
+"Кірістер қате",
+"Weight қате",
+"Bias қосылмай, азайтылып тұр",
+"Python if қолданылмаған"
+],
+answer:2,
+points:25,
+hint:"Формула z = x₁w₁ + x₂w₂ + b болуы керек."
+},
+
+/* 14 */
+
+{
+type:"choice",
+level:"4-ДЕҢГЕЙ • XOR",
+title:"XOR ТҰЗАҒЫ",
+text:"Неліктен қарапайым бір перцептрон XOR логикасын толық шеше алмайды?",
+options:[
+"XOR-да сандар жоқ",
+"XOR сызықтық бөлінетін мәселе емес",
+"Перцептронда bias болмайды",
+"Python XOR-ды қолдамайды"
+],
+answer:1,
+points:30,
+hint:"Бір ғана сызықпен XOR жағдайларын екі бөлікке бөлу мүмкін емес."
+},
+
+/* 15 */
+
+{
+type:"sequence",
+level:"5-ДЕҢГЕЙ • ОҚЫТУ",
+title:"ПЕРЦЕПТРОНДЫ ОҚЫТУ",
+text:"Модельді оқыту қадамдарын дұрыс орналастыр.",
+items:[
+"Prediction жасау",
+"Қатені анықтау",
+"Weight-терді жаңарту",
+"Деректерді беру",
+"Қайта тексеру"
+],
+answer:[3,0,1,2,4],
+points:30,
+hint:"Алдымен дерек беріледі, prediction жасалады, қате табылады."
+},
+
+/* 16 */
+
+{
+type:"choice",
+level:"5-ДЕҢГЕЙ • WEIGHT UPDATE",
+title:"САЛМАҚТЫ ЖАҢАРТ",
+text:"Қарапайым оқу ережесі:",
+formula:"w_new = w_old + η × error × x",
+question:"w_old=2, η=0.5, error=1, x=2 болса, жаңа weight қандай?",
+options:[
+"2",
+"2.5",
+"3",
+"4"
+],
+answer:2,
+points:30,
+hint:"2 + 0.5×1×2."
+},
+
+/* 17 */
+
+{
+type:"choice",
+level:"5-ДЕҢГЕЙ • ТАЛДАУ",
+title:"ҚАЙ WEIGHT КҮШТІ?",
+text:"Берілген салмақтар:",
+formula:"w₁ = 0.2\nw₂ = 3.8\nw₃ = -0.4",
+question:"Абсолюттік мәні бойынша ең үлкен әсер ететін weight қайсы?",
+options:[
+"w₁",
+"w₂",
+"w₃",
+"Барлығы бірдей"
+],
+answer:1,
+points:25,
+hint:"Weight-тердің абсолюттік мәндерін салыстыр."
+},
+
+/* 18 */
+
+{
+type:"choice",
+level:"6-ДЕҢГЕЙ • МОДЕЛЬДІ ТЕКСЕРУ",
+title:"ПЕРЦЕПТРОН ҚАЙДА ҚАТЕЛЕСТІ?",
+text:"Модельдің нәтижелері:",
+code:`Күтілетін: 1   Модель: 1
+Күтілетін: 0   Модель: 0
+Күтілетін: 1   Модель: 0
+Күтілетін: 0   Модель: 0`,
+question:"Модель қанша қате жіберді?",
+options:[
+"0",
+"1",
+"2",
+"3"
+],
+answer:1,
+points:20,
+hint:"Күтілетін және модель нәтижелерін жол бойынша салыстыр."
+},
+
+/* 19 */
+
+{
+type:"choice",
+level:"6-ДЕҢГЕЙ • ИНЖЕНЕР",
+title:"ПЕРЦЕПТРОНДЫ ЖОБАЛА",
+text:"Сен кіріс ретінде x₁ және x₂ алып, тек екеуі де 1 болғанда 1 шығаратын жүйе жасағың келеді. Қай логика қажет?",
+options:[
+"OR",
+"AND",
+"NOT",
+"XOR"
+],
+answer:1,
+points:25,
+hint:"Екі шарт та орындалуы керек."
+},
+
+/* 20 */
+
+{
+type:"choice",
+level:"7-ДЕҢГЕЙ • FINAL BOSS",
+title:"🔥 СОҢҒЫ ПЕРЦЕПТРОН",
+text:`
+Перцептрон параметрлері:
+
+x₁ = 2
+x₂ = 3
+
+w₁ = 1
+w₂ = 2
+
+b = -5
+
+Активация:
+z ≥ 0 → 1
+z < 0 → 0
+`,
+question:"Нейронның соңғы нәтижесін тап.",
+options:[
+"z = 1, y = 1",
+"z = 2, y = 1",
+"z = 3, y = 1",
+"z = -1, y = 0"
+],
+answer:1,
+points:40,
+hint:"z = 2×1 + 3×2 - 5. Алынған z мәнін activation арқылы өткіз."
+}
+
+];
+
+
+/* =====================================================
+   БАСТАУ
+===================================================== */
+
+function startGame(){
+
+    score=0;
+    lives=3;
+    combo=0;
+    current=0;
+    answered=false;
+    hintUsed=false;
+
+    document.getElementById("home")
+        .classList.add("hidden");
+
+    document.getElementById("result")
+        .classList.add("hidden");
+
+    document.getElementById("taskCard")
+        .classList.remove("hidden");
+
+    updateStats();
+    showTask();
+}
+
+
+/* =====================================================
+   ТАПСЫРМАНЫ КӨРСЕТУ
+===================================================== */
+
+function showTask(){
+
+    answered=false;
+    hintUsed=false;
+
+    selectedLeft=null;
+    selectedRight=null;
+    matchDone=[];
+    sequenceAnswer=[];
+
+    document.getElementById("feedback")
+        .className="feedback";
+
+    document.getElementById("feedback")
+        .innerHTML="";
+
+    document.getElementById("hint")
+        .classList.remove("show");
+
+    document.getElementById("hint")
+        .innerHTML="";
+
+    document.getElementById("hintBtn")
+        .classList.remove("hidden");
+
+    document.getElementById("nextBtn")
+        .classList.add("hidden");
+
+
+    const task=tasks[current];
+
+    let html=`
+
+        <div class="level">
+            ${task.level}
+        </div>
+
+        <h2 class="question">
+            ${task.title}
+        </h2>
+
+        <div class="description">
+            ${task.text}
+        </div>
+    `;
+
+
+    if(task.formula){
+
+        html+=`
+        <div class="formula">
+            ${task.formula}
+        </div>
+        `;
+    }
+
+
+    if(task.question){
+
+        html+=`
+        <div class="description">
+            <b>${task.question}</b>
+        </div>
+        `;
+    }
+
+
+    if(task.code){
+
+        html+=`
+        <div class="code">${escapeHTML(task.code)}</div>
+        `;
+    }
+
+
+    if(task.type==="choice"){
+
+        html+=choicesHTML(task);
+
+    }
+
+    else if(task.type==="match"){
+
+        html+=matchHTML(task);
+
+    }
+
+    else if(task.type==="sequence"){
+
+        html+=sequenceHTML(task);
+
+    }
+
+
+    document.getElementById("taskContent")
+        .innerHTML=html;
+}
+
+
+/* =====================================================
+   HTML ҚАУІПСІЗДІГІ
+===================================================== */
+
+function escapeHTML(text){
+
+    return text
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;");
+}
+
+
+/* =====================================================
+   ЖАУАП НҰСҚАЛАРЫ
+===================================================== */
+
+function choicesHTML(task){
+
+    let html=`<div class="options">`;
+
+    task.options.forEach((x,i)=>{
+
+        html+=`
+
+        <button
+            class="option"
+            onclick="chooseAnswer(${i},this)">
+
+            <b>${String.fromCharCode(65+i)}.</b>
+            ${x}
+
+        </button>
+
+        `;
+
+    });
+
+    html+=`</div>`;
+
+    return html;
+}
+
+
+/* =====================================================
+   ЖАУАПТЫ ТЕКСЕРУ
+===================================================== */
+
+function chooseAnswer(index,button){
+
+    if(answered) return;
+
+    answered=true;
+
+    const task=tasks[current];
+
+    document.querySelectorAll(".option")
+        .forEach((b,i)=>{
+
+            if(i===task.answer){
+                b.classList.add("correct");
+            }
+
+        });
+
+
+    if(index===task.answer){
+
+        button.classList.add("correct");
+
+        let points=task.points || 10;
+
+        if(hintUsed){
+            points=Math.floor(points/2);
+        }
+
+        if(combo>=2){
+            points+=5;
+        }
+
+        score+=points;
+        combo++;
+
+
+        feedback(
+            "good",
+            `✅ Дұрыс! <b>+${points} ұпай</b><br>
+             🔥 Комбо: ${combo}`
+        );
+
+    }
+
+    else{
+
+        button.classList.add("wrong");
+
+        lives--;
+        combo=0;
+
+
+        feedback(
+            "bad",
+            `❌ Қате жауап.<br>
+             Дұрыс жауап:
+             <b>${task.options[task.answer]}</b>
+             <br>
+             Қалған мүмкіндік:
+             ${"❤️".repeat(lives)}`
+        );
+
+
+        if(lives<=0){
+
+            setTimeout(finishGame,900);
+
+            return;
+        }
+    }
+
+
+    updateStats();
+
+    document.getElementById("hintBtn")
+        .classList.add("hidden");
+
+    document.getElementById("nextBtn")
+        .classList.remove("hidden");
+}
+
+
+/* =====================================================
+   СӘЙКЕСТЕНДІРУ
+===================================================== */
+
+function matchHTML(task){
+
+    let html=`
+
+    <div class="matchGrid">
+
+        <div class="matchCol">
+    `;
+
+
+    task.left.forEach((x,i)=>{
+
+        html+=`
+
+        <div
+            class="matchItem"
+            id="left${i}"
+            onclick="selectLeft(${i})">
+
+            ${x}
+
+        </div>
+
+        `;
+
+    });
+
+
+    html+=`
+
+        </div>
+
+        <div class="matchCol">
+
+    `;
+
+
+    task.right.forEach((x,i)=>{
+
+        html+=`
+
+        <div
+            class="matchItem"
+            id="right${i}"
+            onclick="selectRight(${i})">
+
+            ${x}
+
+        </div>
+
+        `;
+
+    });
+
+
+    html+=`
+
+        </div>
+
+    </div>
+
+    <button
+        class="mainBtn"
+        onclick="checkMatch()">
+
+        🔗 ЖҰПТЫ ТЕКСЕРУ
+
+    </button>
+
+    `;
+
+    return html;
+}
+
+
+function selectLeft(i){
+
+    if(answered) return;
+
+    if(matchDone.includes(i)) return;
+
+    selectedLeft=i;
+
+    document
+        .querySelectorAll(".matchCol:first-child .matchItem")
+        .forEach(x=>x.classList.remove("selected"));
+
+    document
+        .getElementById("left"+i)
+        .classList.add("selected");
+}
+
+
+function selectRight(i){
+
+    if(answered) return;
+
+    if(
+        matchDone.some(
+            x=>tasks[current].pairs[x]===i
+        )
+    ) return;
+
+    selectedRight=i;
+
+    document
+        .querySelectorAll(".matchCol:last-child .matchItem")
+        .forEach(x=>x.classList.remove("selected"));
+
+    document
+        .getElementById("right"+i)
+        .classList.add("selected");
+}
+
+
+function checkMatch(){
+
+    if(answered) return;
+
+    if(
+        selectedLeft===null ||
+        selectedRight===null
+    ){
+
+        feedback(
+            "bad",
+            "⚠️ Екі жақтан да бір элемент таңда."
+        );
+
+        return;
+    }
+
+
+    const task=tasks[current];
+
+
+    if(
+        task.pairs[selectedLeft]===selectedRight
+    ){
+
+        document
+            .getElementById("left"+selectedLeft)
+            .classList.add("done");
+
+        document
+            .getElementById("right"+selectedRight)
+            .classList.add("done");
+
+
+        matchDone.push(selectedLeft);
+
+
+        feedback(
+            "good",
+            "✅ Дұрыс сәйкестік!"
+        );
+
+
+        if(matchDone.length===task.left.length){
+
+            answered=true;
+
+            let points=task.points || 25;
+
+            if(hintUsed){
+                points=Math.floor(points/2);
+            }
+
+            score+=points;
+            combo++;
+
+
+            feedback(
+                "good",
+                `🏆 Барлық сәйкестік дұрыс! <b>+${points} ұпай</b>`
+            );
+
+
+            document.getElementById("hintBtn")
+                .classList.add("hidden");
+
+            document.getElementById("nextBtn")
+                .classList.remove("hidden");
+
+            updateStats();
+        }
+
+    }
+
+    else{
+
+        lives--;
+        combo=0;
+
+
+        feedback(
+            "bad",
+            `❌ Сәйкестік қате.<br>
+             Қалған мүмкіндік:
+             ${"❤️".repeat(lives)}`
+        );
+
+
+        if(lives<=0){
+
+            answered=true;
+
+            setTimeout(finishGame,900);
+
+            return;
+        }
+    }
+
+
+    selectedLeft=null;
+    selectedRight=null;
+
+    updateStats();
+}
+
+
+/* =====================================================
+   РЕТКЕ ҚОЮ
+===================================================== */
+
+function sequenceHTML(task){
+
+    let html=`
+
+    <div class="description">
+        Элементтерді дұрыс ретпен бірінен соң бірін бас.
+    </div>
+
+    <div class="sequence">
+    `;
+
+
+    task.items.forEach((x,i)=>{
+
+        html+=`
+
+        <div
+            class="seqItem"
+            id="seq${i}"
+            onclick="selectSequence(${i})">
+
+            ${x}
+
+        </div>
+
+        `;
+
+    });
+
+
+    html+=`
+
+    </div>
+
+    <div
+        id="seqResult"
+        class="seqResult">
+
+        Таңдалған рет: —
+
+    </div>
+
+    <button
+        class="mainBtn"
+        onclick="checkSequence()">
+
+        🧠 РЕТТІ ТЕКСЕРУ
+
+    </button>
+
+    `;
+
+    return html;
+}
+
+
+function selectSequence(i){
+
+    if(answered) return;
+
+    if(sequenceAnswer.includes(i)) return;
+
+    sequenceAnswer.push(i);
+
+    document
+        .getElementById("seq"+i)
+        .classList.add("selected");
+
+
+    const names=
+        sequenceAnswer.map(
+            x=>tasks[current].items[x]
+        );
+
+
+    document
+        .getElementById("seqResult")
+        .innerHTML=
+        "Таңдалған рет: "
+        +
+        names.join(" → ");
+}
+
+
+function checkSequence(){
+
+    if(answered) return;
+
+    const task=tasks[current];
+
+
+    if(
+        sequenceAnswer.length!==task.answer.length
+    ){
+
+        feedback(
+            "bad",
+            "⚠️ Барлық элементтерді реттеу керек."
+        );
+
+        return;
+    }
+
+
+    const correct=
+        sequenceAnswer.every(
+            (x,i)=>x===task.answer[i]
+        );
+
+
+    if(correct){
+
+        answered=true;
+
+        let points=task.points || 20;
+
+        if(hintUsed){
+            points=Math.floor(points/2);
+        }
+
+        if(combo>=2){
+            points+=5;
+        }
+
+        score+=points;
+        combo++;
+
+
+        feedback(
+            "good",
+            `🎯 Дұрыс рет! <b>+${points} ұпай</b><br>
+             🔥 Комбо: ${combo}`
+        );
+
+    }
+
+    else{
+
+        lives--;
+        combo=0;
+
+
+        feedback(
+            "bad",
+            `❌ Рет қате. Қайта ойланып көр.<br>
+             Қалған мүмкіндік:
+             ${"❤️".repeat(lives)}`
+        );
+
+
+        sequenceAnswer=[];
+
+
+        document.querySelectorAll(".seqItem")
+            .forEach(
+                x=>x.classList.remove("selected")
+            );
+
+
+        document.getElementById("seqResult")
+            .innerHTML=
+            "Таңдалған рет: —";
+
+
+        if(lives<=0){
+
+            answered=true;
+
+            setTimeout(finishGame,900);
+
+            return;
+        }
+
+
+        updateStats();
+
+        return;
+    }
+
+
+    updateStats();
+
+    document.getElementById("hintBtn")
+        .classList.add("hidden");
+
+    document.getElementById("nextBtn")
+        .classList.remove("hidden");
+}
+
+
+/* =====================================================
+   КЕРІ БАЙЛАНЫС
+===================================================== */
+
+function feedback(type,text){
+
+    const box=
+        document.getElementById("feedback");
+
+    box.className=
+        "feedback show "+type;
+
+    box.innerHTML=text;
+}
+
+
+/* =====================================================
+   КЕҢЕС
+===================================================== */
+
+function showHint(){
+
+    if(
+        hintUsed ||
+        answered
+    ) return;
+
+
+    hintUsed=true;
+
+    score=Math.max(0,score-5);
+
+
+    document.getElementById("hint")
+        .innerHTML=
+        "💡 <b>Кеңес:</b> "
+        +
+        tasks[current].hint;
+
+
+    document.getElementById("hint")
+        .classList.add("show");
+
+
+    document.getElementById("hintBtn")
+        .classList.add("hidden");
+
+
+    updateStats();
+}
+
+
+/* =====================================================
+   КЕЛЕСІ ТАПСЫРМА
+===================================================== */
+
+function nextTask(){
+
+    current++;
+
+
+    if(current>=tasks.length){
+
+        finishGame();
+
+        return;
+    }
+
+
+    showTask();
+    updateStats();
+}
+
+
+/* =====================================================
+   СТАТИСТИКА
+===================================================== */
+
+function updateStats(){
+
+    document.getElementById("score")
+        .textContent=score;
+
+
+    document.getElementById("lives")
+        .textContent=
+        lives>0
+        ?
+        "❤️".repeat(lives)
+        :
+        "💔";
+
+
+    document.getElementById("combo")
+        .textContent=combo;
+
+
+    document.getElementById("taskNum")
+        .textContent=
+        Math.min(current+1,tasks.length)
+        +
+        "/"
+        +
+        tasks.length;
+
+
+    document.getElementById("progress")
+        .style.width=
+        (current/tasks.length*100)
+        +
+        "%";
+}
+
+
+/* =====================================================
+   НӘТИЖЕ
+===================================================== */
+
+function finishGame(){
+
+    document.getElementById("taskCard")
+        .classList.add("hidden");
+
+    document.getElementById("home")
+        .classList.add("hidden");
+
+
+    const result=
+        document.getElementById("result");
+
+    result.classList.remove("hidden");
+
+
+    let rank;
+
+
+    if(score>=430){
+
+        rank="👑 ПЕРЦЕПТРОН ШЕБЕРІ";
+
+    }
+
+    else if(score>=330){
+
+        rank="🏆 AI ИНЖЕНЕРІ";
+
+    }
+
+    else if(score>=230){
+
+        rank="🧠 AI ЗЕРТТЕУШІСІ";
+
+    }
+
+    else{
+
+        rank="🌱 ЖАС ЗЕРТТЕУШІ";
+
+    }
+
+
+    result.innerHTML=`
+
+        <div class="level">
+            ЗЕРТХАНА АЯҚТАЛДЫ
+        </div>
+
+        <div class="homeIcon">
+            🎓
+        </div>
+
+        <h2>
+            Перцептрон сынағы аяқталды!
+        </h2>
+
+        <div class="rank">
+            ${rank}
+        </div>
+
+        <p class="description">
+            Сенің жинаған ұпайың:
+        </p>
+
+        <h2 style="font-size:40px;color:#1677c8">
+            ⭐ ${score}
+        </h2>
+
+        <p class="description" style="margin-top:15px">
+            ${
+                lives>0
+                ?
+                "Барлық мүмкіндігіңді сақтап қалдың!"
+                :
+                "Мүмкіндіктерің аяқталды. Перцептронды қайта сынап көр!"
+            }
+        </p>
+
+        <button
+            class="mainBtn"
+            onclick="restartGame()">
+
+            🔄 ҚАЙТА БАСТАУ
+
+        </button>
+
+    `;
+}
+
+
+/* =====================================================
+   ҚАЙТА БАСТАУ
+===================================================== */
+
+function restartGame(){
+
+    document.getElementById("result")
+        .classList.add("hidden");
+
+    startGame();
+}
+
+</script>
+
+</body>
+</html>
