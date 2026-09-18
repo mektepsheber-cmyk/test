@@ -1,0 +1,3697 @@
+```html
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Қазақша пернетақта жаттықтырғышы</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    color:#17352b;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            #e5f4eb,
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            #f8efd2,
+            transparent 30%
+        ),
+        #f7fbf8;
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+.login-page{
+
+    min-height:100vh;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:25px;
+}
+
+.login-card{
+
+    width:min(650px,100%);
+
+    background:rgba(255,255,255,.97);
+
+    border:1px solid #d9e9df;
+
+    border-radius:30px;
+
+    padding:45px;
+
+    text-align:center;
+
+    box-shadow:
+        0 25px 70px
+        rgba(27,72,53,.13);
+}
+
+.ornament{
+
+    color:#b18b28;
+
+    font-size:28px;
+
+    letter-spacing:8px;
+
+    margin-bottom:12px;
+}
+
+.login-card h1{
+
+    color:#174c3b;
+
+    font-size:34px;
+
+    line-height:1.2;
+
+    margin:5px 0 15px;
+}
+
+.subtitle{
+
+    color:#63786f;
+
+    font-size:18px;
+
+    margin-bottom:30px;
+}
+
+.name-input{
+
+    width:100%;
+
+    padding:17px 20px;
+
+    border:2px solid #d5e5dc;
+
+    border-radius:15px;
+
+    outline:none;
+
+    background:#fbfdfc;
+
+    color:#17352b;
+
+    font-size:18px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    margin-bottom:22px;
+}
+
+.name-input:focus{
+
+    border-color:#3c8c6b;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(60,140,107,.10);
+}
+
+.time-title{
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    margin-bottom:12px;
+}
+
+.time-options{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:10px;
+
+    margin-bottom:12px;
+}
+
+.time-btn{
+
+    border:2px solid #d9e8df;
+
+    background:white;
+
+    color:#285441;
+
+    border-radius:13px;
+
+    padding:12px 5px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    transition:.2s;
+}
+
+.time-btn:hover{
+
+    transform:translateY(-2px);
+
+    border-color:#5a9c7d;
+}
+
+.time-btn.active{
+
+    color:white;
+
+    background:#2f795b;
+
+    border-color:#2f795b;
+}
+
+.custom-time{
+
+    display:none;
+
+    margin-bottom:15px;
+}
+
+.custom-time input{
+
+    width:100%;
+
+    padding:13px;
+
+    text-align:center;
+
+    border:2px solid #d5e5dc;
+
+    border-radius:12px;
+
+    font-size:16px;
+}
+
+.start-btn{
+
+    width:100%;
+
+    padding:17px;
+
+    border:0;
+
+    border-radius:15px;
+
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #286e51,
+            #3f906d
+        );
+
+    font-size:19px;
+
+    font-weight:bold;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 10px 22px
+        rgba(47,121,91,.2);
+
+    transition:.2s;
+}
+
+.start-btn:hover{
+
+    transform:translateY(-2px);
+}
+
+.author{
+
+    margin-top:25px;
+
+    color:#8a7140;
+
+    font-size:15px;
+}
+
+
+/* =====================================================
+   GAME
+===================================================== */
+
+.game-page{
+
+    display:none;
+
+    min-height:100vh;
+
+    padding:20px;
+}
+
+.container{
+
+    width:100%;
+
+    max-width:1450px;
+
+    margin:auto;
+}
+
+
+/* HEADER */
+
+.top-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    background:white;
+
+    border:1px solid #dcebe2;
+
+    border-radius:20px;
+
+    padding:15px 22px;
+
+    margin-bottom:18px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(25,70,50,.07);
+}
+
+.logo-title{
+
+    color:#174c3b;
+
+    font-size:24px;
+
+    font-weight:bold;
+}
+
+.current-name{
+
+    color:#315d4d;
+
+    background:#eef7f1;
+
+    padding:10px 16px;
+
+    border-radius:12px;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    white-space:nowrap;
+}
+
+
+/* MAIN */
+
+.main-layout{
+
+    display:grid;
+
+    grid-template-columns:200px 1fr;
+
+    gap:18px;
+}
+
+
+/* SIDEBAR */
+
+.sidebar{
+
+    height:max-content;
+
+    background:white;
+
+    border:1px solid #dcebe2;
+
+    border-radius:20px;
+
+    padding:15px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(25,70,50,.07);
+}
+
+.mode-title{
+
+    color:#80948c;
+
+    font-size:14px;
+
+    margin:5px 5px 12px;
+}
+
+.mode-btn{
+
+    width:100%;
+
+    border:0;
+
+    background:#f3f8f5;
+
+    color:#285441;
+
+    border-radius:12px;
+
+    padding:13px 10px;
+
+    margin-bottom:8px;
+
+    cursor:pointer;
+
+    text-align:left;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    transition:.2s;
+}
+
+.mode-btn:hover{
+
+    background:#e5f1ea;
+}
+
+.mode-btn.active{
+
+    color:white;
+
+    background:#2f795b;
+}
+
+.author-small{
+
+    color:#8a7140;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+    border-top:1px solid #e3eee8;
+
+    margin-top:18px;
+
+    padding-top:15px;
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(6,1fr);
+
+    gap:10px;
+
+    margin-bottom:18px;
+}
+
+.stat{
+
+    background:white;
+
+    border:1px solid #dcebe2;
+
+    border-radius:16px;
+
+    padding:12px 8px;
+
+    text-align:center;
+
+    box-shadow:
+        0 6px 18px
+        rgba(25,70,50,.05);
+}
+
+.stat-label{
+
+    color:#84968e;
+
+    font-size:13px;
+
+    margin-bottom:5px;
+}
+
+.stat-value{
+
+    color:#235b45;
+
+    font-size:22px;
+
+    font-weight:bold;
+}
+
+
+/* =====================================================
+   TASK
+===================================================== */
+
+.task-card{
+
+    background:white;
+
+    border:1px solid #dcebe2;
+
+    border-radius:22px;
+
+    padding:25px;
+
+    margin-bottom:18px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(25,70,50,.07);
+}
+
+.task-title{
+
+    color:#84968e;
+
+    text-align:center;
+
+    font-size:14px;
+
+    margin-bottom:10px;
+}
+
+
+/* =====================================================
+   BIG CENTER LETTER
+===================================================== */
+
+.text-area{
+
+    min-height:270px;
+
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+    border:2px solid #dcebe2;
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fbfefc,
+            #f0f8f4
+        );
+
+    padding:35px;
+}
+
+
+/* жоғарғы түсіндірме */
+
+.next-info{
+
+    position:absolute;
+
+    top:15px;
+
+    left:0;
+
+    right:0;
+
+    text-align:center;
+
+    color:#8a9b93;
+
+    font-size:14px;
+}
+
+
+/* негізгі әріп */
+
+.current-letter{
+
+    width:170px;
+
+    height:170px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:32px;
+
+    background:white;
+
+    color:#174c3b;
+
+    font-size:115px;
+
+    font-weight:bold;
+
+    line-height:1;
+
+    box-shadow:
+        0 15px 40px
+        rgba(35,91,69,.12),
+
+        inset 0 0 0 3px
+        #dcebe2;
+
+    transition:
+        background .15s,
+        color .15s,
+        transform .15s,
+        box-shadow .15s;
+}
+
+
+/* ДҰРЫС */
+
+.current-letter.correct{
+
+    color:#198754;
+
+    background:#dff5e8;
+
+    box-shadow:
+        0 0 0 5px
+        rgba(25,135,84,.12),
+
+        0 15px 40px
+        rgba(25,135,84,.20);
+
+    transform:scale(1.07);
+}
+
+
+/* ҚАТЕ */
+
+.current-letter.wrong{
+
+    color:#c62828;
+
+    background:#ffe1e1;
+
+    box-shadow:
+        0 0 0 5px
+        rgba(198,40,40,.12),
+
+        0 15px 40px
+        rgba(198,40,40,.20);
+
+    animation:
+        wrongShake .28s;
+}
+
+@keyframes wrongShake{
+
+    0%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-12px);
+    }
+
+    50%{
+        transform:translateX(12px);
+    }
+
+    75%{
+        transform:translateX(-8px);
+    }
+
+    100%{
+        transform:translateX(0);
+    }
+}
+
+
+/* SHIFT хабарламасы */
+
+.shift-info{
+
+    position:absolute;
+
+    bottom:13px;
+
+    left:0;
+
+    right:0;
+
+    text-align:center;
+
+    color:#a17d24;
+
+    font-size:14px;
+
+    font-weight:bold;
+}
+
+
+/* CONTROLS */
+
+.controls{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:18px;
+}
+
+.control-btn{
+
+    border:1px solid #d7e6de;
+
+    background:#f7faf8;
+
+    color:#315d4d;
+
+    padding:11px 16px;
+
+    border-radius:11px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+}
+
+.control-btn:hover{
+
+    background:#eaf4ee;
+}
+
+
+/* =====================================================
+   KEYBOARD
+===================================================== */
+
+.keyboard-card{
+
+    background:white;
+
+    border:1px solid #dcebe2;
+
+    border-radius:22px;
+
+    padding:20px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 8px 25px
+        rgba(25,70,50,.07);
+}
+
+.keyboard-title{
+
+    text-align:center;
+
+    color:#60776d;
+
+    font-size:15px;
+
+    margin-bottom:14px;
+}
+
+.keyboard{
+
+    width:100%;
+
+    max-width:1150px;
+
+    margin:auto;
+}
+
+.key-row{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:5px;
+
+    margin-bottom:5px;
+}
+
+.key{
+
+    width:58px;
+
+    height:58px;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:1px solid #cfdcd5;
+
+    border-radius:7px;
+
+    background:
+        linear-gradient(
+            #ffffff,
+            #edf3ef
+        );
+
+    box-shadow:
+        0 3px 0 #c6d1cb;
+
+    color:#183d30;
+
+    user-select:none;
+
+    transition:.08s;
+}
+
+.key .main{
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    line-height:1;
+}
+
+.key .small{
+
+    color:#82938b;
+
+    font-size:10px;
+
+    margin-top:4px;
+}
+
+.key.wide{
+    width:86px;
+}
+
+.key.xwide{
+    width:110px;
+}
+
+.key.space{
+    width:340px;
+}
+
+
+/* перне */
+
+.key.active{
+
+    background:#cfe9db;
+
+    border-color:#4c9471;
+
+    box-shadow:
+        0 3px 0 #3e795c,
+
+        0 0 0 3px
+        rgba(76,148,113,.15);
+
+    transform:translateY(-2px);
+}
+
+
+/* SHIFT */
+
+.key.shift-active{
+
+    background:#e8dcae;
+
+    border-color:#b4933c;
+
+    box-shadow:
+        0 3px 0 #91772e;
+}
+
+.row-q{
+    padding-left:35px;
+}
+
+.row-home{
+    padding-left:60px;
+}
+
+.row-z{
+    padding-left:85px;
+}
+
+.hint{
+
+    text-align:center;
+
+    color:#84968e;
+
+    font-size:13px;
+
+    margin-top:13px;
+}
+
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+.modal{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:100;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        rgba(15,45,34,.45);
+}
+
+.modal-card{
+
+    width:min(650px,100%);
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:32px;
+
+    text-align:center;
+
+    box-shadow:
+        0 25px 80px
+        rgba(0,0,0,.2);
+}
+
+.modal-card h2{
+
+    color:#174c3b;
+
+    margin-top:0;
+}
+
+.result-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:10px;
+
+    margin:20px 0;
+}
+
+.result-box{
+
+    background:#f3f8f5;
+
+    border-radius:14px;
+
+    padding:14px;
+}
+
+.result-box span{
+
+    display:block;
+
+    color:#7b8e85;
+
+    font-size:13px;
+}
+
+.result-box strong{
+
+    color:#286e51;
+
+    font-size:25px;
+}
+
+.mistakes{
+
+    background:#fff8e7;
+
+    border:1px solid #efdfae;
+
+    border-radius:14px;
+
+    padding:15px;
+
+    text-align:left;
+
+    margin-bottom:20px;
+}
+
+.modal-btn{
+
+    border:0;
+
+    border-radius:12px;
+
+    padding:13px 22px;
+
+    background:#2f795b;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:1000px){
+
+    .main-layout{
+
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+
+        display:flex;
+
+        flex-wrap:wrap;
+
+        align-items:center;
+
+        gap:8px;
+    }
+
+    .mode-title{
+
+        width:100%;
+    }
+
+    .mode-btn{
+
+        width:auto;
+
+        margin:0;
+    }
+
+    .author-small{
+
+        display:none;
+    }
+
+    .stats{
+
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    .keyboard{
+
+        overflow-x:auto;
+
+        padding-bottom:10px;
+    }
+}
+
+
+@media(max-width:650px){
+
+    .login-card{
+
+        padding:28px 20px;
+    }
+
+    .login-card h1{
+
+        font-size:25px;
+    }
+
+    .time-options{
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .top-header{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+        text-align:center;
+    }
+
+    .stats{
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .task-card{
+
+        padding:15px;
+    }
+
+    .text-area{
+
+        min-height:210px;
+    }
+
+    .current-letter{
+
+        width:130px;
+
+        height:130px;
+
+        font-size:85px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     LOGIN
+===================================================== -->
+
+<section class="login-page" id="loginPage">
+
+<div class="login-card">
+
+    <div class="ornament">
+        ✦ ❖ ✦
+    </div>
+
+    <h1>
+        ҚАЗАҚША ПЕРНЕТАҚТА<br>
+        ЖАТТЫҚТЫРҒЫШЫ
+    </h1>
+
+    <div class="subtitle">
+        Қазақ әріптерін жылдам теруді ойын арқылы үйреніңіз!
+    </div>
+
+
+    <input
+        id="nameInput"
+        class="name-input"
+        type="text"
+        placeholder="Аты-жөніңізді енгізіңіз"
+        autocomplete="off"
+    >
+
+
+    <div class="time-title">
+        Жаттығу уақытын таңдаңыз
+    </div>
+
+
+    <div class="time-options">
+
+        <button
+            class="time-btn"
+            onclick="selectTime(30,this)">
+            30 сек
+        </button>
+
+        <button
+            class="time-btn active"
+            onclick="selectTime(60,this)">
+            60 сек
+        </button>
+
+        <button
+            class="time-btn"
+            onclick="selectTime(90,this)">
+            90 сек
+        </button>
+
+        <button
+            class="time-btn"
+            onclick="selectTime(120,this)">
+            120 сек
+        </button>
+
+        <button
+            class="time-btn"
+            onclick="selectCustom(this)"
+            style="grid-column:1/-1">
+            Өз уақытым
+        </button>
+
+    </div>
+
+
+    <div
+        class="custom-time"
+        id="customTimeBox">
+
+        <input
+            id="customTimeInput"
+            type="number"
+            min="10"
+            max="600"
+            value="60"
+            placeholder="10–600 секунд"
+        >
+
+    </div>
+
+
+    <button
+        class="start-btn"
+        onclick="startGame()">
+
+        ОЙЫНДЫ БАСТАУ
+
+    </button>
+
+
+    <div class="author">
+
+        Автор:
+        <b>Әмірәлі Мейірхан</b>
+
+    </div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     GAME
+===================================================== -->
+
+<section
+    class="game-page"
+    id="gamePage">
+
+<div class="container">
+
+
+<header class="top-header">
+
+    <div class="logo-title">
+
+        Қазақша пернетақта жаттықтырғышы
+
+    </div>
+
+
+    <div
+        class="current-name"
+        id="topPersonName">
+
+        👤
+
+    </div>
+
+</header>
+
+
+
+<div class="main-layout">
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="mode-title">
+
+        ЖАТТЫҒУ БӨЛІМІ
+
+    </div>
+
+
+    <button
+        class="mode-btn active"
+        data-mode="letters"
+        onclick="setMode('letters',this)">
+
+        Әріптер
+
+    </button>
+
+
+    <button
+        class="mode-btn"
+        data-mode="words"
+        onclick="setMode('words',this)">
+
+        Сөздер
+
+    </button>
+
+
+    <button
+        class="mode-btn"
+        data-mode="sentences"
+        onclick="setMode('sentences',this)">
+
+        Сөйлемдер
+
+    </button>
+
+
+    <button
+        class="mode-btn"
+        data-mode="symbols"
+        onclick="setMode('symbols',this)">
+
+        Белгілер
+
+    </button>
+
+
+    <div class="author-small">
+
+        Автор:<br>
+
+        <b>Әмірәлі Мейірхан</b>
+
+    </div>
+
+</aside>
+
+
+
+<!-- GAME -->
+
+<main class="game-content">
+
+
+<!-- STATS -->
+
+<div class="stats">
+
+    <div class="stat">
+
+        <div class="stat-label">
+            Уақыт
+        </div>
+
+        <div
+            class="stat-value"
+            id="timeStat">
+            60
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-label">
+            Ұпай
+        </div>
+
+        <div
+            class="stat-value"
+            id="scoreStat">
+            0
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-label">
+            Дәлдік
+        </div>
+
+        <div
+            class="stat-value"
+            id="accuracyStat">
+            100%
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-label">
+            Қате
+        </div>
+
+        <div
+            class="stat-value"
+            id="errorStat">
+            0
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-label">
+            WPM
+        </div>
+
+        <div
+            class="stat-value"
+            id="wpmStat">
+            0
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-label">
+            COMBO
+        </div>
+
+        <div
+            class="stat-value"
+            id="comboStat">
+            0
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- TASK -->
+
+<div class="task-card">
+
+    <div class="task-title">
+
+        Келесі таңбаны пернетақтадан тауып, теріңіз
+
+    </div>
+
+
+    <div
+        class="text-area"
+        id="textArea">
+
+    </div>
+
+
+    <div class="controls">
+
+        <button
+            class="control-btn"
+            onclick="restartGame()">
+
+            ↻ Қайта бастау
+
+        </button>
+
+
+        <button
+            class="control-btn"
+            onclick="practiceErrors()">
+
+            ⚠ Қатемен жұмыс
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     KEYBOARD
+===================================================== -->
+
+<div class="keyboard-card">
+
+<div class="keyboard-title">
+
+    Келесі перне жасыл түспен белгіленеді
+
+</div>
+
+
+<div class="keyboard">
+
+
+<!-- NUMBER ROW -->
+
+<div class="key-row">
+
+    <div class="key">
+        <span class="main">Esc</span>
+    </div>
+
+
+    <div
+        class="key"
+        data-code="Digit1">
+
+        <span class="main">1</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="Digit2">
+
+        <span class="main">Ә</span>
+        <span class="small">2</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="Digit3">
+
+        <span class="main">І</span>
+        <span class="small">3</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="Digit4">
+
+        <span class="main">Ң</span>
+        <span class="small">4</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="Digit5">
+
+        <span class="main">Ғ</span>
+        <span class="small">5</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="Digit6">
+
+        <span class="main">,</span>
+        <span class="small">6</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="Digit7">
+
+        <span class="main">.</span>
+        <span class="small">7</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="Digit8">
+
+        <span class="main">Ү</span>
+        <span class="small">8</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="Digit9">
+
+        <span class="main">Ұ</span>
+        <span class="small">9</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="Digit0">
+
+        <span class="main">Қ</span>
+        <span class="small">0</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="Minus">
+
+        <span class="main">Ө</span>
+        <span class="small">-</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="Equal">
+
+        <span class="main">Һ</span>
+        <span class="small">+</span>
+
+    </div>
+
+
+    <div class="key wide">
+
+        <span class="main">←</span>
+
+    </div>
+
+</div>
+
+
+
+<!-- Q ROW -->
+
+<div class="key-row row-q">
+
+    <div class="key wide">
+
+        <span class="main">TAB</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="KeyQ">
+        <span class="main">Й</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyW">
+        <span class="main">Ц</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyE">
+        <span class="main">У</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyR">
+        <span class="main">К</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyT">
+        <span class="main">Е</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyY">
+        <span class="main">Н</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyU">
+        <span class="main">Г</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyI">
+        <span class="main">Ш</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyO">
+        <span class="main">Щ</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyP">
+        <span class="main">З</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="BracketLeft">
+        <span class="main">Х</span>
+    </div>
+
+</div>
+
+
+
+<!-- HOME -->
+
+<div class="key-row row-home">
+
+    <div class="key xwide">
+
+        <span class="main">CAPS</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="KeyA">
+        <span class="main">Ф</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyS">
+        <span class="main">Ы</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyD">
+        <span class="main">В</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyF">
+        <span class="main">А</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyG">
+        <span class="main">П</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyH">
+        <span class="main">Р</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyJ">
+        <span class="main">О</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyK">
+        <span class="main">Л</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyL">
+        <span class="main">Д</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="Semicolon">
+        <span class="main">Ж</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="Quote">
+        <span class="main">Э</span>
+    </div>
+
+
+    <div class="key wide">
+
+        <span class="main">ENTER</span>
+
+    </div>
+
+</div>
+
+
+
+<!-- Z ROW -->
+
+<div class="key-row row-z">
+
+    <div
+        class="key xwide"
+        data-code="ShiftLeft">
+
+        <span class="main">SHIFT</span>
+
+    </div>
+
+
+    <div
+        class="key"
+        data-code="KeyZ">
+        <span class="main">Я</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyX">
+        <span class="main">Ч</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyC">
+        <span class="main">С</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyV">
+        <span class="main">М</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyB">
+        <span class="main">И</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyN">
+        <span class="main">Т</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="KeyM">
+        <span class="main">Ь</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="Comma">
+        <span class="main">Б</span>
+    </div>
+
+    <div
+        class="key"
+        data-code="Period">
+        <span class="main">Ю</span>
+    </div>
+
+
+    <div
+        class="key xwide"
+        data-code="ShiftRight">
+
+        <span class="main">SHIFT</span>
+
+    </div>
+
+</div>
+
+
+
+<!-- BOTTOM -->
+
+<div class="key-row">
+
+    <div class="key wide">
+
+        <span class="main">CTRL</span>
+
+    </div>
+
+
+    <div class="key wide">
+
+        <span class="main">ALT</span>
+
+    </div>
+
+
+    <div
+        class="key space"
+        data-code="Space">
+
+        <span class="main">SPACE</span>
+
+    </div>
+
+
+    <div class="key wide">
+
+        <span class="main">ALT</span>
+
+    </div>
+
+
+    <div class="key wide">
+
+        <span class="main">CTRL</span>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<div class="hint">
+
+    Қазақ пернетақтасының орналасуы бойынша жаттығыңыз
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     RESULT
+===================================================== -->
+
+<div
+    class="modal"
+    id="resultModal">
+
+<div class="modal-card">
+
+    <div class="ornament">
+        ✦ ❖ ✦
+    </div>
+
+
+    <h2>
+        Жаттығу аяқталды!
+    </h2>
+
+
+    <p id="resultGreeting"></p>
+
+
+    <div class="result-grid">
+
+        <div class="result-box">
+
+            <span>Ұпай</span>
+
+            <strong id="resultScore">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="result-box">
+
+            <span>Дәлдік</span>
+
+            <strong id="resultAccuracy">
+                0%
+            </strong>
+
+        </div>
+
+
+        <div class="result-box">
+
+            <span>WPM</span>
+
+            <strong id="resultWpm">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="result-box">
+
+            <span>Үздік COMBO</span>
+
+            <strong id="resultCombo">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="mistakes">
+
+        <b>
+            Көп қате кеткен таңбалар:
+        </b>
+
+
+        <div
+            id="mistakeList"
+            style="margin-top:8px">
+
+            Қате жоқ 🎉
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="modal-btn"
+        onclick="closeResult()">
+
+        ҚАЙТА ЖАТТЫҒУ
+
+    </button>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   KEY MAP
+===================================================== */
+
+const keyMap = {
+
+    "ә":{code:"Digit2",shift:false},
+    "і":{code:"Digit3",shift:false},
+    "ң":{code:"Digit4",shift:false},
+    "ғ":{code:"Digit5",shift:false},
+
+    ",":{code:"Digit6",shift:false},
+    ".":{code:"Digit7",shift:false},
+
+    "ү":{code:"Digit8",shift:false},
+    "ұ":{code:"Digit9",shift:false},
+    "қ":{code:"Digit0",shift:false},
+    "ө":{code:"Minus",shift:false},
+    "һ":{code:"Equal",shift:false},
+
+
+    "й":{code:"KeyQ",shift:false},
+    "ц":{code:"KeyW",shift:false},
+    "у":{code:"KeyE",shift:false},
+    "к":{code:"KeyR",shift:false},
+    "е":{code:"KeyT",shift:false},
+    "н":{code:"KeyY",shift:false},
+    "г":{code:"KeyU",shift:false},
+    "ш":{code:"KeyI",shift:false},
+    "щ":{code:"KeyO",shift:false},
+    "з":{code:"KeyP",shift:false},
+    "х":{code:"BracketLeft",shift:false},
+
+
+    "ф":{code:"KeyA",shift:false},
+    "ы":{code:"KeyS",shift:false},
+    "в":{code:"KeyD",shift:false},
+    "а":{code:"KeyF",shift:false},
+    "п":{code:"KeyG",shift:false},
+    "р":{code:"KeyH",shift:false},
+    "о":{code:"KeyJ",shift:false},
+    "л":{code:"KeyK",shift:false},
+    "д":{code:"KeyL",shift:false},
+    "ж":{code:"Semicolon",shift:false},
+    "э":{code:"Quote",shift:false},
+
+
+    "я":{code:"KeyZ",shift:false},
+    "ч":{code:"KeyX",shift:false},
+    "с":{code:"KeyC",shift:false},
+    "м":{code:"KeyV",shift:false},
+    "и":{code:"KeyB",shift:false},
+    "т":{code:"KeyN",shift:false},
+    "ь":{code:"KeyM",shift:false},
+    "б":{code:"Comma",shift:false},
+    "ю":{code:"Period",shift:false},
+
+
+    " ":{code:"Space",shift:false},
+
+
+    "!":{code:"Digit1",shift:true},
+    "?":{code:"Slash",shift:true},
+    "(":{code:"Digit9",shift:true},
+    ")":{code:"Digit0",shift:true},
+
+    ":":{code:"Semicolon",shift:true},
+    ";":{code:"Semicolon",shift:false},
+
+    "\"":{code:"Quote",shift:true},
+    "'":{code:"Quote",shift:false},
+
+    "_":{code:"Minus",shift:true},
+    "+":{code:"Equal",shift:true},
+
+    "<":{code:"Comma",shift:true},
+    ">":{code:"Period",shift:true},
+
+    "%":{code:"Digit5",shift:true},
+    "*":{code:"Digit8",shift:true},
+
+    "/":{code:"Slash",shift:false},
+    "=":{code:"Equal",shift:false}
+};
+
+
+/* =====================================================
+   LETTERS
+===================================================== */
+
+const letters=[
+
+    "ә","і","ң","ғ","ү",
+    "ұ","қ","ө","һ",
+
+    "а","б","в","г","д",
+    "е","ж","з","и","й",
+    "к","л","м","н","о",
+    "п","р","с","т","у",
+    "ф","х","ц","ч","ш",
+    "щ","ы","э","ю","я"
+
+];
+
+
+/* =====================================================
+   SYMBOLS
+===================================================== */
+
+const symbols=[
+
+    "!","?",
+    "(",")",
+    ":", ";",
+    "\"","'",
+    "%","/",
+    "*","+",
+    "=","_",
+    "<",">",
+    ",","."
+
+];
+
+
+/* =====================================================
+   WORDS
+===================================================== */
+
+const words=[
+
+"адам",
+"ана",
+"әке",
+"ата",
+"әже",
+"бала",
+"дос",
+"достық",
+"отбасы",
+"үй",
+"аула",
+"көше",
+"қала",
+"ауыл",
+"ел",
+"жер",
+"су",
+"ауа",
+"күн",
+"ай",
+"жыл",
+"күнделік",
+"уақыт",
+"өмір",
+"бақыт",
+"арман",
+"мақсат",
+"ой",
+"сөз",
+"тіл",
+"әңгіме",
+"жауап",
+"сұрақ",
+"көмек",
+"жақсылық",
+"мейірім",
+"құрмет",
+"сенім",
+"достар",
+"қуаныш",
+"еңбек",
+"табыс",
+"жеңіс",
+"болашақ",
+
+"мектеп",
+"сынып",
+"сабақ",
+"мұғалім",
+"ұстаз",
+"оқушы",
+"оқу",
+"кітап",
+"дәптер",
+"қалам",
+"қарындаш",
+"тақта",
+"бор",
+"парта",
+"орындық",
+"баға",
+"білім",
+"білімді",
+"тапсырма",
+"жаттығу",
+"мысал",
+"есеп",
+"емтихан",
+"бақылау",
+"жоба",
+"зерттеу",
+"кітапхана",
+"үзіліс",
+"сыныптас",
+"тәртіп",
+
+"қазақ",
+"қазақша",
+"қазақ тілі",
+"әріп",
+"дыбыс",
+"сөз",
+"сөйлем",
+"мәтін",
+"буын",
+"дауысты",
+"дауыссыз",
+"дыбыстау",
+"жазу",
+"тыңдау",
+"сөйлеу",
+"жазушы",
+"ақын",
+"өлең",
+"мақал",
+"мәтел",
+"мағына",
+
+"ғылым",
+"ғалым",
+"тәжірибе",
+"теория",
+"жаңалық",
+"ашылым",
+"технология",
+"ақпарат",
+"дерек",
+"мәлімет",
+"тәсіл",
+"әдіс",
+"нәтиже",
+"себеп",
+"шешім",
+"даму",
+
+"информатика",
+"компьютер",
+"пернетақта",
+"тышқан",
+"экран",
+"монитор",
+"процессор",
+"жады",
+"файл",
+"бума",
+"құжат",
+"бағдарлама",
+"код",
+"алгоритм",
+"желі",
+"интернет",
+"сайт",
+"веб",
+"браузер",
+"сервер",
+"робот",
+"робототехника",
+"жасанды",
+"интеллект",
+"деректер",
+"ақпараттық",
+"қауіпсіздік",
+"құпиясөз",
+"логин",
+"пароль",
+"батырма",
+"перне",
+"терезе",
+"қосымша",
+"жүйе",
+"бағдарламалау",
+"сенсор",
+"модель",
+"жоба",
+
+"нейрон",
+"нейрондық",
+"үйрету",
+"оқыту",
+"болжам",
+"перцептрон",
+"машина",
+"үйрену",
+"ақылды",
+"тану",
+"сурет",
+"мәтін",
+"дыбыс",
+
+"табиғат",
+"орман",
+"тау",
+"өзен",
+"көл",
+"теңіз",
+"дала",
+"гүл",
+"ағаш",
+"жапырақ",
+"жеміс",
+"құс",
+"жануар",
+"балық",
+"жылқы",
+"қой",
+"сиыр",
+"ит",
+"мысық",
+"көбелек",
+"жаңбыр",
+"қар",
+"жел",
+"бұлт",
+"аспан",
+"жұлдыз",
+"көктем",
+"жаз",
+"күз",
+"қыс",
+
+"ақыл",
+"ақылды",
+"еңбекқор",
+"батыл",
+"мейірімді",
+"әдепті",
+"тәртіпті",
+"ұқыпты",
+"жауапты",
+"шыдамды",
+"талапты",
+"өнерлі",
+"адал",
+"шыншыл",
+"қамқор",
+"қайырымды",
+"белсенді",
+"ізденімпаз",
+"шығармашыл",
+
+"Қазақстан",
+"Отан",
+"халық",
+"ұлт",
+"тәуелсіздік",
+"мемлекет",
+"астана",
+"Алматы",
+"Шымкент",
+"рәміз",
+"тарих",
+"мәдениет",
+"дәстүр",
+"ұрпақ",
+"бірлік",
+"бейбітшілік",
+
+"оқу",
+"жазу",
+"санау",
+"ойлау",
+"үйрену",
+"үйрету",
+"іздеу",
+"табу",
+"жасау",
+"құру",
+"тексеру",
+"есептеу",
+"жоспарлау",
+"талдау",
+"салыстыру",
+"өлшеу",
+"бақылау",
+"зерттеу",
+"көру",
+"ойнау",
+"жүгіру",
+
+"жауапкершілік",
+"шығармашылық",
+"білімпаздық",
+"ізденімпаздық",
+"ынтымақтастық",
+"мүмкіндік",
+"қабілет",
+"жетістік",
+"тәжірибе",
+"мақсаттылық",
+"ұйымдастыру",
+"бағдарламалау",
+"ақпараттандыру",
+"цифрландыру",
+"технологиялық",
+"инновация",
+"зияткерлік",
+"зерттеуші",
+"бағдарламашы",
+"инженер",
+"мамандық",
+
+"ҚАЗАҚСТАН",
+"ҚАЗАҚ",
+"БІЛІМ",
+"МЕКТЕП",
+"ҰСТАЗ",
+"ҒЫЛЫМ",
+"ИНФОРМАТИКА",
+"КОМПЬЮТЕР",
+"АЛГОРИТМ",
+"РОБОТ",
+"БОЛАШАҚ",
+"ОТАН",
+"ТӘУЕЛСІЗДІК",
+"ДОСТЫҚ",
+"ЕҢБЕК",
+"АРМАН",
+"МАҚСАТ"
+
+];
+
+
+/* =====================================================
+   SENTENCES
+===================================================== */
+
+const sentences=[
+
+"Сәлем! Қалың қалай?",
+"Бүгін сабақ нешеде?",
+"Қазақ тілі - бай тіл!",
+"Білім - өмір шырағы.",
+"Білекті бірді жығар, білімді мыңды жығар.",
+"Еңбек түбі - береке.",
+"Талаптыға нұр жауар!",
+"Ғылым таппай мақтанба.",
+"Мен жастарға сенемін!",
+"Білімдіден шыққан сөз.",
+"Мақсат: оқу, іздену, үйрену.",
+"Ата-анаңды құрметте!",
+"Әр күн сайын жаңа нәрсе үйрен.",
+"Қазақстан - менің Отаным!",
+"Ұстаз білімнің шамшырағы.",
+"Ізденіс адамды биікке жетелейді.",
+"Ғылым мен білім - болашақтың негізі.",
+"Қазақ халқының тілі - бай тіл.",
+"Өнерлі адам өрге жүзеді.",
+"Білімді ұрпақ - ел болашағы!",
+"Компьютер ақпаратты өңдейді.",
+"Алгоритм есепті шешуге көмектеседі.",
+"Жасанды интеллект жаңа технологияларды дамытады.",
+"Пернетақта арқылы мәтін тереміз.",
+"Информатика - қызықты ғылым.",
+"Робот берілген тапсырманы орындайды.",
+"Бағдарламалау логикалық ойлауды дамытады.",
+"Әрбір қате - жаңа тәжірибе.",
+"Талап пен еңбек адамды жетістікке жеткізеді.",
+"Білім алу үшін үнемі іздену керек.",
+"Уақытты дұрыс пайдалану маңызды.",
+"Достық пен бірлік - үлкен күш.",
+"Табиғатты қорғау - әр адамның міндеті.",
+"Кітап оқу адамның білімін арттырады.",
+"Жақсы сөз адамға қуаныш сыйлайды.",
+"Мектепте жаңа білім аламыз.",
+"Ұстаз бізге дұрыс бағыт көрсетеді.",
+"Болашақ білімді жастардың қолында.",
+"Қазақ тілін үйрену қызықты әрі пайдалы.",
+"Технология адам өмірін жеңілдетеді."
+
+];
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let mode="letters";
+
+let currentText="";
+let currentIndex=0;
+
+let score=0;
+let errors=0;
+let totalTyped=0;
+
+let selectedTime=60;
+let timeLeft=60;
+
+let timer=null;
+
+let gameStarted=false;
+
+let personName="";
+
+let errorCounts={};
+
+let combo=0;
+let bestCombo=0;
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function selectTime(seconds,button){
+
+    selectedTime=seconds;
+
+    document
+        .querySelectorAll(".time-btn")
+        .forEach(btn=>{
+            btn.classList.remove("active");
+        });
+
+    button.classList.add("active");
+
+    document
+        .getElementById("customTimeBox")
+        .style.display="none";
+}
+
+
+function selectCustom(button){
+
+    document
+        .querySelectorAll(".time-btn")
+        .forEach(btn=>{
+            btn.classList.remove("active");
+        });
+
+    button.classList.add("active");
+
+    document
+        .getElementById("customTimeBox")
+        .style.display="block";
+}
+
+
+function startGame(){
+
+    personName=
+        document
+        .getElementById("nameInput")
+        .value
+        .trim();
+
+
+    if(!personName){
+
+        alert(
+            "Аты-жөніңізді енгізіңіз!"
+        );
+
+        document
+            .getElementById("nameInput")
+            .focus();
+
+        return;
+    }
+
+
+    const activeButton=
+        document.querySelector(
+            ".time-btn.active"
+        );
+
+
+    if(
+        activeButton &&
+        activeButton.textContent
+            .includes("Өз уақытым")
+    ){
+
+        const custom=
+            parseInt(
+                document
+                    .getElementById(
+                        "customTimeInput"
+                    )
+                    .value
+            );
+
+
+        if(
+            isNaN(custom) ||
+            custom<10 ||
+            custom>600
+        ){
+
+            alert(
+                "Уақыт 10–600 секунд аралығында болуы керек!"
+            );
+
+            return;
+        }
+
+        selectedTime=custom;
+    }
+
+
+    document
+        .getElementById("loginPage")
+        .style.display="none";
+
+
+    document
+        .getElementById("gamePage")
+        .style.display="block";
+
+
+    document
+        .getElementById("topPersonName")
+        .textContent=
+            "👤 "+personName;
+
+
+    newGame();
+}
+
+
+/* =====================================================
+   MODE
+===================================================== */
+
+function setMode(newMode,button){
+
+    mode=newMode;
+
+
+    document
+        .querySelectorAll(".mode-btn")
+        .forEach(btn=>{
+            btn.classList.remove("active");
+        });
+
+
+    button.classList.add("active");
+
+
+    restartGame();
+}
+
+
+/* =====================================================
+   NEW GAME
+===================================================== */
+
+function newGame(){
+
+    clearInterval(timer);
+
+
+    currentIndex=0;
+
+    score=0;
+
+    errors=0;
+
+    totalTyped=0;
+
+    combo=0;
+
+    bestCombo=0;
+
+    errorCounts={};
+
+
+    timeLeft=selectedTime;
+
+    gameStarted=false;
+
+
+    updateStats();
+
+    newTask();
+}
+
+
+/* =====================================================
+   RANDOM
+===================================================== */
+
+function randomItem(array){
+
+    return array[
+        Math.floor(
+            Math.random()*array.length
+        )
+    ];
+}
+
+
+/* =====================================================
+   TASK
+===================================================== */
+
+function newTask(){
+
+    if(mode==="letters"){
+
+        currentText=
+            randomItem(letters);
+    }
+
+
+    else if(mode==="words"){
+
+        currentText=
+            randomItem(words);
+    }
+
+
+    else if(mode==="sentences"){
+
+        currentText=
+            randomItem(sentences);
+    }
+
+
+    else if(mode==="symbols"){
+
+        currentText=
+            randomItem(symbols);
+    }
+
+
+    currentIndex=0;
+
+
+    renderText();
+
+    updateKeyboard();
+}
+
+
+/* =====================================================
+   CENTER LETTER
+===================================================== */
+
+function renderText(){
+
+    const area=
+        document.getElementById(
+            "textArea"
+        );
+
+
+    area.innerHTML="";
+
+
+    const info=
+        document.createElement("div");
+
+    info.className="next-info";
+
+    info.textContent=
+        "Келесі таңбаны теріңіз";
+
+
+    area.appendChild(info);
+
+
+    const letter=
+        document.createElement("div");
+
+    letter.className=
+        "current-letter";
+
+    letter.id=
+        "currentLetter";
+
+
+    area.appendChild(letter);
+
+
+    updateCurrentLetter();
+}
+
+
+/* =====================================================
+   UPDATE CURRENT LETTER
+===================================================== */
+
+function updateCurrentLetter(){
+
+    const letter=
+        document.getElementById(
+            "currentLetter"
+        );
+
+
+    if(!letter)return;
+
+
+    if(
+        currentIndex>=
+        currentText.length
+    ){
+
+        letter.textContent="✓";
+
+        letter.className=
+            "current-letter correct";
+
+        return;
+    }
+
+
+    const char=
+        currentText[currentIndex];
+
+
+    letter.textContent=char;
+
+    letter.className=
+        "current-letter";
+
+
+    const info=
+        getKeyInfo(char);
+
+
+    const oldShift=
+        document.querySelector(
+            ".shift-info"
+        );
+
+
+    if(oldShift){
+
+        oldShift.remove();
+    }
+
+
+    if(
+        info &&
+        info.shift
+    ){
+
+        const area=
+            document.getElementById(
+                "textArea"
+            );
+
+
+        const shift=
+            document.createElement(
+                "div"
+            );
+
+
+        shift.className=
+            "shift-info";
+
+
+        shift.textContent=
+            "⇧ SHIFT пернесін бірге басыңыз";
+
+
+        area.appendChild(shift);
+    }
+
+
+    updateKeyboard();
+}
+
+
+/* =====================================================
+   KEY MAP INFO
+===================================================== */
+
+function getKeyInfo(char){
+
+    const lower=
+        char.toLowerCase();
+
+
+    if(keyMap[char]){
+
+        return keyMap[char];
+    }
+
+
+    if(keyMap[lower]){
+
+        return {
+
+            code:keyMap[lower].code,
+
+            shift:true
+
+        };
+    }
+
+
+    return null;
+}
+
+
+/* =====================================================
+   KEYBOARD
+===================================================== */
+
+function clearKeyboard(){
+
+    document
+        .querySelectorAll(".key")
+        .forEach(key=>{
+
+            key.classList.remove(
+                "active",
+                "shift-active"
+            );
+
+        });
+}
+
+
+function updateKeyboard(){
+
+    clearKeyboard();
+
+
+    if(
+        !currentText ||
+        currentIndex>=
+        currentText.length
+    ){
+
+        return;
+    }
+
+
+    const char=
+        currentText[currentIndex];
+
+
+    const info=
+        getKeyInfo(char);
+
+
+    if(!info)return;
+
+
+    const key=
+        document.querySelector(
+            `.key[data-code="${info.code}"]`
+        );
+
+
+    if(key){
+
+        key.classList.add("active");
+    }
+
+
+    if(info.shift){
+
+        document
+            .querySelectorAll(
+                '[data-code="ShiftLeft"],[data-code="ShiftRight"]'
+            )
+            .forEach(key=>{
+
+                key.classList.add(
+                    "shift-active"
+                );
+
+            });
+    }
+}
+
+
+/* =====================================================
+   KEY FLASH
+===================================================== */
+
+function flashKey(code){
+
+    if(!code)return;
+
+
+    const key=
+        document.querySelector(
+            `.key[data-code="${code}"]`
+        );
+
+
+    if(!key)return;
+
+
+    key.style.transform=
+        "translateY(2px)";
+
+
+    setTimeout(()=>{
+
+        key.style.transform="";
+
+    },100);
+}
+
+
+/* =====================================================
+   KEYBOARD INPUT
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        if(
+            document
+                .getElementById("gamePage")
+                .style.display!=="block"
+        ){
+
+            return;
+        }
+
+
+        if(
+            document
+                .getElementById("resultModal")
+                .style.display==="flex"
+        ){
+
+            return;
+        }
+
+
+        if(
+            e.ctrlKey ||
+            e.altKey
+        ){
+
+            return;
+        }
+
+
+        const expected=
+            currentText[currentIndex];
+
+
+        if(expected===undefined){
+
+            return;
+        }
+
+
+        const info=
+            getKeyInfo(expected);
+
+
+        /* =========================================
+           SHIFT ҚАЖЕТ БОЛҒАНДА
+        ========================================= */
+
+        if(
+            info &&
+            info.shift &&
+            !e.shiftKey
+        ){
+
+            e.preventDefault();
+
+
+            totalTyped++;
+
+            errors++;
+
+            combo=0;
+
+
+            errorCounts[expected]=
+                (errorCounts[expected]||0)+1;
+
+
+            showWrong();
+
+
+            updateStats();
+
+
+            return;
+        }
+
+
+        let pressed=e.key;
+
+
+        if(pressed===" "){
+
+            pressed=" ";
+        }
+
+
+        /*
+           Браузер e.key арқылы
+           бас әріпті дұрыс береді.
+        */
+
+
+        if(
+            pressed.length===1 &&
+            !e.shiftKey
+        ){
+
+            pressed=
+                pressed.toLowerCase();
+        }
+
+
+        /* =========================================
+           ДҰРЫС
+        ========================================= */
+
+        if(
+            pressed===expected
+        ){
+
+            e.preventDefault();
+
+
+            if(!gameStarted){
+
+                gameStarted=true;
+
+                beginTimer();
+            }
+
+
+            totalTyped++;
+
+
+            score+=10;
+
+
+            combo++;
+
+
+            if(
+                combo>bestCombo
+            ){
+
+                bestCombo=combo;
+            }
+
+
+            if(combo>=10){
+
+                score+=5;
+            }
+
+
+            const currentLetter=
+                document.getElementById(
+                    "currentLetter"
+                );
+
+
+            if(currentLetter){
+
+                currentLetter.classList.add(
+                    "correct"
+                );
+            }
+
+
+            flashKey(
+                info
+                ? info.code
+                : null
+            );
+
+
+            currentIndex++;
+
+
+            updateStats();
+
+
+            /*
+               Кішкене кідіріс:
+               жасыл түсті көзбен көруге мүмкіндік береді.
+            */
+
+            setTimeout(()=>{
+
+                if(
+                    currentIndex>=
+                    currentText.length
+                ){
+
+                    score+=20;
+
+                    newTask();
+
+                }
+                else{
+
+                    updateCurrentLetter();
+                }
+
+                updateStats();
+
+            },150);
+
+        }
+
+
+        /* =========================================
+           ҚАТЕ
+        ========================================= */
+
+        else{
+
+            e.preventDefault();
+
+
+            totalTyped++;
+
+            errors++;
+
+            combo=0;
+
+
+            errorCounts[expected]=
+                (errorCounts[expected]||0)+1;
+
+
+            showWrong();
+
+
+            updateStats();
+        }
+
+    }
+);
+
+
+/* =====================================================
+   WRONG EFFECT
+===================================================== */
+
+function showWrong(){
+
+    const letter=
+        document.getElementById(
+            "currentLetter"
+        );
+
+
+    if(!letter)return;
+
+
+    letter.classList.remove(
+        "wrong"
+    );
+
+
+    /*
+       animation қайта іске қосылуы үшін
+    */
+
+    void letter.offsetWidth;
+
+
+    letter.classList.add(
+        "wrong"
+    );
+
+
+    setTimeout(()=>{
+
+        letter.classList.remove(
+            "wrong"
+        );
+
+    },350);
+}
+
+
+/* =====================================================
+   TIMER
+===================================================== */
+
+function beginTimer(){
+
+    clearInterval(timer);
+
+
+    timer=
+        setInterval(()=>{
+
+            timeLeft--;
+
+
+            updateStats();
+
+
+            if(timeLeft<=0){
+
+                clearInterval(timer);
+
+                gameStarted=false;
+
+                showResult();
+            }
+
+        },1000);
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+function updateStats(){
+
+    document
+        .getElementById("timeStat")
+        .textContent=
+            timeLeft;
+
+
+    document
+        .getElementById("scoreStat")
+        .textContent=
+            score;
+
+
+    document
+        .getElementById("errorStat")
+        .textContent=
+            errors;
+
+
+    document
+        .getElementById("comboStat")
+        .textContent=
+            combo;
+
+
+    const accuracy=
+        totalTyped===0
+        ?100
+        :Math.round(
+            (
+                (totalTyped-errors) /
+                totalTyped
+            )*100
+        );
+
+
+    document
+        .getElementById("accuracyStat")
+        .textContent=
+            accuracy+"%";
+
+
+    const elapsed=
+        Math.max(
+            1,
+            selectedTime-timeLeft
+        );
+
+
+    const wpm=
+        Math.round(
+            (
+                (totalTyped-errors)/5
+            )/
+            (elapsed/60)
+        );
+
+
+    document
+        .getElementById("wpmStat")
+        .textContent=
+            isFinite(wpm)
+            ?wpm
+            :0;
+}
+
+
+/* =====================================================
+   RESTART
+===================================================== */
+
+function restartGame(){
+
+    newGame();
+}
+
+
+/* =====================================================
+   ERROR PRACTICE
+===================================================== */
+
+function practiceErrors(){
+
+    const mistakes=
+        Object.keys(errorCounts);
+
+
+    if(
+        mistakes.length===0
+    ){
+
+        alert(
+            "Қазір қате кеткен таңба жоқ! 🎉"
+        );
+
+        return;
+    }
+
+
+    mode="letters";
+
+
+    document
+        .querySelectorAll(".mode-btn")
+        .forEach(btn=>{
+
+            btn.classList.toggle(
+                "active",
+                btn.dataset.mode===
+                "letters"
+            );
+
+        });
+
+
+    currentText=
+        mistakes.join("");
+
+
+    currentIndex=0;
+
+
+    renderText();
+
+    updateKeyboard();
+}
+
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+function showResult(){
+
+    const accuracy=
+        totalTyped===0
+        ?100
+        :Math.round(
+            (
+                (totalTyped-errors) /
+                totalTyped
+            )*100
+        );
+
+
+    const elapsed=
+        Math.max(
+            1,
+            selectedTime-timeLeft
+        );
+
+
+    const wpm=
+        Math.round(
+            (
+                (totalTyped-errors)/5
+            )/
+            (elapsed/60)
+        );
+
+
+    document
+        .getElementById(
+            "resultGreeting"
+        )
+        .textContent=
+            personName+
+            ", жаттығу нәтижесі:";
+
+
+    document
+        .getElementById(
+            "resultScore"
+        )
+        .textContent=
+            score;
+
+
+    document
+        .getElementById(
+            "resultAccuracy"
+        )
+        .textContent=
+            accuracy+"%";
+
+
+    document
+        .getElementById(
+            "resultWpm"
+        )
+        .textContent=
+            isFinite(wpm)
+            ?wpm
+            :0;
+
+
+    document
+        .getElementById(
+            "resultCombo"
+        )
+        .textContent=
+            bestCombo;
+
+
+    const mistakes=
+        Object
+            .entries(errorCounts)
+            .sort(
+                (a,b)=>b[1]-a[1]
+            );
+
+
+    const list=
+        document.getElementById(
+            "mistakeList"
+        );
+
+
+    if(
+        mistakes.length===0
+    ){
+
+        list.innerHTML=
+            "Қате жоқ 🎉";
+
+    }
+
+    else{
+
+        list.innerHTML=
+            mistakes
+            .slice(0,8)
+            .map(
+                ([letter,count])=>
+                    `<b>${letter}</b> — ${count} рет`
+            )
+            .join(
+                " &nbsp; | &nbsp; "
+            );
+    }
+
+
+    document
+        .getElementById(
+            "resultModal"
+        )
+        .style.display=
+            "flex";
+}
+
+
+/* =====================================================
+   CLOSE RESULT
+===================================================== */
+
+function closeResult(){
+
+    document
+        .getElementById(
+            "resultModal"
+        )
+        .style.display=
+            "none";
+
+
+    newGame();
+}
+
+</script>
+
+</body>
+</html>
+```
