@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Қазақша пернетақта жаттықтырғышы</title>
+<style>
+* {
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
+    user-select: none;
+}
+
+body {
+    margin: 0;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    background-attachment: fixed;
+    color: #0f172a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* МОДАЛЬДАР */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 24px;
+    width: 95%;
+    max-width: 550px;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid #cbd5e1;
+    position: relative;
+}
+
+.school-header {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1e3a8a;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 12px;
+}
+
+.project-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #0f172a;
+    margin-bottom: 24px;
+}
+
+.authors-info {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    text-align: left;
+    font-size: 17px;
+}
+
+.authors-info div {
+    margin-bottom: 8px;
+}
+
+.authors-info div:last-child {
+    margin-bottom: 0;
+}
+
+.modal-card input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 20px;
+    border: 2px solid #cbd5e1;
+    border-radius: 12px;
+    font-size: 18px;
+    background: #ffffff;
+    color: #0f172a;
+    outline: none;
+    text-align: center;
+    font-weight: bold;
+}
+
+.modal-card input::placeholder {
+    color: #94a3b8;
+    font-weight: normal;
+}
+
+.modal-card input:focus {
+    border-color: #2563eb;
+}
+
+.modal-card button {
+    width: 100%;
+    padding: 16px;
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.modal-card button:hover {
+    background: #1d4ed8;
+}
+
+/* НӘТИЖЕ КАРТОЧКАСЫ */
+.result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.result-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 16px;
+}
+
+.result-item span {
+    display: block;
+    font-weight: bold;
+    font-size: 20px;
+    color: #2563eb;
+    margin-top: 4px;
+}
+
+/* МӘЗІР КАРТОЧКАЛАРЫ */
+.profile-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 24px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.mode-card {
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 20px;
+    padding: 35px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.mode-card:hover {
+    border-color: #2563eb;
+    background: #f8fafc;
+    transform: translateY(-4px);
+}
+
+.mode-title { font-size: 22px; font-weight: bold; color: #0f172a; margin-bottom: 8px; }
+.mode-desc { font-size: 15px; color: #64748b; }
+
+/* УАҚЫТ ТАҢДАУ */
+.timer-select-section {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 24px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.timer-options {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.time-btn {
+    padding: 12px 22px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 12px;
+    background: #f8fafc;
+    font-weight: bold;
+    color: #334155;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.time-btn.active {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+}
+
+.custom-time-input {
+    width: 100px;
+    padding: 10px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* ОЙЫН АЛАҢЫ */
+#gameScreen {
+    display: none;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 32px;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.back-btn {
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #475569;
+    cursor: pointer;
+}
+
+.back-btn:hover { background: #f8fafc; }
+
+.stats-bar { 
+    display: flex; 
+    gap: 16px; 
+}
+
+.stat-pill {
+    padding: 12px 22px;
+    border-radius: 14px;
+    font-weight: bold;
+    font-size: 17px;
+    letter-spacing: 0.5px;
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.stat-time { background: #e0f2fe; color: #0369a1; border: 1.5px solid #bae6fd; }
+.stat-score { background: #fef3c7; color: #b45309; border: 1.5px solid #fde68a; }
+.stat-accuracy { background: #dcfce7; color: #15803d; border: 1.5px solid #bbf7d0; }
+.stat-errors { background: #fee2e2; color: #b91c1c; border: 1.5px solid #fecaca; }
+
+/* МӘТІН ТЕРЕТІН ЭКРАН */
+.display-card {
+    background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+    border: 2px solid #3b82f6;
+    border-radius: 24px;
+    padding: 35px 30px;
+    text-align: center;
+    margin-bottom: 28px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 12px 30px -10px rgba(37, 99, 235, 0.25), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+.display-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #3b82f6, #6366f1, #8b5cf6);
+}
+
+.target-text-container {
+    font-size: 38px;
+    font-weight: bold;
+    color: #64748b;
+    letter-spacing: 1px;
+}
+
+.typed-part { color: #16a34a; }
+.current-char { 
+    color: #1e40af; 
+    border-bottom: 4px solid #2563eb; 
+    background: #dbeafe; 
+    border-radius: 8px; 
+    padding: 2px 8px;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+    transition: all 0.1s ease;
+}
+
+/* ҚАТЕ ТЕРИЛГЕНДЕ ҚЫЗАРЫП КҮТІП ТҰРАТЫН СТИЛЬ */
+.current-char.wrong {
+    color: #ffffff !important;
+    background: #ef4444 !important;
+    border-bottom-color: #dc2626 !important;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+    animation: shake 0.2s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+/* ПЕРНЕТАҚТА */
+.keyboard-wrapper {
+    background: #1e293b;
+    border-radius: 24px;
+    padding: 24px;
+    border: 1px solid #334155;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 8px;
+}
+
+.key {
+    height: 56px;
+    flex: 1;
+    max-width: 68px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    color: #ffffff;
+    background: #334155;
+    border: 1px solid #475569;
+    box-shadow: 0 4px 0 #0f172a;
+    transition: all 0.05s ease;
+    cursor: pointer;
+}
+
+.key .top-sub { font-size: 12px; color: #38bdf8; margin-bottom: -2px; font-weight: bold; }
+.key .main-char { font-size: 19px; font-weight: bold; }
+
+.key.w-15 { flex: 1.5; max-width: 95px; }
+.key.w-20 { flex: 2; max-width: 120px; }
+.key.w-25 { flex: 2.5; max-width: 140px; }
+.key.w-space { flex: 6; max-width: 450px; background: #334155; color: #94a3b8; font-size: 16px; }
+.key.k-action { background: #0f172a; color: #94a3b8; border-color: #1e293b; font-size: 15px; }
+
+.key.pressed {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #0f172a !important;
+}
+
+.key.target-active {
+    background: #eab308 !important;
+    border-color: #fde047 !important;
+    color: #422006 !important;
+    box-shadow: 0 4px 0 #854d0e !important;
+}
+.key.target-active .top-sub { color: #422006 !important; }
+
+.action-bar {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.btn-main {
+    background: #2563eb;
+    color: #ffffff;
+    padding: 14px 40px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+}
+
+.btn-fix {
+    background: #ef4444;
+    color: #ffffff;
+    padding: 14px 28px;
+    font-size: 17px;
+    font-weight: bold;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    display: none;
+}
+</style>
+</head>
+<body>
+
+<!-- ТИТУЛДЫҚ ТЕРЕЗЕ -->
+<div class="modal" id="loginModal">
+    <div class="modal-card">
+        <div class="school-header">
+            Шымкент қаласы № 145 жалпы орта білім беретін мектебі
+        </div>
+        <div class="project-title">
+            ⌨️ Қазақша пернетақта жаттықтырғышы
+        </div>
+        
+        <div class="authors-info">
+            <div><strong>Авторы:</strong> Исабек Нұрасыл</div>
+            <div><strong>Жетекшісі:</strong> Әмірәлі Мейірхан</div>
+        </div>
+
+        <input type="text" id="studentInput" value="" placeholder="Аты-жөніңізді енгізіңіз..." autocomplete="off">
+        <button onclick="saveStudent()">Жаттығуды бастау</button>
+    </div>
+</div>
+
+<!-- НӘТИЖЕ ШЫҒАТЫН ТЕРЕЗЕ -->
+<div class="modal" id="resultModal" style="display: none;">
+    <div class="modal-card">
+        <div style="font-size: 48px; margin-bottom: 10px;">⏱️</div>
+        <div class="project-title" style="margin-bottom: 10px;">Уақыт аяқталды!</div>
+        
+        <div class="result-grid">
+            <div class="result-item">Оқушы: <span id="resStudent">-</span></div>
+            <div class="result-item">Ұпай: <span id="resScore">0</span></div>
+            <div class="result-item">Дәлдік: <span id="resAccuracy">100%</span></div>
+            <div class="result-item">Қателіктер: <span id="resErrors">0</span></div>
+        </div>
+
+        <button onclick="closeResultModal()">Қайта бастау</button>
+    </div>
+</div>
+
+<div class="main-container">
+
+    <!-- МӘЗІР -->
+    <div id="selectionScreen">
+        <div class="profile-card">
+            <div>
+                <h2 id="displayName" style="margin:0; color: #0f172a; font-size: 26px;">Сәлем!</h2>
+                <span style="color: #2563eb; font-weight: bold; font-size: 16px;">Жетекші: Әмірәлі Мейірхан</span>
+            </div>
+            <button class="back-btn" onclick="logout()">Аты-жөнді ауыстыру</button>
+        </div>
+
+        <div class="modes-grid">
+            <div class="mode-card" onclick="openGame('letters')">
+                <div class="mode-title">1. Әріптер</div>
+                <div class="mode-desc">Жеке әріптерді теріп жаттығу</div>
+            </div>
+            <div class="mode-card" onclick="openGame('words')">
+                <div class="mode-title">2. Сөздер</div>
+                <div class="mode-desc">Сөздер мен қысқа тіркестер</div>
+            </div>
+            <div class="mode-card" onclick="openGame('sentences')">
+                <div class="mode-title">3. Сөйлемдер</div>
+                <div class="mode-desc">Мақал-мәтелдер мен сөйлемдер</div>
+            </div>
+        </div>
+
+        <!-- УАҚЫТ ТАҢДАУ -->
+        <div class="timer-select-section">
+            <span style="font-weight: bold; color: #334155; font-size: 18px;">⏱ Жаттығу уақытын таңдаңыз:</span>
+            <div class="timer-options">
+                <button class="time-btn active" onclick="setTimerOption(30, this)">30 сек</button>
+                <button class="time-btn" onclick="setTimerOption(60, this)">60 сек</button>
+                <button class="time-btn" onclick="setTimerOption(120, this)">120 сек</button>
+                <button class="time-btn" onclick="setCustomTimer(this)">Өз таңдауым:</button>
+                <input type="number" id="customSecInput" class="custom-time-input" placeholder="секунд" min="5" max="600" onchange="applyCustomTime()">
+            </div>
+        </div>
+    </div>
+
+    <!-- ОЙЫН АЛАҢЫ -->
+    <div id="gameScreen">
+        <div class="top-header">
+            <button class="back-btn" onclick="backToMenu()">‹ Мәзірге оралу</button>
+            <div style="font-weight:bold; color:#2563eb; font-size: 18px;" id="gameStudentBadge">Оқушы: </div>
+            
+            <div class="stats-bar">
+                <div class="stat-pill stat-time">⏱ Уақыт: <span id="timerVal">30</span>с</div>
+                <div class="stat-pill stat-score">⭐ Ұпай: <span id="scoreVal">0</span></div>
+                <div class="stat-pill stat-accuracy">🎯 Дәлдік: <span id="accuracyVal">100%</span></div>
+                <div class="stat-pill stat-errors">❌ Қателік: <span id="errorsVal">0</span></div>
+            </div>
+        </div>
+
+        <div class="display-card" id="displayCard">
+            <div style="font-size: 15px; color: #475569; font-weight: bold; margin-bottom: 12px; letter-spacing: 1px;">ПЕРНЕТАҚТАДАН МӘТІНДІ ТЕРІҢІЗ:</div>
+            <div class="target-text-container" id="targetDisplay"></div>
+        </div>
+
+        <!-- ПЕРНЕТАҚТА -->
+        <div class="keyboard-wrapper">
+            <div class="keyboard">
+                <div class="row">
+                    <div class="key" data-k="ё"><span class="main-char">Ё</span></div>
+                    <div class="key" data-k="1"><span class="main-char">1</span></div>
+                    <div class="key" data-k="2" data-alt="ә"><span class="top-sub">Ә</span><span class="main-char">2</span></div>
+                    <div class="key" data-k="3" data-alt="і"><span class="top-sub">І</span><span class="main-char">3</span></div>
+                    <div class="key" data-k="4" data-alt="ң"><span class="top-sub">Ң</span><span class="main-char">4</span></div>
+                    <div class="key" data-k="5" data-alt="ғ"><span class="top-sub">Ғ</span><span class="main-char">5</span></div>
+                    <div class="key" data-k="6" data-alt=","><span class="top-sub">,</span><span class="main-char">6</span></div>
+                    <div class="key" data-k="7" data-alt="."><span class="top-sub">.</span><span class="main-char">7</span></div>
+                    <div class="key" data-k="8" data-alt="ү"><span class="top-sub">Ү</span><span class="main-char">8</span></div>
+                    <div class="key" data-k="9" data-alt="ұ"><span class="top-sub">Ұ</span><span class="main-char">9</span></div>
+                    <div class="key" data-k="0" data-alt="қ"><span class="top-sub">Қ</span><span class="main-char">0</span></div>
+                    <div class="key" data-k="ө"><span class="main-char">Ө</span></div>
+                    <div class="key" data-k="һ"><span class="main-char">Һ</span></div>
+                    <div class="key k-action w-15" data-k="backspace">⌫</div>
+                </div>
+
+                <div class="row">
+                    <div class="key k-action w-15" data-k="tab">Tab</div>
+                    <div class="key" data-k="й"><span class="main-char">Й</span></div>
+                    <div class="key" data-k="ц"><span class="main-char">Ц</span></div>
+                    <div class="key" data-k="у"><span class="main-char">У</span></div>
+                    <div class="key" data-k="к"><span class="main-char">К</span></div>
+                    <div class="key" data-k="е"><span class="main-char">Е</span></div>
+                    <div class="key" data-k="н"><span class="main-char">Н</span></div>
+                    <div class="key" data-k="г"><span class="main-char">Г</span></div>
+                    <div class="key" data-k="ш"><span class="main-char">Ш</span></div>
+                    <div class="key" data-k="щ"><span class="main-char">Щ</span></div>
+                    <div class="key" data-k="з"><span class="main-char">З</span></div>
+                    <div class="key" data-k="х"><span class="main-char">Х</span></div>
+                    <div class="key" data-k="ъ"><span class="main-char">Ъ</span></div>
+                </div>
+
+                <div class="row">
+                    <div class="key k-action w-20" data-k="capslock">Caps</div>
+                    <div class="key" data-k="ф"><span class="main-char">Ф</span></div>
+                    <div class="key" data-k="ы"><span class="main-char">Ы</span></div>
+                    <div class="key" data-k="в"><span class="main-char">В</span></div>
+                    <div class="key" data-k="а"><span class="main-char">А</span></div>
+                    <div class="key" data-k="п"><span class="main-char">П</span></div>
+                    <div class="key" data-k="р"><span class="main-char">Р</span></div>
+                    <div class="key" data-k="о"><span class="main-char">О</span></div>
+                    <div class="key" data-k="л"><span class="main-char">Л</span></div>
+                    <div class="key" data-k="д"><span class="main-char">Д</span></div>
+                    <div class="key" data-k="ж"><span class="main-char">Ж</span></div>
+                    <div class="key" data-k="э"><span class="main-char">Э</span></div>
+                    <div class="key k-action w-20" data-k="enter">Enter</div>
+                </div>
+
+                <div class="row">
+                    <div class="key k-action w-25" data-k="shift">Shift</div>
+                    <div class="key" data-k="я"><span class="main-char">Я</span></div>
+                    <div class="key" data-k="ч"><span class="main-char">Ч</span></div>
+                    <div class="key" data-k="с"><span class="main-char">С</span></div>
+                    <div class="key" data-k="м"><span class="main-char">М</span></div>
+                    <div class="key" data-k="и"><span class="main-char">И</span></div>
+                    <div class="key" data-k="т"><span class="main-char">Т</span></div>
+                    <div class="key" data-k="ь"><span class="main-char">Ь</span></div>
+                    <div class="key" data-k="б"><span class="main-char">Б</span></div>
+                    <div class="key" data-k="ю"><span class="main-char">Ю</span></div>
+                    <div class="key k-action w-25" data-k="shift">Shift</div>
+                </div>
+
+                <div class="row">
+                    <div class="key w-space" data-k=" ">Бос орын (Пробел)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <button class="btn-main" id="startBtn" onclick="toggleGame()">Бастау</button>
+            <button class="btn-fix" id="fixBtn" onclick="startErrorCorrection()">🛠 Қатемен жұмыс (<span id="errorCountTag">0</span>)</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const lettersList = ["ә", "і", "ң", "ғ", "ү", "ұ", "қ", "ө", "һ", "а", "о", "л", "р", "в", "ы", "д"];
+
+const wordsCollection = [
+    "алгоритм", "компьютер", "бағдарлама", "пернетақта", "информатика", "білім", "ұстаз"
+];
+
+const sentencesList = [
+    "Мектеп білім ордасы",
+    "Оқу білім бұлағы",
+    "Білім өмір шырағы",
+    "Компьютер сенімді көмекші"
+];
+
+let studentName = "Исабек Нұрасыл";
+let currentMode = "letters";
+let isRunning = false;
+
+let selectedDuration = 30;
+let timeLeft = 30;
+let timerInterval = null;
+
+let score = 0;
+let totalClicks = 0;
+let errorClicks = 0;
+
+let currentText = "";
+let typedIndex = 0;
+let missedItems = [];
+let isFixMode = false;
+let isCurrentCharWrong = false; // Қате күйін сақтайтын жаңа айнымалы
+
+function saveStudent() {
+    const val = document.getElementById('studentInput').value.trim();
+    if(val) {
+        studentName = val;
+    } else {
+        studentName = "Исабек Нұрасыл";
+    }
+    document.getElementById('displayName').innerText = `Сәлем, ${studentName}!`;
+    document.getElementById('gameStudentBadge').innerText = `Оқушы: ${studentName}`;
+    document.getElementById('loginModal').style.display = 'none';
+}
+
+function logout() {
+    document.getElementById('studentInput').value = '';
+    document.getElementById('loginModal').style.display = 'flex';
+}
+
+function setTimerOption(sec, btn) {
+    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedDuration = sec;
+    timeLeft = sec;
+}
+
+function setCustomTimer(btn) {
+    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyCustomTime();
+}
+
+function applyCustomTime() {
+    const inp = document.getElementById('customSecInput');
+    let val = parseInt(inp.value);
+    if(val && val > 0) {
+        selectedDuration = val;
+        timeLeft = val;
+    }
+}
+
+function openGame(mode) {
+    currentMode = mode;
+    isFixMode = false;
+    document.getElementById('selectionScreen').style.display = 'none';
+    document.getElementById('gameScreen').style.display = 'block';
+    resetGameData();
+}
+
+function backToMenu() {
+    stopTimer();
+    isRunning = false;
+    document.getElementById('gameScreen').style.display = 'none';
+    document.getElementById('selectionScreen').style.display = 'block';
+}
+
+function resetGameData() {
+    stopTimer();
+    score = 0;
+    totalClicks = 0;
+    errorClicks = 0;
+    missedItems = [];
+    timeLeft = selectedDuration;
+    isCurrentCharWrong = false;
+    
+    updateStatsUI();
+    document.getElementById('startBtn').innerText = "Бастау";
+    document.getElementById('fixBtn').style.display = 'none';
+    nextTarget();
+}
+
+function startTimer() {
+    stopTimer();
+    timerInterval = setInterval(() => {
+        if(timeLeft > 0) {
+            timeLeft--;
+            updateStatsUI();
+        } else {
+            finishGameByTime();
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    if(timerInterval) clearInterval(timerInterval);
+}
+
+function finishGameByTime() {
+    stopTimer();
+    isRunning = false;
+    document.getElementById('startBtn').innerText = "Қайта бастау";
+    
+    document.getElementById('resStudent').innerText = studentName;
+    document.getElementById('resScore').innerText = score;
+    document.getElementById('resAccuracy').innerText = document.getElementById('accuracyVal').innerText;
+    document.getElementById('resErrors').innerText = errorClicks;
+    
+    document.getElementById('resultModal').style.display = 'flex';
+}
+
+function closeResultModal() {
+    document.getElementById('resultModal').style.display = 'none';
+    resetGameData();
+}
+
+function updateStatsUI() {
+    document.getElementById('timerVal').innerText = timeLeft;
+    document.getElementById('scoreVal').innerText = score;
+    document.getElementById('errorsVal').innerText = errorClicks;
+    
+    let accuracy = 100;
+    if(totalClicks > 0) {
+        accuracy = Math.max(0, Math.round(((totalClicks - errorClicks) / totalClicks) * 100));
+    }
+    document.getElementById('accuracyVal').innerText = `${accuracy}%`;
+    document.getElementById('errorCountTag').innerText = missedItems.length;
+}
+
+function toggleGame() {
+    if(isRunning) {
+        isRunning = false;
+        stopTimer();
+        document.getElementById('startBtn').innerText = "Жалғастыру";
+    } else {
+        if(timeLeft <= 0) {
+            resetGameData();
+        }
+        isRunning = true;
+        startTimer();
+        document.getElementById('startBtn').innerText = "Тоқтату";
+        if(!currentText) nextTarget();
+    }
+}
+
+function nextTarget() {
+    typedIndex = 0;
+    isCurrentCharWrong = false;
+    if(isFixMode) {
+        if(missedItems.length > 0) {
+            currentText = missedItems.shift();
+        } else {
+            isFixMode = false;
+            document.getElementById('fixBtn').style.display = 'none';
+            openGame(currentMode);
+            return;
+        }
+    } else {
+        if(currentMode === 'letters') {
+            currentText = lettersList[Math.floor(Math.random() * lettersList.length)];
+        } else if(currentMode === 'words') {
+            currentText = wordsCollection[Math.floor(Math.random() * wordsCollection.length)];
+        } else if(currentMode === 'sentences') {
+            currentText = sentencesList[Math.floor(Math.random() * sentencesList.length)];
+        }
+    }
+    renderTextDisplay();
+}
+
+function renderTextDisplay() {
+    const container = document.getElementById('targetDisplay');
+    
+    let typedPart = currentText.substring(0, typedIndex);
+    let currentChar = currentText[typedIndex] || '';
+    let remainingPart = currentText.substring(typedIndex + 1);
+
+    const wrongClass = isCurrentCharWrong ? 'wrong' : '';
+
+    container.innerHTML = `
+        <span class="typed-part">${escapeHtml(typedPart)}</span><span class="current-char ${wrongClass}">${currentChar === ' ' ? '␣' : escapeHtml(currentChar)}</span><span>${escapeHtml(remainingPart)}</span>
+    `;
+    
+    highlightKey(currentChar.toLowerCase());
+}
+
+function escapeHtml(text) {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function highlightKey(char) {
+    document.querySelectorAll('.key').forEach(k => k.classList.remove('target-active'));
+    if(!char) return;
+    
+    let targetKey = document.querySelector(`.key[data-k="${char}"], .key[data-alt="${char}"]`);
+    if(targetKey) {
+        targetKey.classList.add('target-active');
+    }
+}
+
+document.addEventListener('keydown', (e) => {
+    if(!isRunning || timeLeft <= 0) return;
+    if(["Shift", "Control", "Alt", "CapsLock", "Tab", "Enter"].includes(e.key)) return;
+    
+    if (e.code === "Space") {
+        e.preventDefault(); 
+    }
+
+    totalClicks++;
+    let pressedKey = e.key.toLowerCase();
+    let expectedChar = currentText[typedIndex] ? currentText[typedIndex].toLowerCase() : '';
+
+    let keyEl = document.querySelector(`.key[data-k="${pressedKey}"], .key[data-alt="${pressedKey}"]`);
+    if(keyEl) {
+        keyEl.classList.add('pressed');
+        setTimeout(() => keyEl.classList.remove('pressed'), 100);
+    }
+
+    // ДҰРЫС ӘРІП БАСЫЛСА:
+    if(pressedKey === expectedChar) {
+        score += 10;
+        typedIndex++;
+        isCurrentCharWrong = false; // Қате қызыл түсін алып тастаймыз
+
+        if(typedIndex >= currentText.length) {
+            score += 20;
+            nextTarget(); // Келесі сөзге/сөйлемге авто-өту
+        } else {
+            renderTextDisplay();
+        }
+    } 
+    // ҚАТЕ ӘРІП БАСЫЛСА:
+    else {
+        errorClicks++; // Статистикадағы қателер саны көбейеді
+        isCurrentCharWrong = true; // Әріп қызыл түске боялады
+        
+        if(!missedItems.includes(currentText)) {
+            missedItems.push(currentText);
+            document.getElementById('fixBtn').style.display = 'inline-block';
+        }
+
+        // ЖАЛҒАСТЫРУ батырмасы шықпайды, жаттығу тоқтамайды,
+        // Оқушы ДҰРЫС ӘРІПТІ БАСҚАНША экранда қызыл болып тұра береді:
+        renderTextDisplay();
+    }
+    
+    updateStatsUI();
+});
+
+function startErrorCorrection() {
+    if(missedItems.length === 0) return;
+    isFixMode = true;
+    isRunning = true;
+    startTimer();
+    document.getElementById('startBtn').innerText = "Тоқтату";
+    nextTarget();
+}
+</script>
+</body>
+</html>
