@@ -1,0 +1,606 @@
+```html
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Компьютердің IP-мекенжайы</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#e0f7ff,#f4e8ff);
+    color:#172033;
+}
+
+header{
+    text-align:center;
+    padding:30px 15px;
+    background:linear-gradient(135deg,#4776e6,#8e54e9);
+    color:white;
+}
+
+header h1{
+    margin:0 0 8px;
+    font-size:32px;
+}
+
+header p{
+    margin:0;
+    font-size:17px;
+}
+
+.container{
+    max-width:1000px;
+    margin:25px auto;
+    padding:0 15px;
+}
+
+.info{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-bottom:20px;
+}
+
+.info div{
+    background:white;
+    padding:12px 20px;
+    border-radius:15px;
+    box-shadow:0 4px 12px #0001;
+    font-weight:bold;
+}
+
+.task{
+    background:white;
+    padding:25px;
+    margin-bottom:20px;
+    border-radius:20px;
+    box-shadow:0 6px 20px #0002;
+}
+
+.task h2{
+    color:#4776e6;
+    font-size:21px;
+}
+
+.option{
+    display:block;
+    padding:13px;
+    margin:9px 0;
+    background:#f3f6ff;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.option:hover{
+    background:#e5ebff;
+}
+
+input[type="text"]{
+    width:100%;
+    padding:13px;
+    border:2px solid #ccd5ff;
+    border-radius:12px;
+    font-size:16px;
+    margin-top:10px;
+}
+
+button{
+    border:0;
+    padding:14px 25px;
+    border-radius:14px;
+    background:#4776e6;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+.match{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.match select{
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ccd5ff;
+}
+
+.order{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.order button{
+    background:#8e54e9;
+}
+
+.result{
+    display:none;
+    text-align:center;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    margin-bottom:30px;
+    box-shadow:0 6px 20px #0002;
+}
+
+.score{
+    font-size:40px;
+    color:#4776e6;
+    font-weight:bold;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#555;
+}
+
+.correct{
+    border:2px solid #28a745!important;
+}
+
+.wrong{
+    border:2px solid #dc3545!important;
+}
+
+@media(max-width:650px){
+    .match{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌐 Компьютердің IP-мекенжайы</h1>
+    <p>20 интерактивті тапсырма</p>
+</header>
+
+<div class="container">
+
+<div class="info">
+    <div>📚 Тапсырма: 20</div>
+    <div>⭐ Ұпай: <span id="liveScore">0</span></div>
+    <div>❌ Қате: <span id="liveWrong">0</span></div>
+</div>
+
+<form id="quiz">
+
+<!-- 1 -->
+<div class="task">
+<h2>1. IP-мекенжай дегеніміз не?</h2>
+<label class="option"><input type="radio" name="q1" value="1"> Компьютердің желідегі мекенжайы</label>
+<label class="option"><input type="radio" name="q1" value="0"> Компьютердің атауы</label>
+<label class="option"><input type="radio" name="q1" value="0"> Пернетақта түрі</label>
+<label class="option"><input type="radio" name="q1" value="0"> Файлдың атауы</label>
+</div>
+
+<!-- 2 -->
+<div class="task">
+<h2>2. Сәйкестендір</h2>
+
+<div class="match">
+<label>IPv4
+<select name="q2a">
+<option value="">Таңда</option>
+<option value="4">32 биттік IP нұсқасы</option>
+<option value="6">128 биттік IP нұсқасы</option>
+<option value="dns">Домен атауын анықтайды</option>
+</select></label>
+
+<label>IPv6
+<select name="q2b">
+<option value="">Таңда</option>
+<option value="4">32 биттік IP нұсқасы</option>
+<option value="6">128 биттік IP нұсқасы</option>
+<option value="dns">Домен атауын анықтайды</option>
+</select></label>
+</div>
+</div>
+
+<!-- 3 -->
+<div class="task">
+<h2>3. Мәтінмен жауап бер</h2>
+<p>IP-мекенжай не үшін қажет?</p>
+<input type="text" name="q3" placeholder="Жауабыңызды жазыңыз...">
+</div>
+
+<!-- 4 -->
+<div class="task">
+<h2>4. Дұрыс IPv4 мекенжайын таңда</h2>
+<label class="option"><input type="radio" name="q4" value="1"> 192.168.1.25</label>
+<label class="option"><input type="radio" name="q4" value="0"> 192.168.300.5</label>
+<label class="option"><input type="radio" name="q4" value="0"> 192.168.1</label>
+<label class="option"><input type="radio" name="q4" value="0"> 999.999.1.1</label>
+</div>
+
+<!-- 5 -->
+<div class="task">
+<h2>5. Public және Private IP-ді сәйкестендір</h2>
+
+<div class="match">
+<label>Private IP
+<select name="q5a">
+<option value="">Таңда</option>
+<option value="p">Жергілікті желіде қолданылады</option>
+<option value="u">Интернетте жалпы қолданылады</option>
+</select></label>
+
+<label>Public IP
+<select name="q5b">
+<option value="">Таңда</option>
+<option value="p">Жергілікті желіде қолданылады</option>
+<option value="u">Интернетте жалпы қолданылады</option>
+</select></label>
+</div>
+</div>
+
+<!-- 6 -->
+<div class="task">
+<h2>6. Бос орынды толтыр</h2>
+<p>192.168.___.10</p>
+<input type="text" name="q6" placeholder="Санды енгізіңіз">
+</div>
+
+<!-- 7 -->
+<div class="task">
+<h2>7. IPv4 мекенжайы неше бөліктен тұрады?</h2>
+<label class="option"><input type="radio" name="q7" value="0"> 2</label>
+<label class="option"><input type="radio" name="q7" value="0"> 3</label>
+<label class="option"><input type="radio" name="q7" value="1"> 4</label>
+<label class="option"><input type="radio" name="q7" value="0"> 8</label>
+</div>
+
+<!-- 8 -->
+<div class="task">
+<h2>8. Дұрыс немесе бұрыс</h2>
+<p>IPv4 мекенжайының әр бөлігі 0 мен 255 аралығында болады.</p>
+<label class="option"><input type="radio" name="q8" value="1"> Дұрыс</label>
+<label class="option"><input type="radio" name="q8" value="0"> Бұрыс</label>
+</div>
+
+<!-- 9 -->
+<div class="task">
+<h2>9. IP мекенжайдың бөліктерін дұрыс ретке қой</h2>
+<p>192.168.1.10 мекенжайындағы сандардың реті:</p>
+<input type="text" name="q9" placeholder="Мысалы: 1-2-3-4">
+</div>
+
+<!-- 10 -->
+<div class="task">
+<h2>10. Сәйкестендір</h2>
+
+<div class="match">
+<label>IP
+<select name="q10a">
+<option value="">Таңда</option>
+<option value="address">Желі мекенжайы</option>
+<option value="domain">Домен атауын IP-ге байланыстырады</option>
+<option value="physical">Құрылғының физикалық мекенжайы</option>
+</select></label>
+
+<label>DNS
+<select name="q10b">
+<option value="">Таңда</option>
+<option value="address">Желі мекенжайы</option>
+<option value="domain">Домен атауын IP-ге байланыстырады</option>
+<option value="physical">Құрылғының физикалық мекенжайы</option>
+</select></label>
+
+<label>MAC
+<select name="q10c">
+<option value="">Таңда</option>
+<option value="address">Желі мекенжайы</option>
+<option value="domain">Домен атауын IP-ге байланыстырады</option>
+<option value="physical">Құрылғының физикалық мекенжайы</option>
+</select></label>
+</div>
+</div>
+
+<!-- 11 -->
+<div class="task">
+<h2>11. Мәтінмен жауап бер</h2>
+<p>Кез келген дұрыс IPv4 мекенжайының мысалын жаз.</p>
+<input type="text" name="q11" placeholder="Мысалы: 192.168.1.1">
+</div>
+
+<!-- 12 -->
+<div class="task">
+<h2>12. Қате IP-мекенжайды тап</h2>
+<label class="option"><input type="radio" name="q12" value="0"> 10.0.0.5</label>
+<label class="option"><input type="radio" name="q12" value="1"> 10.0.500.5</label>
+<label class="option"><input type="radio" name="q12" value="0"> 172.16.1.10</label>
+<label class="option"><input type="radio" name="q12" value="0"> 192.168.0.1</label>
+</div>
+
+<!-- 13 -->
+<div class="task">
+<h2>13. Құрылғы мен IP-ді сәйкестендір</h2>
+
+<div class="match">
+<label>Компьютер
+<select name="q13a">
+<option value="">Таңда</option>
+<option value="one">192.168.1.10</option>
+<option value="two">192.168.1.20</option>
+<option value="three">192.168.1.30</option>
+</select></label>
+
+<label>Принтер
+<select name="q13b">
+<option value="">Таңда</option>
+<option value="one">192.168.1.10</option>
+<option value="two">192.168.1.20</option>
+<option value="three">192.168.1.30</option>
+</select></label>
+
+<label>Ноутбук
+<select name="q13c">
+<option value="">Таңда</option>
+<option value="one">192.168.1.10</option>
+<option value="two">192.168.1.20</option>
+<option value="three">192.168.1.30</option>
+</select></label>
+</div>
+</div>
+
+<!-- 14 -->
+<div class="task">
+<h2>14. IP мекенжайын толықтыр</h2>
+<p>192.___.1.___</p>
+<input type="text" name="q14" placeholder="Мысалы: 168.10">
+</div>
+
+<!-- 15 -->
+<div class="task">
+<h2>15. Мәтінмен жауап бер</h2>
+<p>Private IP дегеніміз не?</p>
+<input type="text" name="q15" placeholder="Жауабыңызды жазыңыз...">
+</div>
+
+<!-- 16 -->
+<div class="task">
+<h2>16. 192.168.1.5 қандай IP?</h2>
+<label class="option"><input type="radio" name="q16" value="1"> Private IP</label>
+<label class="option"><input type="radio" name="q16" value="0"> Public IP</label>
+<label class="option"><input type="radio" name="q16" value="0"> MAC адрес</label>
+<label class="option"><input type="radio" name="q16" value="0"> DNS</label>
+</div>
+
+<!-- 17 -->
+<div class="task">
+<h2>17. IP, DNS және MAC ұғымдарын сәйкестендір</h2>
+
+<div class="match">
+<label>IP
+<select name="q17a">
+<option value="">Таңда</option>
+<option value="ip">Желі мекенжайы</option>
+<option value="dns">Доменді IP-ге байланыстырады</option>
+<option value="mac">Физикалық желілік мекенжай</option>
+</select></label>
+
+<label>DNS
+<select name="q17b">
+<option value="">Таңда</option>
+<option value="ip">Желі мекенжайы</option>
+<option value="dns">Доменді IP-ге байланыстырады</option>
+<option value="mac">Физикалық желілік мекенжай</option>
+</select></label>
+
+<label>MAC
+<select name="q17c">
+<option value="">Таңда</option>
+<option value="ip">Желі мекенжайы</option>
+<option value="dns">Доменді IP-ге байланыстырады</option>
+<option value="mac">Физикалық желілік мекенжай</option>
+</select></label>
+</div>
+</div>
+
+<!-- 18 -->
+<div class="task">
+<h2>18. Жағдаяттық тапсырма</h2>
+<p>Компьютер желіге қосылмай тұр. IP-мекенжайды тексеру үшін не істеуге болады?</p>
+<input type="text" name="q18" placeholder="Жауабыңызды жазыңыз...">
+</div>
+
+<!-- 19 -->
+<div class="task">
+<h2>19. IP мекенжайын құрастыр</h2>
+<p>Төмендегі бөліктерден дұрыс IP құрастыр:</p>
+<input type="text" name="q19" placeholder="192.168.1.20 сияқты жазыңыз">
+</div>
+
+<!-- 20 -->
+<div class="task">
+<h2>20. Қорытынды</h2>
+<p>IP-мекенжай туралы ең маңызды түсінікті бір сөйлеммен жаз.</p>
+<input type="text" name="q20" placeholder="Жауабыңызды жазыңыз...">
+</div>
+
+<button type="button" onclick="checkQuiz()">✅ Нәтижені тексеру</button>
+
+</form>
+
+<div class="result" id="result">
+<h2>🎉 Тапсырма аяқталды!</h2>
+<div class="score" id="finalScore">0/20</div>
+<p id="percent"></p>
+<p id="message"></p>
+<button onclick="location.reload()">🔄 Қайта бастау</button>
+</div>
+
+</div>
+
+<footer>
+    «Компьютердің IP-мекенжайы» | Информатика
+</footer>
+
+<script>
+
+function val(name){
+    const el=document.querySelector(`[name="${name}"]:checked`);
+    return el ? el.value : "";
+}
+
+function textVal(name){
+    const el=document.querySelector(`[name="${name}"]`);
+    return el ? el.value.trim().toLowerCase() : "";
+}
+
+function checkQuiz(){
+
+let score=0;
+
+/* 1 */
+if(val("q1")==="1") score++;
+
+/* 2 */
+if(
+document.querySelector('[name="q2a"]').value==="4" &&
+document.querySelector('[name="q2b"]').value==="6"
+) score++;
+
+/* 3 */
+let q3=textVal("q3");
+if(q3.includes("желі") || q3.includes("мекенжай") || q3.includes("құрылғы"))
+score++;
+
+/* 4 */
+if(val("q4")==="1") score++;
+
+/* 5 */
+if(
+document.querySelector('[name="q5a"]').value==="p" &&
+document.querySelector('[name="q5b"]').value==="u"
+) score++;
+
+/* 6 */
+if(textVal("q6")==="1" || textVal("q6")==="100")
+score++;
+
+/* 7 */
+if(val("q7")==="1") score++;
+
+/* 8 */
+if(val("q8")==="1") score++;
+
+/* 9 */
+if(textVal("q9")==="1-2-3-4" || textVal("q9")==="1 2 3 4")
+score++;
+
+/* 10 */
+if(
+document.querySelector('[name="q10a"]').value==="address" &&
+document.querySelector('[name="q10b"]').value==="domain" &&
+document.querySelector('[name="q10c"]').value==="physical"
+) score++;
+
+/* 11 */
+let q11=textVal("q11");
+let ip=/^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/;
+
+if(ip.test(q11)) score++;
+
+/* 12 */
+if(val("q12")==="1") score++;
+
+/* 13 */
+if(
+document.querySelector('[name="q13a"]').value==="one" &&
+document.querySelector('[name="q13b"]').value==="two" &&
+document.querySelector('[name="q13c"]').value==="three"
+) score++;
+
+/* 14 */
+let q14=textVal("q14");
+if(q14==="168.10" || q14==="168,10") score++;
+
+/* 15 */
+let q15=textVal("q15");
+if(q15.includes("жергілікті") || q15.includes("жергілікті желі") || q15.includes("ішкі"))
+score++;
+
+/* 16 */
+if(val("q16")==="1") score++;
+
+/* 17 */
+if(
+document.querySelector('[name="q17a"]').value==="ip" &&
+document.querySelector('[name="q17b"]').value==="dns" &&
+document.querySelector('[name="q17c"]').value==="mac"
+) score++;
+
+/* 18 */
+let q18=textVal("q18");
+if(
+q18.includes("ipconfig") ||
+q18.includes("ip") ||
+q18.includes("параметр") ||
+q18.includes("баптау")
+) score++;
+
+/* 19 */
+let q19=textVal("q19");
+if(ip.test(q19)) score++;
+
+/* 20 */
+let q20=textVal("q20");
+if(
+q20.includes("мекенжай") ||
+q20.includes("желі") ||
+q20.includes("құрылғы")
+) score++;
+
+let percent=Math.round(score/20*100);
+
+document.getElementById("finalScore").textContent=score+"/20";
+document.getElementById("percent").textContent="Нәтиже: "+percent+"%";
+
+let message="";
+
+if(percent>=90)
+message="🏆 Керемет нәтиже! IP-мекенжай тақырыбын өте жақсы меңгердің!";
+else if(percent>=70)
+message="👏 Жақсы нәтиже! Білімді тағы бір рет қайталап көр.";
+else if(percent>=50)
+message="👍 Жаман емес. Кейбір тақырыптарды қайта қара.";
+else
+message="📚 IP-мекенжай тақырыбын тағы да қайталап көр.";
+
+document.getElementById("message").textContent=message;
+
+document.getElementById("result").style.display="block";
+
+window.scrollTo({
+top:document.getElementById("result").offsetTop,
+behavior:"smooth"
+});
+
+document.getElementById("liveScore").textContent=score;
+document.getElementById("liveWrong").textContent=20-score;
+}
+
+</script>
+
+</body>
+</html>
+```
