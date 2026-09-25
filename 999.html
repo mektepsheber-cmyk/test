@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IP мекенжайы — 15 интерактивті тапсырма</title>
+<style>
+:root{
+  --bg:#eef7ff; --card:#fff; --ink:#17243a; --muted:#667085;
+  --primary:#5b4bdb; --primary2:#7c5cff; --cyan:#19a7c9;
+  --good:#16a36a; --bad:#e05252; --yellow:#ffbd35; --line:#dce5f2;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);
+background:linear-gradient(135deg,#eef7ff 0%,#f8f3ff 48%,#fff8ed 100%);min-height:100vh}
+header{padding:32px 18px 22px;text-align:center;background:
+radial-gradient(circle at 10% 20%,#ffffffaa 0 55px,transparent 56px),
+linear-gradient(135deg,#513dc7,#19a7c9);color:#fff;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;inset:-50px;opacity:.15;background-image:
+linear-gradient(30deg,transparent 48%,#fff 49%,#fff 51%,transparent 52%),
+linear-gradient(120deg,transparent 48%,#fff 49%,#fff 51%,transparent 52%);background-size:80px 80px}
+header>*{position:relative;z-index:1}
+.badge{display:inline-block;background:#ffffff25;border:1px solid #ffffff55;padding:7px 14px;border-radius:999px;font-weight:700}
+h1{font-size:clamp(28px,5vw,48px);margin:14px 0 7px}
+.subtitle{font-size:18px;opacity:.94}
+.wrap{max-width:1050px;margin:auto;padding:22px 14px 60px}
+.progressBox{position:sticky;top:0;z-index:20;background:#ffffffee;backdrop-filter:blur(10px);
+border:1px solid var(--line);border-radius:18px;padding:12px 15px;margin-bottom:20px;box-shadow:0 8px 25px #243b5312}
+.progressTop{display:flex;justify-content:space-between;gap:10px;font-weight:700}
+.bar{height:11px;background:#e8edf5;border-radius:99px;overflow:hidden;margin-top:8px}
+.bar>div{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--cyan));transition:.35s}
+.task{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px;
+margin:18px 0;box-shadow:0 10px 30px #2b3a550d}
+.taskHead{display:flex;gap:12px;align-items:flex-start}
+.num{min-width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--cyan));
+color:#fff;display:grid;place-items:center;font-weight:900;font-size:18px}
+.task h2{font-size:20px;margin:0 0 5px}.hint{color:var(--muted);font-size:14px}
+.question{font-size:17px;line-height:1.5;margin:18px 0}
+.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+button,.option{font:inherit}
+.option{border:2px solid var(--line);background:#fff;border-radius:14px;padding:13px 14px;text-align:left;
+cursor:pointer;transition:.18s}.option:hover{border-color:#8f83ef;transform:translateY(-1px)}
+.option.selected{border-color:var(--primary);background:#f1efff}
+.option.correct{border-color:var(--good);background:#e9fbf3}.option.wrong{border-color:var(--bad);background:#fff0f0}
+.feedback{margin-top:12px;font-weight:700;min-height:22px}
+.inputRow{display:flex;gap:10px;flex-wrap:wrap}
+input[type=text]{flex:1;min-width:220px;padding:13px 14px;border:2px solid var(--line);border-radius:14px;font-size:16px;outline:none}
+input[type=text]:focus{border-color:var(--primary)}
+.action{border:0;border-radius:14px;padding:13px 18px;background:var(--primary);color:#fff;font-weight:800;cursor:pointer}
+.action:hover{filter:brightness(1.06)}
+.action.secondary{background:#eaf0ff;color:#3e42a5}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.card{padding:18px;border:2px solid var(--line);border-radius:18px;background:#fbfdff;cursor:pointer;text-align:center;font-weight:800}
+.card.active{border-color:var(--primary);background:#f0edff}
+.card.done{border-color:var(--good);background:#edfbf5}
+.matchGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.matchCol{display:grid;gap:10px}
+.matchItem,.dropzone{padding:14px;border:2px dashed var(--line);border-radius:14px;background:#fbfdff;min-height:52px}
+.matchItem{border-style:solid;cursor:grab;font-weight:700}
+.dropzone{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dropzone.over{border-color:var(--primary);background:#f3f0ff}.dropzone.ok{border-color:var(--good);background:#edfbf5}
+.smalltag{font-size:12px;color:var(--muted)}
+.ip{font-family:Consolas,monospace;letter-spacing:1px;font-size:26px;font-weight:900}
+.octets{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin:14px 0}
+.octet{background:#f2f0ff;border:2px solid #ddd7ff;border-radius:13px;padding:13px 17px;font-family:Consolas,monospace;font-size:24px;font-weight:900}
+.binary{font-family:Consolas,monospace;font-size:20px;letter-spacing:2px}
+.sortArea{display:flex;flex-wrap:wrap;gap:10px;min-height:58px;padding:12px;border:2px dashed var(--line);border-radius:16px}
+.sortChip{padding:12px 16px;border-radius:13px;background:#fff3ce;border:2px solid #f3cf69;cursor:grab;font-weight:800}
+.result{margin-top:20px;padding:20px;border-radius:22px;background:linear-gradient(135deg,#fff,#f0efff);border:1px solid #d9d2ff;display:none}
+.result.show{display:block}
+.scoreBig{font-size:40px;font-weight:900;color:var(--primary)}
+footer{text-align:center;color:var(--muted);padding:25px}
+@media(max-width:650px){.matchGrid{grid-template-columns:1fr}.task{padding:17px}.octet{font-size:20px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">ИНФОРМАТИКА • ИНТЕРАКТИВТІ ТРЕНАЖЕР</div>
+  <h1>Компьютердің IP-мекенжайы</h1>
+  <div class="subtitle">Ішкі желі, IPv4, IPv6, протокол және DNS • 15 тапсырма</div>
+</header>
+
+<div class="wrap">
+<div class="progressBox">
+  <div class="progressTop"><span>Орындалу барысы</span><span id="progressText">0 / 15</span></div>
+  <div class="bar"><div id="progressBar"></div></div>
+</div>
+
+<!-- 1 -->
+<section class="task" data-task="1"><div class="taskHead"><div class="num">1</div><div><h2>«Интернет» дегеніміз не?</h2><div class="hint">Дұрыс жауапты таңда.</div></div></div>
+<div class="question">Интернет дегеніміз —</div>
+<div class="options" data-answer="a">
+<div class="option" data-v="a">Компьютерлік серверлердің бүкіләлемдік желісі</div>
+<div class="option" data-v="b">Тек бір ғимарат ішіндегі желі</div>
+<div class="option" data-v="c">Тек электрондық пошта бағдарламасы</div>
+<div class="option" data-v="d">Компьютердің жады</div></div><div class="feedback"></div></section>
+
+<!-- 2 -->
+<section class="task" data-task="2"><div class="taskHead"><div class="num">2</div><div><h2>Тұлға мен ұғымды сәйкестендір</h2><div class="hint">Карточканы тиісті ұғымға сүйреп апар.</div></div></div>
+<div class="matchGrid"><div class="matchCol" id="people">
+<div class="matchItem" draggable="true" data-match="protocol">Винтон Грей Серф</div>
+<div class="matchItem" draggable="true" data-match="protocol">Роберт Эллиот (Боб) Кан</div></div>
+<div class="matchCol">
+<div class="dropzone" data-accept="protocol">Интернет протоколдарын дамытуға байланысты тұлғалар <span>⬇️</span></div>
+<div class="dropzone" data-accept="empty">Қате орын <span>⬇️</span></div>
+</div></div><div class="feedback"></div></section>
+
+<!-- 3 -->
+<section class="task" data-task="3"><div class="taskHead"><div class="num">3</div><div><h2>IP ме, пошта мекенжайы ма?</h2><div class="hint">Карточкаларды екі бағанға орналастыр.</div></div></div>
+<div class="cards" id="addressCards">
+<div class="card" data-kind="ip">192.168.1.15</div><div class="card" data-kind="postal">Молшылық 266, Шымкент</div>
+<div class="card" data-kind="ip">201.21.9.112</div><div class="card" data-kind="postal">Астана даңғылы, 111/57</div>
+</div>
+<div class="options" style="margin-top:14px"><button class="option" onclick="classify(3,'ip')">IP мекенжайларын таңдадым</button><button class="option" onclick="classify(3,'postal')">Пошта мекенжайларын таңдадым</button></div>
+<div class="feedback"></div></section>
+
+<!-- 4 -->
+<section class="task" data-task="4"><div class="taskHead"><div class="num">4</div><div><h2>IP мекенжайын құрастыр</h2><div class="hint">Берілген бөліктерді дұрыс ретке қой.</div></div></div>
+<div class="question">192.168.125.16 мекенжайының төрт бөлігін дұрыс ретпен орналастыр:</div>
+<div class="sortArea" id="ipSort">
+<div class="sortChip" draggable="true" data-order="2">168</div><div class="sortChip" draggable="true" data-order="4">16</div>
+<div class="sortChip" draggable="true" data-order="1">192</div><div class="sortChip" draggable="true" data-order="3">125</div>
+</div><button class="action" style="margin-top:12px" onclick="checkSortIP()">Тексеру</button><div class="feedback"></div></section>
+
+<!-- 5 -->
+<section class="task" data-task="5"><div class="taskHead"><div class="num">5</div><div><h2>IPv4 детективі</h2><div class="hint">Мекенжайдың қасиетін тап.</div></div></div>
+<div class="question"><span class="ip">192.168.125.16</span> неше бөліктен (октеттен) тұрады?</div>
+<div class="options" data-answer="c"><div class="option" data-v="a">2</div><div class="option" data-v="b">3</div><div class="option" data-v="c">4</div><div class="option" data-v="d">8</div></div><div class="feedback"></div></section>
+
+<!-- 6 -->
+<section class="task" data-task="6"><div class="taskHead"><div class="num">6</div><div><h2>Ондықтан екілікке</h2><div class="hint">192.168.125.16 мекенжайындағы 125 санының екілік түрін таңда.</div></div></div>
+<div class="question">125 = ?</div>
+<div class="options" data-answer="b"><div class="option" data-v="a">1100 0000</div><div class="option" data-v="b">0111 1101</div><div class="option" data-v="c">1010 1000</div><div class="option" data-v="d">0001 0000</div></div><div class="feedback"></div></section>
+
+<!-- 7 -->
+<section class="task" data-task="7"><div class="taskHead"><div class="num">7</div><div><h2>32 биттік әлем</h2><div class="hint">IPv4 сипаттамасын тап.</div></div></div>
+<div class="question">IPv4 адресінің ұзындығы:</div>
+<div class="options" data-answer="a"><div class="option" data-v="a">32 бит</div><div class="option" data-v="b">64 бит</div><div class="option" data-v="c">128 бит</div><div class="option" data-v="d">16 бит</div></div><div class="feedback"></div></section>
+
+<!-- 8 -->
+<section class="task" data-task="8"><div class="taskHead"><div class="num">8</div><div><h2>Протокол деген не?</h2><div class="hint">Мағынасына сәйкес анықтаманы таңда.</div></div></div>
+<div class="question">Құрылғылар арасындағы байланыс үшін алдын ала белгіленген ережелер мен стандарттар жиынтығы қалай аталады?</div>
+<div class="options" data-answer="d"><div class="option" data-v="a">Домен</div><div class="option" data-v="b">Октет</div><div class="option" data-v="c">IP-адрес</div><div class="option" data-v="d">Протокол</div></div><div class="feedback"></div></section>
+
+<!-- 9 -->
+<section class="task" data-task="9"><div class="taskHead"><div class="num">9</div><div><h2>Доменді тап</h2><div class="hint">Сәйкестендіру ойыны.</div></div></div>
+<div class="matchGrid">
+<div class="matchCol">
+<div class="matchItem" draggable="true" data-match="com">.com</div>
+<div class="matchItem" draggable="true" data-match="edu">.edu</div>
+<div class="matchItem" draggable="true" data-match="gov">.gov</div>
+<div class="matchItem" draggable="true" data-match="net">.net</div>
+</div>
+<div class="matchCol">
+<div class="dropzone" data-accept="com">com — <span>?</span></div>
+<div class="dropzone" data-accept="edu">edu — <span>?</span></div>
+<div class="dropzone" data-accept="gov">gov — <span>?</span></div>
+<div class="dropzone" data-accept="net">net — <span>?</span></div>
+</div></div><div class="feedback"></div></section>
+
+<!-- 10 -->
+<section class="task" data-task="10"><div class="taskHead"><div class="num">10</div><div><h2>DNS не істейді?</h2><div class="hint">Дұрыс тұжырымды таңда.</div></div></div>
+<div class="question">DNS (Domain Name System) ұғымы  қандай қызметпен байланысты көрсетілген?</div>
+<div class="options" data-answer="b"><div class="option" data-v="a">Компьютерді өшіреді</div><div class="option" data-v="b">Домен атауларын IP мекенжайларымен байланыстырады</div><div class="option" data-v="c">Пернетақтаны басқарады</div><div class="option" data-v="d">Экранның жарықтығын өзгертеді</div></div><div class="feedback"></div></section>
+
+<!-- 11 -->
+<section class="task" data-task="11"><div class="taskHead"><div class="num">11</div><div><h2>DNS жұбын тап</h2><div class="hint">Домен атауы мен IP мекенжайын жұптастыр.</div></div></div>
+<div class="cards" id="dnsCards">
+<div class="card" data-dns="salem">www.salem.com</div>
+<div class="card" data-dns="alem">www.alem.com</div>
+<div class="card" data-dns="sabaq">www.sabaq.com</div>
+</div>
+<div class="question">Берілген IP: <span class="ip">165.148.26.39</span>. Оны доменмен байланыстыратын қызмет қалай аталады?</div>
+<div class="inputRow"><input id="dnsInput" type="text" placeholder="Жауабыңызды жазыңыз"><button class="action" onclick="textCheck(11,'dnsInput',['dns','днс','domain name system','домендік атаулар жүйесі'])">Тексеру</button></div><div class="feedback"></div></section>
+
+<!-- 12 -->
+<section class="task" data-task="12"><div class="taskHead"><div class="num">12</div><div><h2>Жарамды ма, жарамсыз ба?</h2><div class="hint">IP мекенжайы 4 сандық бөліктен тұратын үлгіге сай келетінін анықта.</div></div></div>
+<div class="cards" id="validCards">
+<div class="card" data-valid="1">192.168.1.15</div><div class="card" data-valid="1">201.21.9.112</div>
+<div class="card" data-valid="0">192.168.1</div><div class="card" data-valid="0">192.168.1.999</div>
+</div>
+<div class="options" style="margin-top:14px"><button class="option" onclick="validIP(true)">Таңдалғандары жарамды</button><button class="option" onclick="validIP(false)">Таңдалғандары жарамсыз</button></div><div class="feedback"></div></section>
+
+<!-- 13 -->
+<section class="task" data-task="13"><div class="taskHead"><div class="num">13</div><div><h2>IP мекенжайын «оқы»</h2><div class="hint">Әр санның ретін дұрыс түсіндір.</div></div></div>
+<div class="octets"><div class="octet">192</div><span>.</span><div class="octet">168</div><span>.</span><div class="octet">125</div><span>.</span><div class="octet">16</div></div>
+<div class="question">Төрт санның әрқайсысы IP мекенжайының жеке бөлігі екенін ескеріп, дұрыс тұжырымды таңда.</div>
+<div class="options" data-answer="c"><div class="option" data-v="a">Төрт сан бір ғана сан болып есептеледі</div><div class="option" data-v="b">Тек бірінші сан маңызды</div><div class="option" data-v="c">IP мекенжайы нүктелермен бөлінген төрт сандық бөліктен тұрады</div><div class="option" data-v="d">IP-де нүкте қолданылмайды</div></div><div class="feedback"></div></section>
+
+<!-- 14 -->
+<section class="task" data-task="14"><div class="taskHead"><div class="num">14</div><div><h2>IPv4 vs IPv6</h2><div class="hint">Екі карточканы дұрыс сипаттамамен байланыстыр.</div></div></div>
+<div class="cards">
+<div class="card" onclick="choose14(this,'IPv4')">IPv4</div><div class="card" onclick="choose14(this,'IPv6')">IPv6</div>
+</div>
+<div id="v14" class="options" style="margin-top:14px;display:none">
+<div class="option" data-v="IPv4">32 бит</div><div class="option" data-v="IPv6">128 бит</div>
+</div><div class="feedback"></div></section>
+
+<!-- 15 -->
+<section class="task" data-task="15"><div class="taskHead"><div class="num">15</div><div><h2>Финал: желі сарапшысы</h2><div class="hint">Бірнеше дұрыс жауап бар. Барлығын таңда.</div></div></div>
+<div class="question">IP мекенжайы туралы дұрыс тұжырымдарды таңда.</div>
+<div class="options multi" data-multi="1" data-correct="a,c,d">
+<div class="option" data-v="a">Желідегі құрылғылардың өздерінің ерекше адресі болады</div>
+<div class="option" data-v="b">IPv4 — 128 бит</div>
+<div class="option" data-v="c">IPv4 — 32 бит</div>
+<div class="option" data-v="d">Құрылғылар IP адрестер арқылы мәлімет алмаса алады</div>
+</div><button class="action" style="margin-top:12px" onclick="checkMulti()">Финалды тексеру</button><div class="feedback"></div></section>
+
+<div class="result" id="result">
+  <div>🎉 Тапсырмалар аяқталды!</div>
+  <div class="scoreBig"><span id="score">0</span> / 15</div>
+  <p id="resultText"></p>
+  <button class="action" onclick="location.reload()">Қайта бастау</button>
+</div>
+</div>
+<footer>IP мекенжайы • интерактивті оқу тренажері</footer>
+
+<script>
+let score=0, completed=new Set();
+const total=15;
+function taskDone(n,good=true){
+  if(completed.has(n)) return;
+  completed.add(n); if(good) score++;
+  document.getElementById('progressText').textContent=completed.size+' / '+total;
+  document.getElementById('progressBar').style.width=(completed.size/total*100)+'%';
+  if(completed.size===total){
+    setTimeout(()=>{document.getElementById('result').classList.add('show');document.getElementById('score').textContent=score;
+      let t=score>=13?'🏆 Желі сарапшысы деңгейі!':score>=10?'⭐ Өте жақсы нәтиже!':'📚 Жақсы бастама! Қайталап көрсең, нәтижең артады.';
+      document.getElementById('resultText').textContent=t;},300);
+  }
+}
+document.querySelectorAll('.options:not(.multi)').forEach(box=>{
+  const answer=box.dataset.answer;if(!answer)return;
+  box.querySelectorAll('.option').forEach(o=>o.addEventListener('click',()=>{
+    if(completed.has(+box.closest('.task').dataset.task))return;
+    box.querySelectorAll('.option').forEach(x=>x.classList.remove('selected','correct','wrong'));
+    const ok=o.dataset.v===answer;o.classList.add(ok?'correct':'wrong');
+    box.closest('.task').querySelector('.feedback').textContent=ok?'✅ Дұрыс!':'❌ Қате. Дұрыс жауапты қайта қарап көр.';
+    taskDone(+box.closest('.task').dataset.task,ok);
+  }));
+});
+function classify(n,kind){
+ const task=document.querySelector('[data-task="'+n+'"]'), cards=[...task.querySelectorAll('.card')];
+ const selected=cards.filter(c=>c.classList.contains('active'));
+ if(selected.length===0){task.querySelector('.feedback').textContent='Алдымен карточкаларды таңдаңыз.';return}
+ const ok=selected.every(c=>c.dataset.kind===kind);
+ task.querySelector('.feedback').textContent=ok?'✅ Дұрыс жіктедің!':'❌ Таңдауда қате бар.';
+ selected.forEach(c=>c.classList.add(ok?'done':'active'));
+ if(ok)taskDone(n,true);
+}
+document.querySelectorAll('#addressCards .card').forEach(c=>c.onclick=()=>c.classList.toggle('active'));
+function validIP(valid){
+ const task=document.querySelector('[data-task="12"]'), cards=[...task.querySelectorAll('.card')], sel=cards.filter(c=>c.classList.contains('active'));
+ if(!sel.length){task.querySelector('.feedback').textContent='Карточкаларды таңдаңыз.';return}
+ const ok=sel.every(c=>c.dataset.valid===(valid?'1':'0')) && sel.length===2;
+ task.querySelector('.feedback').textContent=ok?'✅ Дұрыс!':'❌ Екі дұрыс карточканы таңдауың керек.';
+ if(ok){sel.forEach(c=>c.classList.add('done'));taskDone(12,true)}
+}
+document.querySelectorAll('#validCards .card').forEach(c=>c.onclick=()=>c.classList.toggle('active'));
+function textCheck(n,id,answers){
+ const v=document.getElementById(id).value.trim().toLowerCase(),ok=answers.includes(v);
+ const task=document.querySelector('[data-task="'+n+'"]');task.querySelector('.feedback').textContent=ok?'✅ Дұрыс!':'❌ Дұрыс жауап: DNS / Domain Name System.';
+ taskDone(n,ok);
+}
+function checkSortIP(){
+ const arr=[...document.querySelectorAll('#ipSort .sortChip')].map(x=>x.dataset.order);
+ const ok=arr.join('')==='1234',task=document.querySelector('[data-task="4"]');
+ task.querySelector('.feedback').textContent=ok?'✅ 192.168.125.16 — дұрыс!':'❌ Ретін қайта орналастыр.';
+ taskDone(4,ok);
+}
+let dragged=null;
+document.addEventListener('dragstart',e=>{if(e.target.classList.contains('matchItem')||e.target.classList.contains('sortChip'))dragged=e.target});
+document.addEventListener('dragover',e=>{if(e.target.classList.contains('dropzone')||e.target.classList.contains('sortArea'))e.preventDefault()});
+document.addEventListener('drop',e=>{
+ if(!dragged)return;
+ if(e.target.classList.contains('dropzone')){
+   const zone=e.target, task=zone.closest('.task'), ok=zone.dataset.accept===dragged.dataset.match;
+   if(ok){zone.innerHTML=dragged.textContent+' <span>✅</span>';zone.classList.add('ok');dragged.remove();
+      const remain=task.querySelectorAll('.matchItem').length;
+      if(remain===0){task.querySelector('.feedback').textContent='🎯 Барлық жұп дұрыс!';taskDone(+task.dataset.task,true)}
+   }else task.querySelector('.feedback').textContent='❌ Бұл карточка бұл орынға сәйкес емес.';
+ }
+ if(e.target.classList.contains('sortArea')){e.preventDefault();e.target.appendChild(dragged)}
+});
+function choose14(el,v){
+ const task=document.querySelector('[data-task="14"]');document.querySelector('#v14').style.display='grid';
+ document.querySelectorAll('#v14 .option').forEach(o=>o.onclick=()=>{
+   const ok=o.dataset.v===v;o.classList.add(ok?'correct':'wrong');task.querySelector('.feedback').textContent=ok?'✅ Дұрыс сәйкестік!':'❌ Қайта ойлан.';
+   taskDone(14,ok);
+ });
+}
+function checkMulti(){
+ const box=document.querySelector('[data-task="15"] .multi'), vals=[...box.querySelectorAll('.option.selected')].map(x=>x.dataset.v).sort();
+ const ans=box.dataset.correct.split(',').sort(),ok=JSON.stringify(vals)===JSON.stringify(ans);
+ box.querySelectorAll('.option').forEach(x=>{if(ans.includes(x.dataset.v))x.classList.add('correct')});
+ document.querySelector('[data-task="15"] .feedback').textContent=ok?'🏆 Финал дұрыс орындалды!':'❌ Дұрыс жауаптардың барлығын таңда.';
+ taskDone(15,ok);
+}
+document.querySelectorAll('.multi .option').forEach(o=>o.onclick=()=>o.classList.toggle('selected'));
+</script>
+</body>
+</html>
