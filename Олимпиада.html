@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шымкент қаласы №145 ЖОББМ - Олимпиада Бақылау Орталығы</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Қазақы ұлттық нақыштағы өрнекті фон */
+        body {
+            background-color: #0b1e36;
+            background-image: radial-gradient(#d4af37 0.75px, transparent 0.75px), radial-gradient(#d4af37 0.75px, #0b1e36 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Ою-өрнекті жиек стилі */
+        .ornament-border {
+            border: 4px solid #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4), inset 0 0 15px rgba(212, 175, 55, 0.2);
+            position: relative;
+        }
+
+        /* Кабинет блогының рамкасы */
+        .card-kazakh {
+            background: linear-gradient(145deg, #162a45, #0d1b2a);
+            border: 2px solid #c59b27;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .card-kazakh:hover {
+            transform: translateY(-4px);
+            border-color: #f3e5ab;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+        }
+
+        /* SVG Ою өрнек декорациясы */
+        .ornament-corner {
+            width: 40px;
+            height: 40px;
+            fill: #d4af37;
+            position: absolute;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex flex-col justify-between p-4 sm:p-8">
+
+    <div class="max-w-5xl mx-auto w-full">
+        <!-- Басты Орнаментті Баннер (Стенд) -->
+        <header class="card-kazakh ornament-border p-6 sm:p-8 text-center mb-8 relative overflow-hidden">
+            <!-- Бұрыштағы өрнектер -->
+            <svg class="ornament-corner top-1 left-1" viewBox="0 0 100 100"><path d="M0 0 L100 0 L100 20 C60 20 20 60 20 100 L0 100 Z"/></svg>
+            <svg class="ornament-corner top-1 right-1 transform rotate-90" viewBox="0 0 100 100"><path d="M0 0 L100 0 L100 20 C60 20 20 60 20 100 L0 100 Z"/></svg>
+            <svg class="ornament-corner bottom-1 left-1 transform -rotate-90" viewBox="0 0 100 100"><path d="M0 0 L100 0 L100 20 C60 20 20 60 20 100 L0 100 Z"/></svg>
+            <svg class="ornament-corner bottom-1 right-1 transform rotate-180" viewBox="0 0 100 100"><path d="M0 0 L100 0 L100 20 C60 20 20 60 20 100 L0 100 Z"/></svg>
+
+            <!-- Ою белгісі -->
+            <div class="text-[#d4af37] text-3xl mb-2">
+                <i class="fa-solid fa-gem"></i>
+            </div>
+
+            <!-- Жаңартылған бас жазулар -->
+            <h1 class="text-2xl sm:text-4xl font-extrabold text-[#f3e5ab] tracking-wide mb-2 uppercase drop-shadow-md">
+                Қош келдіңіз!
+            </h1>
+            <h2 class="text-lg sm:text-2xl font-bold text-slate-100 tracking-wide mb-3 uppercase">
+                Шымкент қаласы №145 жалпы орта білім беретін мектебі
+            </h2>
+            <p class="text-base sm:text-lg text-slate-300 font-medium">
+                Трансляцияны көру үшін керекті кабинетті таңдаңыз
+            </p>
+        </header>
+
+        <!-- 6 Кабинет Торшалары (Grid) -->
+        <main id="roomsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- JavaScript арқылы толтырылады -->
+        </main>
+    </div>
+
+    <!-- Төменгі баптау түймесі -->
+    <footer class="mt-10 text-center">
+        <button onclick="openSettings()" class="bg-[#162a45] hover:bg-[#1d385c] text-[#d4af37] border border-[#d4af37] px-5 py-2.5 rounded-lg font-semibold text-sm transition shadow-lg inline-flex items-center gap-2">
+            <i class="fa-solid fa-gear"></i> Сілтемелерді Өзгерту
+        </button>
+    </footer>
+
+    <!-- Сілтемелерді өзгерту терезесі (Modal) -->
+    <div id="settingsModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4 z-50">
+        <div class="bg-[#0b1e36] border-2 border-[#d4af37] rounded-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto text-white shadow-2xl">
+            <div class="flex justify-between items-center mb-4 border-b border-[#d4af37]/40 pb-3">
+                <h2 class="text-lg font-bold text-[#f3e5ab] flex items-center gap-2">
+                    <i class="fa-solid fa-link text-[#d4af37]"></i> Кабинет сілтемелерін енгізу
+                </h2>
+                <button onclick="closeSettings()" class="text-slate-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            
+            <div id="settingsFormContainer" class="space-y-4">
+                <!-- Кабинет енгізу формалары -->
+            </div>
+
+            <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-[#d4af37]/40">
+                <button onclick="closeSettings()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm font-medium transition">Болдырмау</button>
+                <button onclick="saveSettings()" class="px-5 py-2 bg-[#d4af37] hover:bg-[#b8952b] text-slate-900 font-bold rounded-lg text-sm transition">Сақтау</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Әдепкі деректер
+        const defaultRooms = [
+            { id: 1, name: "1-КАБИНЕТ", url: "https://youtube.com" },
+            { id: 2, name: "2-КАБИНЕТ", url: "https://youtube.com" },
+            { id: 3, name: "3-КАБИНЕТ", url: "https://youtube.com" },
+            { id: 4, name: "4-КАБИНЕТ", url: "https://youtube.com" },
+            { id: 5, name: "5-КАБИНЕТ", url: "https://youtube.com" },
+            { id: 6, name: "6-КАБИНЕТ", url: "https://youtube.com" }
+        ];
+
+        let rooms = JSON.parse(localStorage.getItem('olympiad_stand_rooms')) || defaultRooms;
+
+        function renderRooms() {
+            const grid = document.getElementById('roomsGrid');
+            grid.innerHTML = '';
+
+            rooms.forEach(room => {
+                const card = document.createElement('div');
+                card.className = "card-kazakh p-5 flex flex-col items-center text-center justify-between";
+                
+                card.innerHTML = `
+                    <div class="w-full">
+                        <div class="border-b border-[#d4af37]/30 pb-2 mb-4">
+                            <h3 class="text-xl font-bold text-[#f3e5ab] tracking-wider uppercase">
+                                <i class="fa-solid fa-door-closed text-[#d4af37] mr-1"></i> ${room.name}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="w-full mt-2">
+                        <a href="${room.url}" target="_blank" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2 shadow-lg text-sm sm:text-base">
+                            <i class="fa-brands fa-youtube text-lg"></i> Трансляцияны Көру
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openSettings() {
+            const container = document.getElementById('settingsFormContainer');
+            container.innerHTML = '';
+
+            rooms.forEach((room, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = "bg-[#162a45] p-3 rounded-lg border border-[#d4af37]/40 space-y-2";
+                itemDiv.innerHTML = `
+                    <div class="text-xs font-bold text-[#d4af37]">Баптау: #${index + 1}</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div>
+                            <label class="block text-xs text-slate-300 mb-1">Кабинет Атауы:</label>
+                            <input type="text" id="name_${index}" value="${room.name}" class="w-full bg-[#0b1e36] border border-slate-600 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#d4af37]">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs text-slate-300 mb-1">YouTube Сілтемесі:</label>
+                            <input type="text" id="url_${index}" value="${room.url}" class="w-full bg-[#0b1e36] border border-slate-600 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#d4af37]">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(itemDiv);
+            });
+
+            document.getElementById('settingsModal').classList.remove('hidden');
+            document.getElementById('settingsModal').classList.add('flex');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.add('hidden');
+            document.getElementById('settingsModal').classList.remove('flex');
+        }
+
+        function saveSettings() {
+            rooms.forEach((room, index) => {
+                room.name = document.getElementById(`name_${index}`).value;
+                room.url = document.getElementById(`url_${index}`).value;
+            });
+
+            localStorage.setItem('olympiad_stand_rooms', JSON.stringify(rooms));
+            renderRooms();
+            closeSettings();
+        }
+
+        // Іске қосу
+        renderRooms();
+    </script>
+</body>
+</html>
