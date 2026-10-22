@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Санау жүйелері | Интерактивті жаттығу</title>
+<style>
+:root{--bg:#0a1020;--panel:#121d35;--panel2:#182744;--text:#eef4ff;--muted:#a9b8d5;--cyan:#63e6e2;--violet:#a994ff;--green:#6ee7a8;--red:#ff8195;--line:#2b3b5c}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(ellipse at 15% 0%,#1b3260 0,transparent 38%),radial-gradient(ellipse at 90% 20%,#30245c 0,transparent 35%),var(--bg);color:var(--text);min-height:100vh}
+header{padding:34px 18px 24px;text-align:center;max-width:1100px;margin:auto}
+.tag{display:inline-block;padding:7px 12px;border:1px solid #52648b;border-radius:30px;color:var(--cyan);font-size:12px;letter-spacing:1.4px;text-transform:uppercase}
+h1{font-size:clamp(30px,5vw,54px);margin:17px 0 10px;line-height:1.08;letter-spacing:-1.5px}h1 span{color:var(--cyan)}header p{max-width:700px;margin:0 auto;color:var(--muted);font-size:16px;line-height:1.65}
+.wrap{max-width:1050px;margin:auto;padding:0 16px 44px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:8px 0 20px}.stat,.panel,.task{background:linear-gradient(145deg,rgba(24,39,68,.96),rgba(15,25,45,.96));border:1px solid var(--line);border-radius:18px}.stat{padding:16px}.stat small{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}.stat strong{font-size:25px}.progress{height:7px;background:#273654;border-radius:20px;overflow:hidden;margin-top:12px}.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:.3s}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:20px 0}.filters{display:flex;gap:8px;flex-wrap:wrap}.filter,button{border:1px solid #405276;background:#172541;color:var(--text);border-radius:11px;padding:10px 14px;font-weight:650;cursor:pointer;transition:.18s}.filter.active,.filter:hover{background:var(--cyan);color:#081321;border-color:var(--cyan)}button.primary{background:linear-gradient(110deg,#63e6e2,#a994ff);color:#091322;border:0}button:hover{transform:translateY(-1px)}button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.section-title{display:flex;align-items:center;gap:10px;margin:28px 0 13px;font-size:20px}.section-title .num{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#23385d;color:var(--cyan);font-size:15px}
+.task{padding:20px;margin-bottom:13px;scroll-margin-top:12px}.task-head{display:flex;align-items:flex-start;gap:12px}.badge{flex-shrink:0;background:#27395e;color:var(--cyan);font-size:12px;font-weight:800;border-radius:8px;padding:7px 9px}.task h3{margin:1px 0 7px;font-size:17px}.task p{color:var(--muted);line-height:1.55;margin:0 0 14px}.answer-row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.answer-row input,.match-select{background:#0a1428;border:1px solid #3a4c70;border-radius:10px;padding:12px 13px;color:var(--text);font-size:15px;min-width:150px;outline:none}.answer-row input:focus,.match-select:focus{border-color:var(--cyan)}.feedback{font-size:13px;margin-top:10px;min-height:18px;color:var(--muted)}.feedback.good{color:var(--green)}.feedback.bad{color:var(--red)}.hint{margin-top:10px}.hint summary{font-size:13px;color:var(--violet);cursor:pointer}.hint div{font-size:13px;color:var(--muted);padding-top:8px;line-height:1.5}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.match-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0d1830;border:1px solid #2d3f62;border-radius:12px;padding:12px}.match-item b{font-size:15px}.match-select{min-width:110px;width:46%;padding:9px}
+footer{text-align:center;color:#7f91b4;font-size:12px;padding:25px 10px 8px}.empty{display:none;padding:30px;text-align:center;color:var(--muted)}.pill{color:var(--muted);font-size:12px}
+@media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}.match-grid{grid-template-columns:1fr}.task{padding:16px}.stat strong{font-size:22px}.answer-row input{flex:1;min-width:120px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="tag">ИНФОРМАТИКА · ПРАКТИКУМ</div>
+ <h1>Санау <span>жүйелері</span></h1>
+ <p>Есепте, түрлендір, сәйкестендір! Екілік, сегіздік, ондық және оналтылық санау жүйелерін меңгеруге арналған 20 интерактивті тапсырма.</p>
+</header>
+<main class="wrap">
+ <div class="stats">
+  <div class="stat"><small>ЖАЛПЫ ҰПАЙ</small><strong id="score">0 / 20</strong><div class="progress"><div id="bar"></div></div></div>
+  <div class="stat"><small>ОРЫНДАЛҒАНЫ</small><strong id="done">0 / 20</strong></div>
+  <div class="stat"><small>ДҰРЫС ЖАУАП</small><strong id="correct">0</strong></div>
+  <div class="stat"><small>ҚАЛҒАНЫ</small><strong id="left">20</strong></div>
+ </div>
+ <div class="toolbar">
+  <div class="filters">
+   <button class="filter active" data-filter="all">Барлығы · 20</button>
+   <button class="filter" data-filter="convert">Түрлендіру · 10</button>
+   <button class="filter" data-filter="math">Амалдар · 4</button>
+   <button class="filter" data-filter="match">Сәйкестендіру · 3</button>
+   <button class="filter" data-filter="logic">Тест және қатені тап · 3</button>
+  </div>
+  <button id="reset">↻ Қайта бастау</button>
+ </div>
+ <div id="tasks"></div>
+ <div id="empty" class="empty">Бұл бөлімде тапсырма табылмады.</div>
+ <div class="panel" style="padding:20px;margin-top:22px">
+  <h2 style="margin:0 0 8px">🏁 Нәтиже</h2>
+  <p id="summary" style="margin:0 0 15px;color:var(--muted)">Тапсырмаларды орындап, біліміңді тексер.</p>
+  <button class="primary" id="checkAll">Барлық жауапты тексеру</button>
+ </div>
+ <footer>Санау жүйелері · Интерактивті оқу парақшасы · GitHub Pages-ке дайын</footer>
+</main>
+<script>
+const tasks = [
+ {id:1,cat:'convert',title:'Екіліктен ондыққа',desc:'101101₂ санын ондық санау жүйесіне түрлендір.',type:'input',answer:['45'],placeholder:'Ондық сан',hint:'Разрядтарға жікте: 1·2⁵ + 0·2⁴ + 1·2³ + 1·2² + 0·2¹ + 1·2⁰.'},
+ {id:2,cat:'convert',title:'Екіліктен ондыққа',desc:'1100101₂ санын ондық жүйеге айналдыр.',type:'input',answer:['101'],placeholder:'Ондық сан',hint:'Екілік санның әр цифрын сәйкес 2 дәрежесіне көбейт.'},
+ {id:3,cat:'convert',title:'Ондықтан екілікке',desc:'58₁₀ санын екілік санау жүйесінде жаз.',type:'input',answer:['111010'],placeholder:'Мысалы: 1010',hint:'58 санын 2-ге қалдықпен бөл. Қалдықтарды төменнен жоғары қарай оқы.'},
+ {id:4,cat:'convert',title:'Ондықтан екілікке',desc:'156₁₀ санын екілік жүйеге түрлендір.',type:'input',answer:['10011100'],placeholder:'Екілік сан',hint:'156 = 128 + 16 + 8 + 4.'},
+ {id:5,cat:'convert',title:'Екіліктен сегіздікке',desc:'11110110₂ санын сегіздік жүйеге түрлендір.',type:'input',answer:['366'],placeholder:'Сегіздік сан',hint:'Оңнан бастап үш-үштен топта: 011 110 110.'},
+ {id:6,cat:'convert',title:'Сегіздіктен ондыққа',desc:'347₈ санын ондық жүйеге айналдыр.',type:'input',answer:['231'],placeholder:'Ондық сан',hint:'3·8² + 4·8¹ + 7·8⁰.'},
+ {id:7,cat:'convert',title:'Ондықтан оналтылыққа',desc:'254₁₀ санын оналтылық жүйеде көрсет.',type:'input',answer:['fe'],placeholder:'Мысалы: 7A',hint:'254 = 15·16 + 14. Оналтылықта 15 = F, 14 = E.'},
+ {id:8,cat:'convert',title:'Оналтылықтан ондыққа',desc:'2B₁₆ санын ондық жүйеге түрлендір.',type:'input',answer:['43'],placeholder:'Ондық сан',hint:'B = 11, сондықтан 2·16 + 11.'},
+ {id:9,cat:'convert',title:'Екіліктен оналтылыққа',desc:'11011110₂ санын оналтылық жүйеге айналдыр.',type:'input',answer:['de'],placeholder:'Оналтылық сан',hint:'Төрт биттен топта: 1101 1110.'},
+ {id:10,cat:'convert',title:'Сегіздіктен екілікке',desc:'572₈ санын екілік жүйеде жаз.',type:'input',answer:['101111010'],placeholder:'Екілік сан',hint:'Әр сегіздік цифрды үш битпен жаз: 5=101, 7=111, 2=010.'},
+ {id:11,cat:'math',title:'Екілік қосу',desc:'1011₂ + 110₂ = ? Жауапты екілік жүйеде енгіз.',type:'input',answer:['10001'],placeholder:'Екілік нәтиже',hint:'Оң жақтан қос: 1+0, 1+1, 0+1 және тасымалды ескер.'},
+ {id:12,cat:'math',title:'Екілік азайту',desc:'11010₂ − 1011₂ = ? Жауапты екілік түрде жаз.',type:'input',answer:['1111'],placeholder:'Екілік нәтиже',hint:'Алдымен ондыққа айналдырып тексеруге болады: 26 − 11.'},
+ {id:13,cat:'math',title:'Оналтылық қосу',desc:'A₁₆ + 7₁₆ = ? Нәтижені оналтылық жүйеде жаз.',type:'input',answer:['11'],placeholder:'Оналтылық нәтиже',hint:'A = 10. 10 + 7 = 17, ал 17 оналтылықта 11.'},
+ {id:14,cat:'math',title:'Сегіздік қосу',desc:'27₈ + 15₈ = ? Нәтижені сегіздік жүйеде жаз.',type:'input',answer:['44'],placeholder:'Сегіздік нәтиже',hint:'Ондықпен тексер: 23 + 13 = 36; 36₁₀ = 44₈.'},
+ {id:15,cat:'match',title:'Сәйкестендіру: сан және ондық мәні',desc:'Әр санға сәйкес ондық мәнін таңда.',type:'match',pairs:[['1001₂','9'],['17₈','15'],['1A₁₆','26'],['1111₂','15']],options:['9','15','26','31'],hint:'Әр санды өзінің санау жүйесінің негізі бойынша есепте.'},
+ {id:16,cat:'match',title:'Сәйкестендіру: жүйе негізі',desc:'Санау жүйесін оның негізімен сәйкестендір.',type:'match',pairs:[['Екілік','2'],['Сегіздік','8'],['Ондық','10'],['Оналтылық','16']],options:['2','8','10','16'],hint:'Жүйенің негізі сол жүйеде қолданылатын цифрлар санын анықтайды.'},
+ {id:17,cat:'match',title:'Сәйкестендіру: баламалар',desc:'Бірдей мәнге ие сандарды сәйкестендір.',type:'match',pairs:[['1010₂','10₁₀'],['20₈','16₁₀'],['FF₁₆','255₁₀'],['10000₂','16₁₀']],options:['10₁₀','16₁₀','255₁₀','32₁₀'],hint:'Әр мәнді ондық жүйеге ауыстырып салыстыр.'},
+ {id:18,cat:'logic',title:'Дұрыс жауапты таңда',desc:'Қай теңдік дұрыс?',type:'choice',options:['1010₂ = 12₁₀','111₂ = 7₁₀','20₈ = 20₁₀','A₁₆ = 10₁₀'],answer:['1'],hint:'Әр нұсқаны ондық жүйеге айналдырып тексер.'},
+ {id:19,cat:'logic',title:'Қатені тап',desc:'Оқушы: «100₂ = 4₁₀, сондықтан 100₈ = 4₁₀» деді. Қай тұжырым дұрыс?',type:'choice',options:['Оқушы дұрыс айтты','100₈ = 64₁₀, қате — жүйе негізін ескермеген','100₈ = 8₁₀','100₈ = 100₁₀'],answer:['1'],hint:'100₈ = 1·8² + 0·8 + 0.'},
+ {id:20,cat:'logic',title:'Цифрларды анықта',desc:'Қай санды оналтылық санау жүйесінде жазуға болмайды?',type:'choice',options:['2AF','90B','G12','1CE'],answer:['2'],hint:'Оналтылық жүйеде 0–9 және A–F таңбалары қолданылады.'}
+];
+const labels={convert:'Түрлендіру есептері',math:'Санау жүйелеріндегі амалдар',match:'Сәйкестендіру',logic:'Тест және қатені тап'};
+const state={}; let currentFilter='all';
+function norm(s){return String(s??'').trim().replace(/\s+/g,'').replace(/[₀-₉]/g,'').toLowerCase().replace(/^0+(?=\d)/,'')}
+function render(){
+ const root=document.getElementById('tasks');root.innerHTML='';
+ let last='';
+ const visible=tasks.filter(t=>currentFilter==='all'||t.cat===currentFilter);
+ document.getElementById('empty').style.display=visible.length?'none':'block';
+ visible.forEach(t=>{
+  if(t.cat!==last){last=t.cat;const h=document.createElement('h2');h.className='section-title';h.innerHTML=`<span class="num">${({convert:'01',math:'02',match:'03',logic:'04'})[t.cat]}</span>${labels[t.cat]}`;root.appendChild(h)}
+  const card=document.createElement('section');card.className='task';card.id='task'+t.id;
+  let body='';
+  if(t.type==='input'){
+   body=`<div class="answer-row"><input id="a${t.id}" aria-label="Жауап" placeholder="${t.placeholder||'Жауабың'}" value="${state[t.id]?.value||''}"><button class="primary" onclick="check(${t.id})">Тексеру</button></div>`;
+  }else if(t.type==='choice'){
+   body=`<div style="display:grid;gap:8px">${t.options.map((o,i)=>`<label class="match-item" style="justify-content:flex-start;cursor:pointer"><input type="radio" name="a${t.id}" value="${i}" ${state[t.id]?.value===String(i)?'checked':''} style="accent-color:#63e6e2"><span>${o}</span></label>`).join('')}</div><div style="margin-top:12px"><button class="primary" onclick="check(${t.id})">Тексеру</button></div>`;
+  }else{
+   body=`<div class="match-grid">${t.pairs.map((p,i)=>`<div class="match-item"><b>${p[0]}</b><select class="match-select" id="a${t.id}_${i}" aria-label="${p[0]} жауабы"><option value="">Таңда...</option>${t.options.map(o=>`<option value="${o}" ${state[t.id]?.values?.[i]===o?'selected':''}>${o}</option>`).join('')}</select></div>`).join('')}</div><div style="margin-top:12px"><button class="primary" onclick="check(${t.id})">Тексеру</button></div>`;
+  }
+  card.innerHTML=`<div class="task-head"><span class="badge">№ ${String(t.id).padStart(2,'0')}</span><div style="flex:1"><h3>${t.title}</h3><p>${t.desc}</p></div></div>${body}<div id="f${t.id}" class="feedback">${state[t.id]?.msg||''}</div><details class="hint"><summary>Көмек / формула</summary><div>${t.hint}</div></details>`;
+  root.appendChild(card);
+ });
+ updateStats();
+}
+function check(id){
+ const t=tasks.find(x=>x.id===id);let ok=false, val='';
+ if(t.type==='input'){val=document.getElementById('a'+id).value;state[id]=state[id]||{};state[id].value=val;ok=t.answer.some(a=>norm(a)===norm(val));}
+ else if(t.type==='choice'){const el=document.querySelector(`input[name="a${id}"]:checked`);val=el?el.value:'';state[id]=state[id]||{};state[id].value=val;ok=t.answer.includes(val);}
+ else {const values=t.pairs.map((_,i)=>document.getElementById(`a${id}_${i}`).value);state[id]=state[id]||{};state[id].values=values;ok=values.every((v,i)=>norm(v)===norm(t.pairs[i][1]));}
+ state[id].done=true;state[id].correct=ok;state[id].msg=ok?'✓ Дұрыс! Жарайсың!':'✗ Әзірге қате. Көмек бөлімін қарап, қайта есепте.';
+ const f=document.getElementById('f'+id);f.textContent=state[id].msg;f.className='feedback '+(ok?'good':'bad');updateStats();
+}
+function updateStats(){
+ const done=tasks.filter(t=>state[t.id]?.done).length, correct=tasks.filter(t=>state[t.id]?.correct).length;
+ document.getElementById('score').textContent=`${correct} / 20`;document.getElementById('done').textContent=`${done} / 20`;document.getElementById('correct').textContent=correct;document.getElementById('left').textContent=20-done;document.getElementById('bar').style.width=(correct/20*100)+'%';
+ document.getElementById('summary').textContent=done===20?`Нәтижең: ${correct}/20. ${correct>=18?'Керемет нәтиже! Сен санау жүйелерін жақсы меңгергенсің.':correct>=14?'Жақсы жұмыс! Қате кеткен есептерді тағы бір қарап шық.':'Жаттығуды қайталап, түрлендіру ережелерін бекіт.'}`:`Әзірге ${done} тапсырма тексерілді. Дұрыс жауап саны: ${correct}.`;
+}
+document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;render()}));
+document.getElementById('reset').addEventListener('click',()=>{Object.keys(state).forEach(k=>delete state[k]);render();window.scrollTo({top:0,behavior:'smooth'})});
+document.getElementById('checkAll').addEventListener('click',()=>{tasks.forEach(t=>{const el=document.getElementById('task'+t.id);if(el)check(t.id)});render();document.getElementById('summary').scrollIntoView({behavior:'smooth',block:'center'})});
+render();
+</script>
+</body>
+</html>
