@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Қазақша пернетақта жаттықтырғышы - Kahoot Режимі</title>
+
+<!-- Firebase SDK (Серверсіз real-time байланыс үшін) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI','Trebuchet MS',Arial,sans-serif;user-select:none;transition:background .3s, border-color .3s, color .3s}
+html,body{
+    min-height:100vh;margin:0;padding:0;display:flex;justify-content:center;align-items:center;position:relative;
+}
+body.theme-space{
+    color:#ffffff;
+    background:radial-gradient(circle at 15% 20%,rgba(139,92,246,.35),transparent 30%),
+               radial-gradient(circle at 85% 75%,rgba(56,189,248,.25),transparent 30%),
+               linear-gradient(135deg,#030712 0%,#0f172a 50%,#1e1b4b 100%);
+    background-attachment:fixed;
+}
+body.theme-candy{
+    color:#ffffff;
+    background:radial-gradient(circle at 12% 18%,rgba(255,182,193,.8),transparent 30%),
+               radial-gradient(circle at 88% 82%,rgba(244,114,182,.6),transparent 30%),
+               linear-gradient(135deg,#fbcfe8 0%,#f472b6 50%,#e879f9 100%);
+    background-attachment:fixed;
+}
+
+.main-container{width:100%;max-width:1100px;padding:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;margin:auto;}
+
+/* ===== СОЛ ЖАҚ МӘЗІР ===== */
+.top-left-menu{position:fixed;top:20px;left:20px;z-index:2000;}
+.menu-toggle-btn{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;border:none;padding:12px 20px;border-radius:14px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.3);}
+.side-drawer{position:fixed;top:0;left:-320px;width:300px;height:100%;backdrop-filter:blur(16px);z-index:2001;padding:25px 20px;box-shadow:5px 0 25px rgba(0,0,0,.4);transition:left .3s ease;display:flex;flex-direction:column;gap:15px;background:rgba(15,23,42,.95);color:#ffffff;}
+.side-drawer.open{left:0}
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:none}
+.drawer-overlay.show{display:block}
+.drawer-menu-btn{padding:12px;border-radius:12px;border:none;cursor:pointer;font-weight:700;text-align:left;background:rgba(255,255,255,.08);color:#fff;width:100%;}
+
+/* ===== ОҢ ЖАҚ БӨЛМЕЛЕР МӘЗІРІ ===== */
+.top-right-rooms{position:fixed;top:20px;right:20px;z-index:2000;display:flex;gap:10px;}
+.room-btn{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;padding:12px 18px;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.3);}
+.room-btn.create{background:linear-gradient(135deg,#8b5cf6,#6d28d9);}
+
+/* ===== МОДАЛЬДАР ===== */
+.modal{position:fixed;inset:0;background:rgba(3,7,18,.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;z-index:3000;padding:20px}
+.modal-card{width:95%;max-width:560px;text-align:center;padding:30px;border-radius:28px;background:linear-gradient(145deg,rgba(15,23,42,.95),rgba(30,27,75,.95));border:1px solid rgba(56,189,248,.4);box-shadow:0 25px 80px rgba(0,0,0,.7);}
+.modal-card input{width:100%;padding:14px;margin-bottom:12px;border-radius:14px;font-size:18px;outline:none;text-align:center;font-weight:700;border:1px solid rgba(56,189,248,.4);background:rgba(3,7,18,.8);color:#fff}
+.modal-card button{width:100%;padding:14px;border:0;border-radius:14px;cursor:pointer;font-size:17px;font-weight:800;color:#fff;background:linear-gradient(90deg,#0284c7,#8b5cf6);margin-top:5px;}
+
+/* ===== ОЙЫН РЕЖИМДЕРІ ===== */
+#selectionScreen, #gameScreen{width:100%;}
+.profile-card,#gameScreen,.timer-select-section,.mode-card{border-radius:24px;backdrop-filter:blur(12px);background:linear-gradient(145deg,rgba(15,23,42,.92),rgba(30,27,75,.88));border:1px solid rgba(56,189,248,.3);padding:20px;}
+.profile-card{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.modes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.mode-card{cursor:pointer;text-align:center;transition:.25s;}
+.mode-card:hover{transform:translateY(-5px)}
+.mode-title{font-size:22px;font-weight:900;margin-bottom:9px}
+
+.timer-select-section{margin-top:20px;text-align:center}
+.time-btn{padding:11px 20px;border-radius:12px;font-weight:800;cursor:pointer;font-size:15px;border:none;background:rgba(15,23,42,.8);border:1px solid rgba(148,163,184,.3);color:#cbd5e1;margin:3px;}
+.time-btn.active{background:linear-gradient(90deg,#0284c7,#8b5cf6)!important;color:#fff!important}
+
+.display-card{border-radius:24px;padding:25px;text-align:center;margin-bottom:20px;background:rgba(3,7,18,.8);border:1px solid rgba(56,189,248,.5);}
+.target-text-container{font-size:34px;font-weight:900;line-height:1.4;word-break:break-word;color:#ffffff!important;}
+.typed-part{color:#10b981!important;}
+.current-char{border-bottom:4px solid #38bdf8;background:rgba(56,189,248,.3);border-radius:6px;padding:0 4px;}
+
+/* Суреттегі толық өлшемді қазақша Acer ISO пернетақтасы */
+.keyboard-wrapper{border-radius:16px;padding:12px;background:#161c1c;border:1px solid #59615e;overflow-x:auto;box-shadow:0 10px 24px #0005}
+.keyboard{min-width:900px;width:100%;padding:15px 12px 18px;border-radius:10px;background:linear-gradient(120deg,#454c48,#303834 65%,#454d48);box-shadow:inset 0 2px 3px #ffffff24,inset 0 -4px 5px #0008;color:#f2f5f2;display:grid;grid-template-columns:minmax(0,15fr) minmax(0,3fr) minmax(0,4fr);gap:12px}
+.keyboard .key{position:relative;min-width:0;height:auto;border-radius:5px;border:1px solid #101512;background:linear-gradient(145deg,#363d39,#242b28);box-shadow:inset 1px 2px 2px #ffffff1c,inset -2px -3px 3px #0006,0 2px 1px #101512;color:#f5f5ef;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;font-size:13px;gap:3px;padding:3px}
+.key .latin{position:absolute;left:6px;top:5px;font-size:13px;font-weight:500}
+.key .local{position:absolute;right:6px;bottom:5px;font-size:14px}
+.key .shift-symbol{position:absolute;right:6px;top:4px;font-size:10px}
+.key .number{position:absolute;left:6px;bottom:5px;font-size:13px}
+.key.utility{font-size:9px;text-align:center;white-space:pre-line}
+.keyboard .key.target-active{background:linear-gradient(145deg,#ffe474,#f5b522)!important;color:#171b17!important;border-color:#f8e7a0;box-shadow:0 0 13px #facc1588,inset 0 1px 2px #fff8}
+.function-main{display:grid;grid-template-columns:repeat(60,minmax(0,1fr));gap:4px;height:31px;margin-bottom:11px}
+.function-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;height:31px}
+.keyboard-brand{height:31px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.keyboard-brand strong{font-size:28px;font-style:italic;font-weight:700;letter-spacing:-2px;color:#f2f6f2}
+.keyboard-leds{display:flex;gap:11px;font-size:8px;color:#dee5db;text-align:center}
+.keyboard-leds i{display:block;width:6px;height:6px;margin:4px auto 0;background:#1e281f;border-radius:4px;box-shadow:inset 0 1px 2px #0008}
+.keyboard-leds .on{background:#ffe3a3;box-shadow:0 0 5px #ffcc78}
+.keyboard-main{display:grid;grid-template-columns:repeat(60,minmax(0,1fr));grid-template-rows:repeat(5,44px);gap:5px 3px}
+.key.iso-enter{grid-column:55 / 61;grid-row:2 / 4;clip-path:polygon(0 0,100% 0,100% 100%,16.667% 100%,16.667% 48%,0 48%);padding-left:7px}
+.keyboard-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(5,44px);gap:5px}
+.keyboard-nav .media{border-radius:50%;width:23px;height:23px;align-self:center;justify-self:center;font-size:12px}
+.keyboard-numpad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(5,44px);gap:5px}
+@media(max-width:600px){.keyboard-wrapper{padding:8px}.keyboard .key{transition:none}}
+
+.action-bar{display:flex;gap:12px;justify-content:center;margin-top:20px}
+.btn-main{color:#fff;padding:13px 34px;font-size:17px;font-weight:900;border:0;border-radius:13px;cursor:pointer;background:linear-gradient(90deg,#0284c7,#8b5cf6);}
+.back-btn{border-radius:12px;padding:10px 18px;font-weight:700;cursor:pointer;border:none;background:rgba(30,41,59,.8);border:1px solid rgba(148,163,184,.3);color:#38bdf8}
+
+/* ТІЗІМ ТАБЛИЦАСЫ */
+.players-list{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:15px 0;max-height:180px;overflow-y:auto;}
+.player-chip{background:rgba(56,189,248,.2);border:1px solid #38bdf8;padding:6px 14px;border-radius:20px;font-weight:700;font-size:14px;}
+.leaderboard-table{width:100%;border-collapse:collapse;margin-top:15px;text-align:left;}
+.leaderboard-table th, .leaderboard-table td{padding:10px;border-bottom:1px solid rgba(255,255,255,.1);font-size:15px;}
+.leaderboard-table th{color:#38bdf8;}
+
+/* ===== ҚАЗАҚЫ КӨГІЛДІР СТИЛЬ ===== */
+:root{--oyu:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2236%22%20height%3D%22100%22%20viewBox%3D%220%200%2036%20100%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23e8f8ed%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M18%200v12m0%2076v12M18%2012C9%206%205%2010%207%2016c2%205%209%204%208%200M18%2012c9-6%2013-2%2011%204-2%205-9%204-8%200M18%2012v16M18%2028C9%2020%202%2027%205%2035c2%206%2010%207%2011%201%201-5-6-6-6-2M18%2028c9-8%2016-1%2013%207-2%206-10%207-11%201-1-5%206-6%206-2M18%2028v15l-5%207%205%207%205-7-5-7M18%2057v15M18%2072C9%2080%202%2073%205%2065c2-6%2010-7%2011-1%201%205-6%206-6%202M18%2072c9%208%2016%201%2013-7-2-6-10-7-11-1-1%205%206%206%206%202M18%2072v16M18%2088C9%2094%205%2090%207%2084c2-5%209-4%208%200M18%2088c9%206%2013%202%2011-4-2-5-9-4-8%200%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");--ink:#07546a;--teal:#007e99;--gold:#d8b568}
+body.theme-space,body.theme-candy{color:var(--ink);background:radial-gradient(ellipse at 50% 100%,#f2ffff 0%,#b8ecf2 24%,transparent 66%),linear-gradient(120deg,#00a5cc,#0bb5d7 52%,#009bc2);background-attachment:fixed}
+body.theme-candy{background:radial-gradient(ellipse at 50% 100%,#fffff7 0%,#d9f5ed 28%,transparent 70%),linear-gradient(120deg,#079da9,#4acbd0 55%,#078d9e)}
+body::before,body::after,.modal::before,.modal::after{content:"";position:fixed;top:0;bottom:0;width:38px;background-image:var(--oyu);background-size:32px 89px;background-repeat:repeat-y;background-position:center top;pointer-events:none;opacity:.7;z-index:0;border-left:1px solid #e7f8eb66;border-right:1px solid #e7f8eb66}
+body::before,.modal::before{left:10px}body::after,.modal::after{right:10px;transform:scaleX(-1)}
+.main-container{position:relative;z-index:1;max-width:1240px;padding:94px 60px 38px;min-width:0}
+.top-left-menu{left:62px}.top-right-rooms{right:62px}
+.menu-toggle-btn,.room-btn,.room-btn.create,.btn-main,.modal-card button{background:linear-gradient(135deg,#0088a3,#00677e);color:#fff;border:1px solid #e5cb86;border-radius:12px;box-shadow:0 5px 15px #00576c24;font-weight:700}
+button:hover{filter:brightness(1.06)}button:focus-visible,input:focus-visible{outline:3px solid #b8892a;outline-offset:4px}
+.profile-card,#gameScreen,.timer-select-section,.mode-card{color:var(--ink);background:linear-gradient(135deg,#f9fffcf5,#e5f7f7ee);border:1px solid #ffffffe6;box-shadow:0 9px 28px #006f8520;border-radius:19px}
+.profile-card{border-top:3px solid var(--gold)}
+.mode-card{position:relative;overflow:hidden;padding:32px 20px;border-bottom:3px solid var(--gold)}
+.mode-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:27px;background:var(--oyu) center / 25px 70px repeat-y;background-color:#008fa9;opacity:.75;pointer-events:none}
+.mode-card:hover{border-color:#c7a457;box-shadow:0 14px 26px #00687d30}
+.mode-title{color:#006b83;letter-spacing:.2px}
+.back-btn,.time-btn{background:#e4f5f4;color:#07546a;border:1px solid #85c4cb;box-shadow:none}
+.time-btn.active{background:linear-gradient(135deg,#0088a3,#00677e)!important;color:#fff!important;border-color:#d8b568}
+.display-card{background:#fffef5;border:1px solid #d6b875;box-shadow:inset 0 0 22px #ecddb526}
+body .target-text-container{color:#07546a!important}.typed-part{color:#137749!important}.current-char{color:#004c62;background:#c7eef1;border-bottom-color:#bd8a24}
+.keyboard-wrapper{border-color:#cfb06d;border-radius:14px;box-shadow:0 8px 20px #00465326}
+.action-bar{margin-top:24px}.btn-main{padding:14px 42px}
+.side-drawer{background:linear-gradient(160deg,#eafaf8,#d1edf0);color:var(--ink);border-right:2px solid var(--gold)}
+.drawer-menu-btn{background:#ffffffb3;color:var(--ink);border:1px solid #9dced1}
+.drawer-overlay{background:#004c5f66}
+.modal{background:#008bb044;backdrop-filter:blur(7px)}
+.modal-card{position:relative;z-index:1;overflow:hidden;color:var(--ink);background:linear-gradient(145deg,#fcfffc,#e1f3f2);border:1px solid #f6e3ac;border-top:4px solid var(--gold);box-shadow:0 24px 70px #00485d42;padding:36px 32px;border-radius:22px}
+.modal-card::after{content:"";display:block;height:20px;margin:24px auto -15px;width:138px;background-image:var(--oyu);background-size:20px 55px;background-repeat:repeat-x;background-color:#008ca5;opacity:.65;border-radius:12px;pointer-events:none}
+.modal-card h2{color:#006b83;line-height:1.35}.modal-card p{line-height:1.65}
+.modal-card input,#customTimeInput{color:#07546a!important;background:#ffffffed!important;border:1px solid #8bbec7!important}
+input::placeholder{color:#52818b;opacity:1}
+.player-chip{background:#d2f0ee;border-color:#78b9c1;color:#07546a}
+.leaderboard-table th,.leaderboard-table td{border-bottom-color:#b6d6d8}.leaderboard-table th{color:#00657c}
+#createdRoomCode,#waitingRoomTime{color:#00718b!important}
+.modal-card button[onclick*="closeModal"]{color:#07546a!important;border-color:#86bac1!important;background:transparent!important;box-shadow:none}
+@media(max-width:760px){body::before,body::after,.modal::before,.modal::after{width:22px;background-size:19px 53px}body::before,.modal::before{left:2px}body::after,.modal::after{right:2px}.main-container{padding:100px 28px 28px}.top-left-menu{top:14px;left:28px}.top-right-rooms{top:14px;right:28px;gap:5px}.menu-toggle-btn,.room-btn{font-size:12px;padding:10px 9px}.modes-grid{grid-template-columns:1fr;gap:12px}.mode-card{padding:20px}.mode-title{font-size:20px}.profile-card{gap:12px;flex-wrap:wrap}.modal{padding:28px}.modal-card{width:100%;padding:28px 18px}.modal-card h2{font-size:22px}#gameScreen{padding:12px}#gameScreen>div:first-child{flex-wrap:wrap;gap:12px}.target-text-container{font-size:27px}.display-card{padding:18px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.mode-card:hover{transform:none}}
+
+</style>
+</head>
+<body class="theme-space" id="bodyEl">
+
+<!-- СОЛ ЖАҚ МӘЗІР -->
+<div class="top-left-menu">
+    <button class="menu-toggle-btn" onclick="toggleDrawer()">☰ Мәзір</button>
+</div>
+
+<!-- ОҢ ЖАҚ БӨЛМЕЛЕР ТҮЙМЕСІ (KAHOOT СИЯҚТЫ) -->
+<div class="top-right-rooms">
+    <button class="room-btn" onclick="openJoinRoomModal()">🔑 Бөлмеге кіру</button>
+    <button class="room-btn create" onclick="openCreateRoomModal()">➕ Бөлме ашу</button>
+</div>
+
+<div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+<div class="side-drawer" id="sideDrawer">
+    <h3>⚙️ Баптаулар</h3>
+    <button class="drawer-menu-btn" onclick="toggleTheme()">🎨 Теманы ауыстыру</button>
+    <button class="drawer-menu-btn" onclick="openGlobalLeaderboard()">🏆 Жалпы Рейтинг</button>
+    <button class="drawer-menu-btn" onclick="logout(); toggleDrawer();">🔄 Оқушыны ауыстыру</button>
+</div>
+
+<!-- ТИТУЛДЫҚ ТЕРЕЗЕ (КИРУ) -->
+<div class="modal" id="loginModal">
+    <div class="modal-card">
+        <h2>⌨ Қазақша пернетақта жаттықтырғышы</h2>
+        <p style="opacity: .8;">Жоба авторы: Исабек Нұрасыл | Жетекшісі: Әмірәлі Мейірхан</p>
+        <input type="text" id="studentInput" placeholder="Аты-жөніңізді енгізіңіз..." autocomplete="off">
+        <button onclick="saveStudent()">Ойынды бастау</button>
+    </div>
+</div>
+
+<!-- БӨЛМЕ АШУ МОДАЛЫ (МҰҒАЛІМ) -->
+<div class="modal" id="createRoomModal" style="display:none;">
+    <div class="modal-card">
+        <h2>🎉 Жаңа Бөлме Ашылды!</h2>
+        <p>Оқушыларға мына PIN-кодты беріңіз:</p>
+        <h1 id="createdRoomCode" style="font-size: 48px; color: #38bdf8; letter-spacing: 5px; margin: 10px 0;">000000</h1>
+        
+        <!-- УАҚЫТ ТАҢДАУ БӨЛІМІ (ЖАҢА) -->
+        <div style="margin: 15px 0; text-align: center;">
+            <p style="font-weight: 700; margin-bottom: 8px;">⏱ Жарыс уақытын орнату:</p>
+            <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 10px;">
+                <button class="time-btn" id="roomTime60" onclick="setRoomHostTime(60, this)">60 сек</button>
+                <button class="time-btn active" id="roomTime120" onclick="setRoomHostTime(120, this)">120 сек</button>
+            </div>
+            <input type="number" id="customRoomTimeInput" placeholder="Өз уақытыңызды жазыңыз (сек)..." oninput="setCustomHostTime(this.value)">
+        </div>
+
+        <p>Қосылған оқушылар (<span id="playerCount">0</span>/40):</p>
+        <div class="players-list" id="playersListContainer"></div>
+        <button onclick="startRoomGameByHost()" style="background: linear-gradient(90deg,#10b981,#059669);">🚀 Жарысты Бастау</button>
+        <button onclick="closeModal('createRoomModal')" style="background: transparent; border:1px solid #ef4444; color:#ef4444;">Жабу</button>
+    </div>
+</div>
+
+<!-- БӨЛМЕГЕ КІРУ МОДАЛЫ (ОҚУШЫ) -->
+<div class="modal" id="joinRoomModal" style="display:none;">
+    <div class="modal-card">
+        <h2>🔑 Бөлмеге кіру</h2>
+        <input type="number" id="roomCodeInput" placeholder="6 таңбалы PIN-код..." autocomplete="off">
+        <button onclick="joinRoomByCode()">Қосылу</button>
+        <button onclick="closeModal('joinRoomModal')" style="background: transparent; border:1px solid #cbd5e1; color:#cbd5e1;">Бас тарту</button>
+    </div>
+</div>
+
+<!-- КҮТУ ТЕРЕЗЕСІ (ОҚУШЫЛАР ҮШІН) -->
+<div class="modal" id="waitingRoomModal" style="display:none;">
+    <div class="modal-card">
+        <h2>⏳ Мұғалімнің бастауын күтіңіз...</h2>
+        <p>Орнатылған жарыс уақыты: <b id="waitingRoomTime" style="color:#38bdf8;">120</b> сек</p>
+        <p>Сіз бөлмеге сәтті қосылдыңыз! Жарыс жақында басталады.</p>
+        <div class="players-list" id="waitingPlayersList"></div>
+    </div>
+</div>
+
+<!-- ЖАЛПЫ РЕЙТИНГ МОДАЛЫ -->
+<div class="modal" id="leaderboardModal" style="display:none;">
+    <div class="modal-card" style="max-width: 650px;">
+        <h2>🏆 Онлайн ТОП-10 Өздіктер</h2>
+        <table class="leaderboard-table">
+            <thead>
+                <tr><th>#</th><th>Оқушы</th><th>Ұпай</th><th>Дәлдік</th></tr>
+            </thead>
+            <tbody id="leaderboardBody"></tbody>
+        </table>
+        <br>
+        <button onclick="closeModal('leaderboardModal')">Жабу</button>
+    </div>
+</div>
+
+<div class="main-container">
+    <div id="selectionScreen">
+        <div class="profile-card">
+            <div>
+                <h2 id="displayName" style="margin:0;">Сәлем!</h2>
+                <span>Режимді таңдап, жаттығуды бастаңыз:</span>
+            </div>
+            <button class="back-btn" onclick="openGlobalLeaderboard()">🏆 Рейтинг</button>
+        </div>
+
+        <div class="modes-grid">
+            <div class="mode-card" onclick="openGame('letters')">
+                <div class="mode-title">1. Әріптер</div>
+            </div>
+            <div class="mode-card" onclick="openGame('words')">
+                <div class="mode-title">2. Сөздер</div>
+            </div>
+            <div class="mode-card" onclick="openGame('sentences')">
+                <div class="mode-title">3. Сөйлемдер</div>
+            </div>
+        </div>
+
+        <!-- ҚАЙТАРЫЛҒАН УАҚЫТ ТАҢДАУ БӨЛІМІ (30, 60, 120 СЕК ЖӘНЕ ӨЗ УАҚЫТЫ) -->
+        <div class="timer-select-section">
+            <b>⏱ Уақыт таңдау:</b><br><br>
+            <button class="time-btn" onclick="setTimerOption(30, this)">30 сек</button>
+            <button class="time-btn" onclick="setTimerOption(60, this)">60 сек</button>
+            <button class="time-btn active" onclick="setTimerOption(120, this)">120 сек</button>
+            <br><br>
+            <input type="number" id="customTimeInput" placeholder="Өз уақытыңызды енгізіңіз (сек)..." style="width: 220px; padding: 10px; border-radius: 12px; border: 1px solid rgba(56,189,248,.4); background: rgba(3,7,18,.8); color: #fff; text-align: center;" oninput="setCustomTimeOption(this.value)">
+        </div>
+    </div>
+
+    <div id="gameScreen" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <button class="back-btn" onclick="backToMenu()">‹ Мәзірге оралу</button>
+            <div id="gameStudentBadge"></div>
+            <div>⏱ Уақыт: <b id="timerVal">120</b>с | ⭐ Ұпай: <b id="scoreVal">0</b></div>
+        </div>
+
+        <div class="display-card">
+            <div class="target-text-container" id="targetDisplay"></div>
+        </div>
+
+        <div class="keyboard-wrapper"><div class="keyboard" role="img" aria-label="Суреттегі Acer толық өлшемді қазақша және ағылшынша ISO пернетақтасы"><div class="function-main"><div class="key utility" style="grid-column:1 / span 4;">Esc</div><div class="key utility" style="grid-column:9 / span 4;">F1</div><div class="key utility" style="grid-column:13 / span 4;">F2</div><div class="key utility" style="grid-column:17 / span 4;">F3</div><div class="key utility" style="grid-column:21 / span 4;">F4</div><div class="key utility" style="grid-column:27 / span 4;">F5</div><div class="key utility" style="grid-column:31 / span 4;">F6</div><div class="key utility" style="grid-column:35 / span 4;">F7</div><div class="key utility" style="grid-column:39 / span 4;">F8</div><div class="key utility" style="grid-column:45 / span 4;">F9</div><div class="key utility" style="grid-column:49 / span 4;">F10</div><div class="key utility" style="grid-column:53 / span 4;">F11</div><div class="key utility" style="grid-column:57 / span 4;">F12</div></div><div class="function-nav"><div class="key utility">Print Scrn
+SysRq</div><div class="key utility">Scroll
+Lock</div><div class="key utility">Pause
+Break</div></div><div class="keyboard-brand"><div class="keyboard-leds"><span>1<i class="on"></i></span><span>A<i></i></span><span>↧<i></i></span></div><strong>acer</strong></div><div class="keyboard-main"><div class="key " style="grid-column:1 / span 4;grid-row:1 / span 1;" data-chars="`()"><span class="latin">~</span><span class="number">`</span><span class="local">(</span><span class="shift-symbol">)</span></div><div class="key " style="grid-column:5 / span 4;grid-row:1 / span 1;" data-chars="1&quot;"><span class="latin">!</span><span class="number">1</span><span class="local">&quot;</span></div><div class="key " style="grid-column:9 / span 4;grid-row:1 / span 1;" data-chars="2ә"><span class="latin">@</span><span class="number">2</span><span class="local">Ә</span></div><div class="key " style="grid-column:13 / span 4;grid-row:1 / span 1;" data-chars="3і"><span class="latin">#</span><span class="number">3</span><span class="local">І</span></div><div class="key " style="grid-column:17 / span 4;grid-row:1 / span 1;" data-chars="4ң"><span class="latin">$</span><span class="number">4</span><span class="local">Ң</span></div><div class="key " style="grid-column:21 / span 4;grid-row:1 / span 1;" data-chars="5ғ"><span class="latin">%</span><span class="number">5</span><span class="local">Ғ</span></div><div class="key " style="grid-column:25 / span 4;grid-row:1 / span 1;" data-chars="6,;"><span class="latin">^</span><span class="number">6</span><span class="local">,</span><span class="shift-symbol">;</span></div><div class="key " style="grid-column:29 / span 4;grid-row:1 / span 1;" data-chars="7.:"><span class="latin">&amp;</span><span class="number">7</span><span class="local">.</span><span class="shift-symbol">:</span></div><div class="key " style="grid-column:33 / span 4;grid-row:1 / span 1;" data-chars="8ү"><span class="latin">*</span><span class="number">8</span><span class="local">Ү</span></div><div class="key " style="grid-column:37 / span 4;grid-row:1 / span 1;" data-chars="9ұ"><span class="latin">(</span><span class="number">9</span><span class="local">Ұ</span></div><div class="key " style="grid-column:41 / span 4;grid-row:1 / span 1;" data-chars="0қ"><span class="latin">)</span><span class="number">0</span><span class="local">Қ</span></div><div class="key " style="grid-column:45 / span 4;grid-row:1 / span 1;" data-chars="-ө"><span class="latin">_</span><span class="number">-</span><span class="local">Ө</span></div><div class="key " style="grid-column:49 / span 4;grid-row:1 / span 1;" data-chars="=һ"><span class="latin">+</span><span class="number">=</span><span class="local">Һ</span></div><div class="key utility" style="grid-column:53 / span 8;grid-row:1 / span 1;">← Backspace</div><div class="key utility" style="grid-column:1 / span 6;grid-row:2 / span 1;">Tab ⇥</div><div class="key " style="grid-column:7 / span 4;grid-row:2 / span 1;" data-chars="й"><span class="latin">Q</span><span class="local">Й</span></div><div class="key " style="grid-column:11 / span 4;grid-row:2 / span 1;" data-chars="ц"><span class="latin">W</span><span class="local">Ц</span></div><div class="key " style="grid-column:15 / span 4;grid-row:2 / span 1;" data-chars="у"><span class="latin">E</span><span class="local">У</span></div><div class="key " style="grid-column:19 / span 4;grid-row:2 / span 1;" data-chars="к"><span class="latin">R</span><span class="local">К</span></div><div class="key " style="grid-column:23 / span 4;grid-row:2 / span 1;" data-chars="е"><span class="latin">T</span><span class="local">Е</span></div><div class="key " style="grid-column:27 / span 4;grid-row:2 / span 1;" data-chars="н"><span class="latin">Y</span><span class="local">Н</span></div><div class="key " style="grid-column:31 / span 4;grid-row:2 / span 1;" data-chars="г"><span class="latin">U</span><span class="local">Г</span></div><div class="key " style="grid-column:35 / span 4;grid-row:2 / span 1;" data-chars="ш"><span class="latin">I</span><span class="local">Ш</span></div><div class="key " style="grid-column:39 / span 4;grid-row:2 / span 1;" data-chars="щ"><span class="latin">O</span><span class="local">Щ</span></div><div class="key " style="grid-column:43 / span 4;grid-row:2 / span 1;" data-chars="з"><span class="latin">P</span><span class="local">З</span></div><div class="key " style="grid-column:47 / span 4;grid-row:2 / span 1;" data-chars="х"><span class="latin">[</span><span class="local">Х</span></div><div class="key " style="grid-column:51 / span 4;grid-row:2 / span 1;" data-chars="ъ"><span class="latin">]</span><span class="local">Ъ</span></div><div class="key utility iso-enter">↵
+Enter</div><div class="key utility" style="grid-column:1 / span 7;grid-row:3 / span 1;">Caps Lock</div><div class="key " style="grid-column:8 / span 4;grid-row:3 / span 1;" data-chars="ф"><span class="latin">A</span><span class="local">Ф</span></div><div class="key " style="grid-column:12 / span 4;grid-row:3 / span 1;" data-chars="ы"><span class="latin">S</span><span class="local">Ы</span></div><div class="key " style="grid-column:16 / span 4;grid-row:3 / span 1;" data-chars="в"><span class="latin">D</span><span class="local">В</span></div><div class="key " style="grid-column:20 / span 4;grid-row:3 / span 1;" data-chars="а"><span class="latin">F</span><span class="local">А</span></div><div class="key " style="grid-column:24 / span 4;grid-row:3 / span 1;" data-chars="п"><span class="latin">G</span><span class="local">П</span></div><div class="key " style="grid-column:28 / span 4;grid-row:3 / span 1;" data-chars="р"><span class="latin">H</span><span class="local">Р</span></div><div class="key " style="grid-column:32 / span 4;grid-row:3 / span 1;" data-chars="о"><span class="latin">J</span><span class="local">О</span></div><div class="key " style="grid-column:36 / span 4;grid-row:3 / span 1;" data-chars="л"><span class="latin">K</span><span class="local">Л</span></div><div class="key " style="grid-column:40 / span 4;grid-row:3 / span 1;" data-chars="д"><span class="latin">L</span><span class="local">Д</span></div><div class="key " style="grid-column:44 / span 4;grid-row:3 / span 1;" data-chars="ж"><span class="latin">;</span><span class="local">Ж</span></div><div class="key " style="grid-column:48 / span 4;grid-row:3 / span 1;" data-chars="э"><span class="latin">&#x27;</span><span class="local">Э</span></div><div class="key " style="grid-column:52 / span 4;grid-row:3 / span 1;" data-chars="\/"><span class="latin">|</span><span class="number">\</span><span class="local">/</span></div><div class="key " style="grid-column:1 / span 5;grid-row:4 / span 1;">⇧</div><div class="key " style="grid-column:6 / span 4;grid-row:4 / span 1;" data-chars="\|"><span class="latin">|</span><span class="local">\</span></div><div class="key " style="grid-column:10 / span 4;grid-row:4 / span 1;" data-chars="я"><span class="latin">Z</span><span class="local">Я</span></div><div class="key " style="grid-column:14 / span 4;grid-row:4 / span 1;" data-chars="ч"><span class="latin">X</span><span class="local">Ч</span></div><div class="key " style="grid-column:18 / span 4;grid-row:4 / span 1;" data-chars="с"><span class="latin">C</span><span class="local">С</span></div><div class="key " style="grid-column:22 / span 4;grid-row:4 / span 1;" data-chars="м"><span class="latin">V</span><span class="local">М</span></div><div class="key " style="grid-column:26 / span 4;grid-row:4 / span 1;" data-chars="и"><span class="latin">B</span><span class="local">И</span></div><div class="key " style="grid-column:30 / span 4;grid-row:4 / span 1;" data-chars="т"><span class="latin">N</span><span class="local">Т</span></div><div class="key " style="grid-column:34 / span 4;grid-row:4 / span 1;" data-chars="ь"><span class="latin">M</span><span class="local">Ь</span></div><div class="key " style="grid-column:38 / span 4;grid-row:4 / span 1;" data-chars="б"><span class="latin">,</span><span class="local">Б</span></div><div class="key " style="grid-column:42 / span 4;grid-row:4 / span 1;" data-chars="ю"><span class="latin">.</span><span class="local">Ю</span></div><div class="key " style="grid-column:46 / span 4;grid-row:4 / span 1;" data-chars="№?"><span class="latin">/</span><span class="local">№</span></div><div class="key " style="grid-column:50 / span 11;grid-row:4 / span 1;">⇧</div><div class="key utility" style="grid-column:1 / span 5;grid-row:5 / span 1;">Ctrl</div><div class="key utility" style="grid-column:6 / span 5;grid-row:5 / span 1;">⊞</div><div class="key utility" style="grid-column:11 / span 5;grid-row:5 / span 1;">Alt</div><div class="key utility" style="grid-column:16 / span 25;grid-row:5 / span 1;" data-chars=" "></div><div class="key utility" style="grid-column:41 / span 5;grid-row:5 / span 1;">Alt Gr</div><div class="key utility" style="grid-column:46 / span 5;grid-row:5 / span 1;">⊞</div><div class="key utility" style="grid-column:51 / span 5;grid-row:5 / span 1;">▤</div><div class="key utility" style="grid-column:56 / span 5;grid-row:5 / span 1;">Ctrl</div></div><div class="keyboard-nav"><div class="key utility" style="grid-column:1 / span 1;grid-row:1 / span 1;">Insert</div><div class="key utility" style="grid-column:2 / span 1;grid-row:1 / span 1;">Home</div><div class="key utility" style="grid-column:3 / span 1;grid-row:1 / span 1;">Page
+Up</div><div class="key utility" style="grid-column:1 / span 1;grid-row:2 / span 1;">Delete</div><div class="key utility" style="grid-column:2 / span 1;grid-row:2 / span 1;">End</div><div class="key utility" style="grid-column:3 / span 1;grid-row:2 / span 1;">Page
+Down</div><div class="key utility media" style="grid-column:1 / span 1;grid-row:3 / span 1;">◀♪</div><div class="key utility media" style="grid-column:2 / span 1;grid-row:3 / span 1;">♪</div><div class="key utility media" style="grid-column:3 / span 1;grid-row:3 / span 1;">♪▶</div><div class="key utility media" style="grid-column:3 / span 1;grid-row:4 / span 1;">☾</div><div class="key utility" style="grid-column:2 / span 1;grid-row:4 / span 1;">↑</div><div class="key utility" style="grid-column:1 / span 1;grid-row:5 / span 1;">←</div><div class="key utility" style="grid-column:2 / span 1;grid-row:5 / span 1;">↓</div><div class="key utility" style="grid-column:3 / span 1;grid-row:5 / span 1;">→</div></div><div class="keyboard-numpad"><div class="key utility" style="grid-column:1 / span 1;grid-row:1 / span 1;">Num
+Lock</div><div class="key utility" style="grid-column:2 / span 1;grid-row:1 / span 1;">/</div><div class="key utility" style="grid-column:3 / span 1;grid-row:1 / span 1;">*</div><div class="key utility" style="grid-column:4 / span 1;grid-row:1 / span 1;">-</div><div class="key utility" style="grid-column:1 / span 1;grid-row:2 / span 1;">7
+Home</div><div class="key utility" style="grid-column:2 / span 1;grid-row:2 / span 1;">8
+↑</div><div class="key utility" style="grid-column:3 / span 1;grid-row:2 / span 1;">9
+PgUp</div><div class="key utility" style="grid-column:4 / span 1;grid-row:2 / span 2;">+</div><div class="key utility" style="grid-column:1 / span 1;grid-row:3 / span 1;">4
+←</div><div class="key utility" style="grid-column:2 / span 1;grid-row:3 / span 1;">5</div><div class="key utility" style="grid-column:3 / span 1;grid-row:3 / span 1;">6
+→</div><div class="key utility" style="grid-column:1 / span 1;grid-row:4 / span 1;">1
+End</div><div class="key utility" style="grid-column:2 / span 1;grid-row:4 / span 1;">2
+↓</div><div class="key utility" style="grid-column:3 / span 1;grid-row:4 / span 1;">3
+PgDn</div><div class="key utility" style="grid-column:4 / span 1;grid-row:4 / span 2;">Enter</div><div class="key utility" style="grid-column:1 / span 2;grid-row:5 / span 1;">0   Ins</div><div class="key utility" style="grid-column:3 / span 1;grid-row:5 / span 1;">.
+Del</div></div></div></div>
+
+        <div class="action-bar">
+            <button class="btn-main" id="startBtn" onclick="toggleGame()">Бастау</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* 🔥 FIREBASE БАЗАСЫ */
+const firebaseConfig = {
+    databaseURL: "https://kaz-keyboard-default-rtdb.asia-southeast1.firebasedatabase.app"
+};
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+let studentName = "Оқушы";
+let currentMode = "letters";
+let isRunning = false;
+let selectedDuration = 120; // Әдепкі бойынша 120 секунд
+let roomDuration = 120; // Мұғалім таңдайтын бөлме уақыты
+let timeLeft = 120;
+let timerInterval = null;
+let score = 0;
+let totalClicks = 0;
+let errorClicks = 0;
+let currentText = "";
+let typedIndex = 0;
+
+let currentRoomCode = null;
+let isHost = false;
+
+const lettersList = ["ә", "і", "ң", "ғ", "ү", "ұ", "қ", "ө", "һ", "а", "о", "л", "р"];
+const wordsCollection = ["мектеп","оқушы","ұстаз","білім","ғылым","сабақ","кітап","дәптер","қалам","тақта","сынып","компьютер","пернетақта"];
+const sentencesList = ["Мектеп білім ордасы", "Оқу білім бұлағы", "Білім өмір шырағы"];
+
+function toggleDrawer() {
+    document.getElementById('sideDrawer').classList.toggle('open');
+    document.getElementById('drawerOverlay').classList.toggle('show');
+}
+
+function toggleTheme() {
+    const body = document.getElementById('bodyEl');
+    if(body.classList.contains('theme-space')) {
+        body.className = 'theme-candy';
+    } else {
+        body.className = 'theme-space';
+    }
+}
+
+function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+}
+
+function saveStudent() {
+    const val = document.getElementById('studentInput').value.trim();
+    studentName = val || "Оқушы";
+    document.getElementById('displayName').innerText = `Сәлем, ${studentName}!`;
+    document.getElementById('gameStudentBadge').innerText = `Оқушы: ${studentName}`;
+    document.getElementById('loginModal').style.display = 'none';
+}
+
+function logout() {
+    document.getElementById('loginModal').style.display = 'flex';
+}
+
+/* ==================== УАҚЫТ ТАҢДАУ ЛОГИКАСЫ ==================== */
+
+function setTimerOption(sec, btn) {
+    document.querySelectorAll('.timer-select-section .time-btn').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    document.getElementById('customTimeInput').value = '';
+    selectedDuration = parseInt(sec);
+    timeLeft = selectedDuration;
+}
+
+function setCustomTimeOption(val) {
+    let sec = parseInt(val);
+    if(sec && sec > 0) {
+        document.querySelectorAll('.timer-select-section .time-btn').forEach(b => b.classList.remove('active'));
+        selectedDuration = sec;
+        timeLeft = selectedDuration;
+    }
+}
+
+// Бөлме иесіне (Мұғалімге) арналған уақыт таңдау
+function setRoomHostTime(sec, btn) {
+    document.getElementById('roomTime60').classList.remove('active');
+    document.getElementById('roomTime120').classList.remove('active');
+    if(btn) btn.classList.add('active');
+    document.getElementById('customRoomTimeInput').value = '';
+    roomDuration = parseInt(sec);
+    if(currentRoomCode) {
+        database.ref('rooms/' + currentRoomCode).update({ duration: roomDuration });
+    }
+}
+
+function setCustomHostTime(val) {
+    let sec = parseInt(val);
+    if(sec && sec > 0) {
+        document.getElementById('roomTime60').classList.remove('active');
+        document.getElementById('roomTime120').classList.remove('active');
+        roomDuration = sec;
+        if(currentRoomCode) {
+            database.ref('rooms/' + currentRoomCode).update({ duration: roomDuration });
+        }
+    }
+}
+
+/* ==================== KAHOOT БӨЛМЕЛЕР ЖҮЙЕСІ ==================== */
+
+function openCreateRoomModal() {
+    isHost = true;
+    roomDuration = 120; // Бастапқы бөлме уақыты
+    currentRoomCode = Math.floor(100000 + Math.random() * 900000).toString();
+    document.getElementById('createdRoomCode').innerText = currentRoomCode;
+    document.getElementById('createRoomModal').style.display = 'flex';
+
+    // Базада бөлме құру
+    database.ref('rooms/' + currentRoomCode).set({
+        status: 'waiting',
+        host: studentName,
+        duration: roomDuration,
+        created: Date.now()
+    });
+
+    // Қосылған оқушыларды көру
+    database.ref('rooms/' + currentRoomCode + '/players').on('value', (snapshot) => {
+        const players = snapshot.val() || {};
+        const pList = Object.keys(players);
+        document.getElementById('playerCount').innerText = pList.length;
+        
+        let html = '';
+        pList.forEach(p => {
+            html += `<div class="player-chip">👤 ${players[p].name}</div>`;
+        });
+        document.getElementById('playersListContainer').innerHTML = html;
+    });
+}
+
+function startRoomGameByHost() {
+    database.ref('rooms/' + currentRoomCode).update({ 
+        status: 'started',
+        duration: roomDuration 
+    });
+    closeModal('createRoomModal');
+    selectedDuration = roomDuration;
+    openGame('words');
+}
+
+function openJoinRoomModal() {
+    document.getElementById('joinRoomModal').style.display = 'flex';
+}
+
+function joinRoomByCode() {
+    const code = document.getElementById('roomCodeInput').value.trim();
+    if(!code) return alert("Кодты енгізіңіз!");
+
+    database.ref('rooms/' + code).once('value', (snapshot) => {
+        if(!snapshot.exists()) return alert("Мұндай бөлме табылмады!");
+
+        const roomData = snapshot.val();
+        const players = roomData.players || {};
+        if(Object.keys(players).length >= 40) return alert("Бөлме толды! Максимум 40 оқушы.");
+
+        currentRoomCode = code;
+        roomDuration = roomData.duration || 120;
+        document.getElementById('waitingRoomTime').innerText = roomDuration;
+
+        const playerKey = database.ref('rooms/' + code + '/players').push().key;
+
+        database.ref(`rooms/${code}/players/${playerKey}`).set({
+            name: studentName,
+            score: 0,
+            accuracy: 100
+        });
+
+        closeModal('joinRoomModal');
+        document.getElementById('waitingRoomModal').style.display = 'flex';
+
+        // Мұғалім уақытты өзгерртсе, оқушы экранында жаңарту
+        database.ref('rooms/' + code + '/duration').on('value', (durSnap) => {
+            if(durSnap.val()) {
+                roomDuration = durSnap.val();
+                document.getElementById('waitingRoomTime').innerText = roomDuration;
+            }
+        });
+
+        // Бастауды күту
+        database.ref('rooms/' + code + '/status').on('value', (statusSnap) => {
+            if(statusSnap.val() === 'started') {
+                closeModal('waitingRoomModal');
+                selectedDuration = roomDuration;
+                openGame('words');
+            }
+        });
+    });
+}
+
+/* ==================== ОЙЫН АҒЫМЫ ==================== */
+
+function openGame(mode) {
+    currentMode = mode;
+    document.getElementById('selectionScreen').style.display = 'none';
+    document.getElementById('gameScreen').style.display = 'block';
+    resetGameData();
+}
+
+function backToMenu() {
+    stopTimer();
+    isRunning = false;
+    document.getElementById('gameScreen').style.display = 'none';
+    document.getElementById('selectionScreen').style.display = 'block';
+}
+
+function resetGameData() {
+    stopTimer();
+    score = 0;
+    totalClicks = 0;
+    errorClicks = 0;
+    timeLeft = selectedDuration;
+    updateStatsUI();
+    document.getElementById('startBtn').innerText = "Бастау";
+    nextTarget();
+}
+
+function startTimer() {
+    stopTimer();
+    timerInterval = setInterval(() => {
+        if(timeLeft > 0) {
+            timeLeft--;
+            updateStatsUI();
+        } else {
+            finishGameByTime();
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    if(timerInterval) clearInterval(timerInterval);
+}
+
+function finishGameByTime() {
+    stopTimer();
+    isRunning = false;
+    document.getElementById('startBtn').innerText = "Қайта бастау";
+    let accuracy = totalClicks > 0 ? Math.max(0, Math.round(((totalClicks - errorClicks) / totalClicks) * 100)) : 100;
+
+    if(currentRoomCode) {
+        database.ref(`rooms/${currentRoomCode}/results`).push({
+            name: studentName,
+            score: score,
+            accuracy: accuracy
+        });
+        openRoomLeaderboard(currentRoomCode);
+    } else {
+        openGlobalLeaderboard();
+    }
+}
+
+function openRoomLeaderboard(code) {
+    document.getElementById('leaderboardModal').style.display = 'flex';
+    const tbody = document.getElementById('leaderboardBody');
+    tbody.innerHTML = '<tr><td colspan="4">Жүктелуде...</td></tr>';
+
+    database.ref(`rooms/${code}/results`).orderByChild('score').limitToLast(10).once('value', (snap) => {
+        tbody.innerHTML = '';
+        let list = [];
+        snap.forEach(c => list.push(c.val()));
+        list.reverse();
+
+        list.forEach((item, index) => {
+            tbody.innerHTML += `<tr><td><b>${index + 1}</b></td><td>${item.name}</td><td><b style="color:#38bdf8">${item.score}</b></td><td>${item.accuracy}%</td></tr>`;
+        });
+    });
+}
+
+function openGlobalLeaderboard() {
+    document.getElementById('leaderboardModal').style.display = 'flex';
+    const tbody = document.getElementById('leaderboardBody');
+    tbody.innerHTML = '<tr><td colspan="4">Жүктелуде...</td></tr>';
+
+    database.ref('rooms').limitToLast(5).once('value', (snap) => {
+        tbody.innerHTML = '<tr><td colspan="4">Жалпы ойын аяқталды! Үздік нәтижелер сақталды.</td></tr>';
+    });
+}
+
+function updateStatsUI() {
+    document.getElementById('timerVal').innerText = timeLeft;
+    document.getElementById('scoreVal').innerText = score;
+}
+
+function toggleGame() {
+    if(isRunning) {
+        isRunning = false;
+        stopTimer();
+        document.getElementById('startBtn').innerText = "Жалғастыру";
+    } else {
+        if(timeLeft <= 0) resetGameData();
+        isRunning = true;
+        startTimer();
+        document.getElementById('startBtn').innerText = "Тоқтату";
+        if(!currentText) nextTarget();
+    }
+}
+
+function nextTarget() {
+    typedIndex = 0;
+    if(currentMode === 'letters') currentText = lettersList[Math.floor(Math.random() * lettersList.length)];
+    else if(currentMode === 'words') currentText = wordsCollection[Math.floor(Math.random() * wordsCollection.length)];
+    else currentText = sentencesList[Math.floor(Math.random() * sentencesList.length)];
+    
+    renderTextDisplay();
+}
+
+function renderTextDisplay() {
+    const container = document.getElementById('targetDisplay');
+    let typedPart = currentText.substring(0, typedIndex);
+    let currentChar = currentText[typedIndex] || '';
+    let remainingPart = currentText.substring(typedIndex + 1);
+
+    let displayChar = currentChar === ' ' ? '␣' : currentChar;
+    container.innerHTML = `<span class="typed-part">${typedPart}</span><span class="current-char">${displayChar}</span><span>${remainingPart}</span>`;
+    
+    document.querySelectorAll('.key').forEach(k => k.classList.remove('target-active'));
+    let targetKey = Array.from(document.querySelectorAll('.key[data-chars]')).find(key => key.dataset.chars.includes(currentChar.toLowerCase()) && currentChar !== '');
+    if(targetKey) targetKey.classList.add('target-active');
+}
+
+document.addEventListener('keydown', (e) => {
+    if(!isRunning || timeLeft <= 0) return;
+    if(["Shift", "Control", "Alt", "CapsLock", "Tab", "Enter"].includes(e.key)) return;
+
+    totalClicks++;
+    let pressedKey = e.key.toLowerCase();
+    let expectedChar = currentText[typedIndex] ? currentText[typedIndex].toLowerCase() : '';
+
+    if(pressedKey === expectedChar) {
+        score += 10;
+        typedIndex++;
+        if(typedIndex >= currentText.length) {
+            score += 20;
+            nextTarget();
+        } else {
+            renderTextDisplay();
+        }
+    } else {
+        errorClicks++;
+    }
+    updateStatsUI();
+});
+</script>
+</body>
+</html>
